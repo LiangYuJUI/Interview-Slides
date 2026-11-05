@@ -1,33 +1,28 @@
 # Software Engineering & System Simulation
 
-Interview slides for Delta Electronics software roles and NVIDIA software / system-software roles. The deck connects production backend work at NeoPower with ongoing graduate research on energy-aware LLM serving across heterogeneous GPUs and HBM/HBF memory.
+Software engineering interview presentation by Yu-Jui Liang, dated November 6, 2026. The deck covers production software work at NeoPower and ongoing research on energy-aware LLM serving across heterogeneous GPUs with HBM/HBF memory configurations.
 
-Presenter: Yu-Jui Liang, National Taiwan University, M.S. in Data Science, expected graduation June 2027.
-
-Presentation date: November 6, 2026.
-
-Target length: about 7 min 40 sec, 10 slides. Spoken rehearsal notes are in `speaker_notes.md` (Traditional Chinese). Those notes are not part of the compiled PDF.
+**9 slides; standard speaking target: 7 min 55 sec.** Traditional Chinese rehearsal notes and 5-minute / 10-minute guidance are in `speaker_notes.md`, separate from the PDF. All three versions use the same slide order and adjust spoken detail.
 
 ## Slide organization
 
-| # | Title | Role in the story | Time |
+| # | Title | Purpose | Time |
 | --- | --- | --- | --- |
-| 1 | Software Engineering & System Simulation | Cover | 15 s |
-| 2 | Education & Professional Experience | Academic background and two contract software roles | 35 s |
-| 3 | NeoPower: Backend System Architecture | Existing platform and personal backend work | 50 s |
-| 4 | NeoPower: Scenario-Based System Simulation | External behavior simulation | 75 s |
-| 5 | NeoPower: Testing & Production Reliability | Regression and field validation | 60 s |
-| 6 | From Production Systems to GPU Simulation | Transition; optional in 5-minute version | 20 s |
-| 7 | LLM Serving: Heterogeneous GPU & Memory | Research question and design space | 65 s |
-| 8 | Research Methodology: Simulation Framework | Proposed simulator | 85 s |
-| 9 | Current Progress & Research Roadmap | Completed versus planned work | 45 s |
-| 10 | Thank You | Close | 10 s |
+| 1 | Software Engineering & System Simulation | Simple cover | 15 s |
+| 2 | Education & Professional Experience | Existing education and employment history | 35 s |
+| 3 | NeoPower: Backend System Architecture | Electric bus platform, personal responsibilities, container isolation | 50 s |
+| 4 | NeoPower: Scenario-Based System Simulation | Personally developed simulator, historical inputs, high load and network failures | 90 s |
+| 5 | NeoPower: Testing & Production Reliability | Pre-deployment test gate and cross-site charging-power algorithm comparison | 80 s |
+| 6 | LLM Serving: Heterogeneous GPU & Memory | Scheduling question and conceptual 2 × 3 compute/memory matrix | 65 s |
+| 7 | Research Methodology: Simulation Framework | Proposed profiling/modeling, serving simulation and evaluation architecture | 85 s |
+| 8 | Current Progress & Research Roadmap | Completed exploration versus planned implementation and evaluation | 45 s |
+| 9 | Thank You | Close | 10 s |
 
-Narrative: production backend engineering, then simulation used for reliability, then the same simulation discipline applied to GPU LLM serving.
+NeoPower testing is followed directly by the LLM research question. Slides 3–5 follow the presenter's finalized explanation: system and responsibilities, custom simulator, then deployment validation. No additional projects are included.
 
 ## Compilation
 
-From this directory, with pdfLaTeX:
+Use the existing pdfLaTeX workflow from this directory:
 
 ```bash
 latexmk -pdf main.tex
@@ -40,50 +35,42 @@ cd 2026-11-06/Software-Projects-NeoPower-LLM
 latexmk -pdf main.tex
 ```
 
-Remove generated auxiliaries without deleting `main.pdf`:
+Clean auxiliaries without deleting the PDF:
 
 ```bash
 latexmk -c main.tex
 ```
 
-pdfLaTeX is intentional. This deck does not need XeLaTeX or an external font. Do not switch engines unless the source starts using Unicode text in the slides.
+Rebuild `main.pdf` whenever `main.tex` changes. Keep the PDF in sync with the source. No external fonts or image assets are needed.
 
-## How to edit figures and text
+## Editing and visual checks
 
-All diagrams are TikZ pictures in `main.tex`, so they stay editable without image exports.
+- Preserve the existing blue/green, 16:9 Beamer identity and editable TikZ diagrams.
+- Slide 2 retains its original two-column education/employment content from `../NV-Testing/main.tex`; reference folders are not modified.
+- Diagram styles and colors live in the preamble. HBM is blue, HBF is mint; `\hybridcell` draws the split fill. Its geometry must match `memcell`.
+- Comment banners use final slide numbers 1–9.
+- Keep essential diagram labels readable. Remove secondary material rather than shrink fonts or fill whitespace.
+- No bottom explanatory captions or disclaimers. Normal theme page numbers remain; caveats belong in the speaker notes.
+- Check the build log for box overflow and warnings, verify exactly nine PDF pages, and render and inspect every page after layout changes.
 
-- Colors, panel commands, and node styles are in the preamble under the Madrid-inspired identity block and the `Diagram styles` comment.
-- HBM is blue (`AccentBlue` / `SoftBlue`). HBF is mint (`Accent` / `SoftMint`). Hybrid cells are drawn by `\hybridcell` as a split of those two fills. If you change `memcell` width or height, update the clip rectangle inside `\hybridcell` so the split cells stay the same size.
-- Each slide has a comment banner. Search for `SLIDE 2`, `SLIDE 3`, and so on.
-- Keep diagram text on explicit `\\` line breaks. A narrow node will otherwise hyphenate words such as "external" or "vendor".
-- `figures/` is reserved for a future export. It is not used by the current build. `\graphicspath` already includes `./` and `figures/`.
+## Factual boundaries
 
-After a source change, rebuild and recommit `main.pdf` so the GitHub PDF preview matches the current slides. After a layout change, check `main.log` for `Overfull` boxes, then look at each PDF page. The 16:9 text block is about 15.3 cm wide.
+NeoPower:
 
-## Reference presentations
+- Platform architecture is not a claim of sole authorship. Personal scope includes system planning and development, backend APIs, database integration, log analysis/debugging, some deployment and maintenance, and development of the custom simulator.
+- The simulator emulates vendors as clients or servers. Scenarios draw on production database logs, customer feedback and observed operational problems.
+- The two representative scenarios are high load from buses arriving together and network failures causing mass station/charger disconnection.
+- Pre-deployment functional and regression tests must pass before deployment. Post-deployment comparison focuses on old and new charging-power allocation algorithms at sites with similar operating conditions.
+- Cross-site observations are not randomized experiments and do not establish causal improvement by themselves. No unconfirmed performance numbers, protocols, customer names or implementation details are added.
 
-Used only as sources. They were not modified.
+LLM research:
 
-- `../NV-Testing/main.tex` — visual identity, Education & Professional Experience (slide 2), NeoPower service diagram, and reliability workflow.
-- `../Mapping-HBF-Project-15min/main.tex` — NeoPower custom-simulator wording, and the rule that HBF is modeled from published parameters rather than measured hardware.
+- The 2 × 3 matrix contains conceptual profiles, not commercial products. Hybrid colors do not imply a 50/50 memory capacity split.
+- HBF is modeled, not directly measured. Hardware trade-offs and optional metric definitions stay in speaker notes.
+- Slide 7 is a proposed framework, not an implemented or validated simulator.
+- Slide 8 marks literature review, problem/design-space exploration and candidate-framework evaluation as completed. Baseline reproduction, GPU profiling, HBF integration and scheduling experiments remain planned.
+- No experimental results or claims of guaranteed energy savings are included.
 
-## Known limitations and source assumptions
+## Current verification
 
-NeoPower
-
-- The architecture diagram is the platform, not a claim that every service was personally designed. Personal scope on the slides is backend integration, simulation, testing, and debugging.
-- Named technologies are only those already on the reference slides: Next.js, NestJS / TypeScript, MongoDB, Redis, Elasticsearch, external charging services, and background scheduling plus log export.
-- Redis and Elasticsearch are grouped as data / messaging. This deck does not assign them a more specific role.
-- Container isolation is stated without naming Docker, Compose, or Kubernetes.
-- No protocol names, customer names, incident write-ups, load numbers, or reliability percentages are included, because the reference slides do not provide public figures for them.
-- Post-deployment comparisons are observational: same site over time, and similar conditions across sites. They are not presented as a randomized experiment. An older deck used "A/B" more loosely; do not describe that work as a randomized trial.
-- The custom simulator is limited to what the Mapping deck states: it reproduced operational workflows and error scenarios, alongside external vendor/client simulators.
-
-LLM research
-
-- The 2×3 matrix is a set of conceptual simulation profiles, not six commercial GPUs.
-- HBF is not claimed as directly measured hardware. Capacity, latency, bandwidth, power, and endurance are trade-offs to model.
-- LLMServingSim 2.0 (`https://github.com/casys-kaist/LLMServingSim`) and FlashLab HBFSim (`https://github.com/FlashLabAE/HBFSim`) are candidate frameworks. They are not integrated or validated here.
-- Slide 7 is a proposed method. Slide 8 separates the survey, design space, and framework evaluation from implementation and results. No speedup, energy, or goodput number is shown.
-- The deck does not claim that heterogeneous GPU/HBF scheduling has never been studied.
-- System-level simulation is the target. Instruction-level GPU cycle simulation is out of scope, while memory-service contention still matters when it changes the result.
+The revised PDF was built with `latexmk -pdf` / pdfLaTeX and contains nine pages. Every rendered page was visually inspected for clipping, overlap, diagram readability and unwanted bottom commentary. The compilation log contains no overfull/underfull box warnings. Speaking durations are rehearsal targets, not measured delivery times.

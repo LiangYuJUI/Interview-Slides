@@ -6,9 +6,8 @@
 % Diagrams are TikZ in this file. Do not add measured results, incidents,
 % or a claim that the LLM simulator is already integrated.
 %
-% Facts reused from the reference decks:
-%   NV-Testing           -- NeoPower platform components and reliability workflow
-%   Mapping-HBF-Project  -- custom simulator; HBF is modeled, not measured
+% NeoPower scope follows the presenter's finalized explanation.
+% Existing Beamer identity and useful architecture diagrams are preserved.
 %
 % Slide sequence:
 %  1 Cover
@@ -16,11 +15,10 @@
 %  3 NeoPower architecture
 %  4 NeoPower scenario simulation
 %  5 NeoPower testing and reliability
-%  6 Bridge
-%  7 Heterogeneous GPU / memory design space
-%  8 Proposed serving-simulation method
-%  9 Progress and roadmap
-% 10 Thank you
+%  6 Heterogeneous GPU / memory design space
+%  7 Proposed serving-simulation method
+%  8 Progress and roadmap
+%  9 Thank you
 
 \documentclass[aspectratio=169,10pt]{beamer}
 \usepackage[english]{babel}
@@ -88,25 +86,6 @@
     \raggedright\strut\textbf{#1}\strut
   \end{beamercolorbox}%
 }
-\newcommand{\minibadge}[2]{%
-  \tikz[baseline=(badge.base)]\node[fill=#1,rounded corners=3pt,
-    inner xsep=6pt,inner ysep=3pt] (badge) {\scriptsize\bfseries #2};%
-}
-\newcommand{\softpanel}[3]{%
-  \begin{beamercolorbox}[rounded=true,sep=0.14cm,wd=\linewidth]{#1}%
-    \raggedright
-    {\small\bfseries\color{Accent}#2}\par\vspace{0.07cm}
-    {\small\color{Ink}#3}%
-  \end{beamercolorbox}%
-}
-\newcommand{\smallpanel}[3]{%
-  \begin{beamercolorbox}[rounded=true,sep=0.12cm,wd=\linewidth]{#1}%
-    \raggedright
-    {\small\bfseries\color{Accent}#2}\par\vspace{0.05cm}
-    {\scriptsize\color{Ink}#3}%
-  \end{beamercolorbox}%
-}
-
 % Diagram styles. HBM is blue, HBF is mint, hybrid cells are split.
 % Hybrid cell geometry must match memcell: text width 2.48cm, inner sep 3pt,
 % minimum height 1.26cm.
@@ -118,10 +97,10 @@
   \end{scope}
   \draw[Ink!30, rounded corners=3pt, line width=0.7pt]
     (#1-1.35,#2-0.63) rectangle (#1+1.35,#2+0.63);
-  \node[align=center, font=\scriptsize, text width=2.30cm] at (#1,#2) {#3};
+  \node[align=center, font=\small, text width=2.30cm] at (#1,#2) {#3};
 }
 \tikzset{
-  svc/.style={rounded corners=3pt, align=center, font=\scriptsize,
+  svc/.style={rounded corners=3pt, align=center, font=\small,
     inner sep=3.5pt, line width=0.75pt},
   fe/.style={svc, draw=AccentBlue!65, fill=SoftBlue!75,
     text width=2.45cm, minimum height=1.08cm},
@@ -131,26 +110,26 @@
     text width=2.55cm, minimum height=1.28cm},
   extbox/.style={svc, draw=AccentBlue!55, fill=SoftLilac,
     text width=2.75cm, minimum height=1.08cm},
-  scen/.style={rounded corners=3pt, align=center, font=\scriptsize,
+  scen/.style={rounded corners=3pt, align=center, font=\small,
     text width=2.85cm, minimum height=2.02cm, inner sep=3.5pt, line width=0.75pt,
     execute at begin node={\hyphenpenalty=10000\exhyphenpenalty=10000\sloppy}},
   flowstep/.style={draw=Accent!65, fill=white, rounded corners=3pt,
     minimum height=0.92cm, text width=2.20cm, align=center,
-    inner sep=3pt, font=\scriptsize, line width=0.75pt},
-  memcell/.style={rounded corners=3pt, align=center, font=\scriptsize,
+    inner sep=3pt, font=\small, line width=0.75pt},
+  memcell/.style={rounded corners=3pt, align=center, font=\small,
     text width=2.48cm, minimum height=1.26cm, inner sep=3pt, line width=0.7pt},
-  demand/.style={rounded corners=3pt, align=center, font=\scriptsize,
+  demand/.style={rounded corners=3pt, align=center, font=\small,
     text width=3.05cm, minimum height=0.68cm, inner sep=2pt, line width=0.7pt},
-  srcbox/.style={rounded corners=3pt, align=flush left, font=\scriptsize,
+  srcbox/.style={rounded corners=3pt, align=flush left, font=\small,
     text width=3.25cm, minimum height=1.78cm, inner sep=4pt, line width=0.75pt},
-  hubbox/.style={rounded corners=3pt, align=flush left, font=\scriptsize,
+  hubbox/.style={rounded corners=3pt, align=flush left, font=\small,
     text width=3.85cm, minimum height=3.72cm, inner sep=5pt, line width=0.8pt},
-  method/.style={rounded corners=3pt, align=center, font=\scriptsize\bfseries,
+  method/.style={rounded corners=3pt, align=center, font=\small\bfseries,
     minimum height=0.72cm, text width=2.85cm, inner sep=3pt}
 }
 
 \title[Software Engineering]{Software Engineering \& System Simulation}
-\subtitle{Production Backend Development / GPU LLM Serving Research}
+\subtitle{Production Software Development / GPU LLM Serving Research}
 \author{Yu-Jui Liang}
 \institute{National Taiwan University}
 \date{November 6, 2026}
@@ -163,23 +142,17 @@
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
   \vspace*{0.82cm}
-  \smalllabel{Software Engineer Interview}\par
+  {\normalsize\bfseries\color{Accent}SOFTWARE ENGINEER INTERVIEW}\par
   \vspace{0.48cm}
-  {\raggedright\fontsize{18}{22}\selectfont\bfseries\color{Ink}
+  {\raggedright\fontsize{20}{24}\selectfont\bfseries\color{Ink}
     Software Engineering \& System Simulation\par}
   \vspace{0.34cm}
-  {\color{Muted}\normalsize Production Backend Development \quad$\cdot$\quad GPU LLM Serving Research\par}
+  {\color{Muted}\fontsize{11}{14}\selectfont Production Software Development \quad$\cdot$\quad GPU LLM Serving Research\par}
   \vspace{0.72cm}
-  {\bfseries Yu-Jui Liang}\par
-  \vspace{0.08cm}
-  {\normalsize\color{Muted}M.S.\ in Data Science\par}
-  \vspace{0.04cm}
-  {\small\color{Muted}National Taiwan University \quad|\quad Expected Graduation: June 2027\par}
-  \vspace{0.03cm}
-  {\small\color{Muted}November 6, 2026\par}
+  {\large\bfseries Yu-Jui Liang}\par
+  \vspace{0.12cm}
+  {\normalsize\color{Muted}November 6, 2026\par}
   \vfill
-  {\color{Accent}\rule{\textwidth}{0.7pt}}\par\vspace{0.08cm}
-  {\small\bfseries\color{Muted}Backend Integration \quad/\quad System Simulation \quad/\quad Performance Evaluation}
 \end{frame}}
 
 % ============================================================
@@ -188,8 +161,6 @@
 % ============================================================
 \begin{frame}{Education \& Professional Experience}
   \vspace{0.05cm}
-  \smalllabel{01 / Background}\par
-  \vspace{0.22cm}
 
   \begin{columns}[T,onlytextwidth]
 
@@ -199,33 +170,33 @@
         rounded=true,sep=0.20cm,wd=\linewidth
       ]{panelblue}
 
-        {\normalsize\bfseries\color{AccentBlue}
+        {\large\bfseries\color{AccentBlue}
           Education}\par
         \vspace{0.24cm}
 
-        {\small\bfseries
+        {\normalsize\bfseries
           National Taiwan University}\par
         \vspace{0.06cm}
-        {\small
+        {\normalsize
           M.S. Candidate, Data Science
           Master's Degree Program}\par
         \vspace{0.05cm}
-        {\scriptsize\color{Muted}
+        {\small\color{Muted}
           Expected Graduation: June 2027}\par
 
         \vspace{0.26cm}
         {\color{Divider}\rule{0.92\linewidth}{0.4pt}}
         \vspace{0.19cm}
 
-        {\small\bfseries
+        {\normalsize\bfseries
           National Chengchi University}\par
         \vspace{0.06cm}
-        {\small
+        {\normalsize
           B.S. in Computer Science}\par
-        {\small
+        {\normalsize
           Double Major in Electronic Physics}\par
         \vspace{0.05cm}
-        {\scriptsize\color{Muted}
+        {\small\color{Muted}
           Sep. 2021 -- Jun. 2025}\par
 
       \end{beamercolorbox}
@@ -237,32 +208,32 @@
         rounded=true,sep=0.20cm,wd=\linewidth
       ]{panelmint}
 
-        {\normalsize\bfseries\color{Accent}
+        {\large\bfseries\color{Accent}
           Professional Experience}\par
         \vspace{0.24cm}
 
-        {\small\bfseries
+        {\normalsize\bfseries
           AIMobile Co., Ltd.}\par
-        {\scriptsize\color{Muted}
+        {\small\color{Muted}
           Inventec Group}\par
         \vspace{0.06cm}
-        {\small
+        {\normalsize
           Contract Software Engineer}\par
         \vspace{0.05cm}
-        {\scriptsize\color{Muted}
+        {\small\color{Muted}
           Apr. 2025 -- Jul. 2025}\par
 
         \vspace{0.26cm}
         {\color{Divider}\rule{0.92\linewidth}{0.4pt}}
         \vspace{0.19cm}
 
-        {\small\bfseries
+        {\normalsize\bfseries
           Neopower Technologies\\Co., Ltd.}\par
         \vspace{0.06cm}
-        {\small
+        {\normalsize
           Contract Software Engineer}\par
         \vspace{0.05cm}
-        {\scriptsize\color{Muted}
+        {\small\color{Muted}
           Jun. 2023 -- Mar. 2025}\par
 
       \end{beamercolorbox}
@@ -272,200 +243,124 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 3 - NeoPower architecture
-% Personal scope: backend integration and debugging in an existing platform.
-% Do not describe every box as personally designed.
+% SLIDE 3 - NeoPower architecture and personal engineering scope
+% Platform diagram is not a claim of sole authorship.
 % ============================================================
 \begin{frame}{NeoPower: Backend System Architecture}
-  \vspace{0.01cm}
-  \smalllabel{02 / Production Platform}\par\vspace{0.08cm}
-  \takeaway{Backend integration and debugging inside a production EV charging platform.}
-  \vspace{0.04cm}
+  \takeaway{Electric Bus Charging Management Platform}
+  \vspace{0.30cm}
   {\centering
   \begin{tikzpicture}[>=Latex]
-    % Coordinates keep the external service outside the deployment boundary.
-    \node[fe] (ui) at (0,0) {Web frontend\\Next.js};
-    \node[be] (api) at (4.84,0) {Backend APIs\\NestJS / TypeScript};
-    \node[extbox] (cpo) at (10.15,0) {External charging\\services};
-    \node[store] (db) at (3.20,-1.50)
-      {Data / messaging\\MongoDB, Redis,\\Elasticsearch};
-    \node[store] (jobs) at (6.48,-1.50)
-      {Background services\\Scheduling and\\log export};
-
+    \node[fe] (ui) at (0,0) {Web frontend};
+    \node[be] (api) at (4.84,0) {Backend APIs};
+    \node[extbox] (vendor) at (10.15,0) {Vehicle \& charging\\vendors};
+    \node[store] (db) at (3.20,-1.55) {Database\\integration};
+    \node[store] (jobs) at (6.48,-1.55) {Background\\services};
     \begin{scope}[on background layer]
-      \node[draw=Accent!55, dashed, fill=SoftMint!28, rounded corners=5pt,
-        line width=0.8pt, inner xsep=8pt, inner ysep=7pt,
+      \node[draw=Accent!55,dashed,fill=SoftMint!28,rounded corners=5pt,
+        line width=0.8pt,inner xsep=8pt,inner ysep=7pt,
         fit={(api)(db)(jobs)}] (boundary) {};
     \end{scope}
-    \node[anchor=south west, font=\scriptsize\bfseries, text=Accent, inner sep=1pt]
-      at ([yshift=1pt]boundary.north west) {Container-isolated services};
-
-    \draw[<->, Accent, thick] (ui.east) -- (api.west);
-    \draw[<->, Accent, thick] (api.east) -- (cpo.west);
-    \draw[<->, AccentBlue, thick] (api.south) -- (db.north);
-    \draw[<->, AccentBlue, thick] (api.south) -- (jobs.north);
+    \node[anchor=south west,font=\small\bfseries,text=Accent,inner sep=1pt]
+      at ([yshift=2pt]boundary.north west) {Container-Based Service Isolation};
+    \draw[<->,Accent,thick] (ui) -- (api);
+    \draw[<->,Accent,thick] (api) -- (vendor);
+    \draw[<->,AccentBlue,thick] (api.south) -- (db.north);
+    \draw[<->,AccentBlue,thick] (api.south) -- (jobs.north);
   \end{tikzpicture}\par}
-  \vspace{0.06cm}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.486\textwidth}
-      \smallpanel{panelblue}{Backend / API Integration}{%
-        Developing and integrating services within an existing production system.}
-    \end{column}
-    \begin{column}{0.486\textwidth}
-      \smallpanel{panelmint}{Container-Based Service Isolation}{%
-        Separating services to support maintenance, deployment, and troubleshooting.}
-    \end{column}
-  \end{columns}
+  \vspace{0.25cm}
+  {\small\bfseries\color{Accent}My contributions}\par\vspace{0.10cm}
+  {\small System planning \& backend development\quad /\quad Database integration\par
+  \vspace{0.08cm}Log analysis \& debugging\quad /\quad Deployment \& maintenance}
 \end{frame}
 
 % ============================================================
-% SLIDE 4 - Scenario simulation
-% Supported scope: a custom simulator plus external vendor/client simulators.
-% No protocol names, incident stories, or load numbers.
+% SLIDE 4 - Personally developed simulator and representative scenarios
 % ============================================================
 \begin{frame}{NeoPower: Scenario-Based System Simulation}
-  \vspace{0.01cm}
-  \smalllabel{03 / Why Simulate}\par\vspace{0.08cm}
-  \takeaway{Scenarios reproduce charger and vendor behavior when live equipment cannot.}
-  \vspace{0.08cm}
-  \begin{center}
-  \begin{tikzpicture}[>=Latex, node distance=0.46cm]
-    \node[scen, draw=AccentBlue!65, fill=SoftBlue!78] (def)
-      {{\bfseries Scenario definition}\\[1.2mm]
-       Normal / abnormal\\
-       High load\\
-       Multi-charger};
-    \node[scen, draw=AccentBlue!50, fill=SoftLilac, right=of def] (sim)
-      {{\bfseries Custom / external}\\[-0.2mm]
-       {\bfseries simulator}\\[1.1mm]
-       Client and vendor\\
-       Equipment failures};
-    \node[scen, draw=Accent!78, fill=SoftMint, right=of sim] (sut)
-      {{\bfseries Backend under test}\\[1.2mm]
-       APIs and services\\
-       Async workflow};
-    \node[scen, draw=Accent!65, fill=white, right=of sut] (val)
-      {{\bfseries Logs and validation}\\[1.2mm]
-       Behavior checks\\
-       Debug / regression};
-    \draw[->, AccentBlue, thick] (def) -- (sim);
-    \draw[->, Accent, thick, dashed] (sim) -- (sut);
-    \draw[->, Accent, thick] (sut) -- (val);
-    \node[font=\scriptsize, text=Accent, anchor=north] at
-      ($(sim.south)!0.5!(sut.south)+(0,-0.32)$)
-      {simulated external behavior};
-  \end{tikzpicture}
-  \end{center}
-  \vspace{0.02cm}
+  \takeaway{I developed a custom simulator for vendor interaction and failure reproduction.}
+  \vspace{0.18cm}
+  {\centering
+  \begin{tikzpicture}[>=Latex]
+    \node[scen,text width=3.5cm,minimum height=0.85cm,draw=AccentBlue!65,fill=SoftBlue] (history) at (0,1.65)
+      {Historical logs /\\Customer feedback};
+    \node[scen,text width=2.7cm,draw=AccentBlue!65,fill=SoftBlue] (def) at (0,0)
+      {\textbf{Scenario}\\\textbf{definition}};
+    \node[scen,text width=3.0cm,draw=AccentBlue!50,fill=SoftLilac] (sim) at (3.65,0)
+      {\textbf{Custom simulator}\\[2mm]Vendors as\\clients or servers};
+    \node[scen,text width=2.7cm,draw=Accent!78,fill=SoftMint] (sut) at (7.3,0)
+      {\textbf{System under test}\\[2mm]Backend services};
+    \node[scen,text width=2.5cm,draw=Accent!65,fill=white] (val) at (10.75,0)
+      {\textbf{Validation}\\[2mm]Behavior checks\\Error reproduction};
+    \draw[->,AccentBlue,thick] (history) -- (def);
+    \draw[->,AccentBlue,thick] (def) -- (sim);
+    \draw[->,Accent,thick] (sim) -- (sut);
+    \draw[->,Accent,thick] (sut) -- (val);
+  \end{tikzpicture}\par}
+  \vspace{0.20cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.32\textwidth}
-      \smallpanel{panelblue}{Reproducible workflows}{%
-        Re-run a defined scenario without the physical charger or live vendor system.}
+    \begin{column}{0.486\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.16cm,wd=\linewidth]{panelblue}
+        {\small\bfseries\color{AccentBlue}High Load}\par\vspace{0.07cm}
+        {\small Many buses arrive at once}
+      \end{beamercolorbox}
     \end{column}
-    \begin{column}{0.32\textwidth}
-      \smallpanel{panellilac}{Failure and load}{%
-        Exercise normal, abnormal, high-load, and multi-charger situations.}
-    \end{column}
-    \begin{column}{0.32\textwidth}
-      \smallpanel{panelmint}{Debug and regression}{%
-        Use logs to investigate bugs and keep past failures from returning.}
+    \begin{column}{0.486\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.16cm,wd=\linewidth]{panelmint}
+        {\small\bfseries\color{Accent}Network Failure}\par\vspace{0.07cm}
+        {\small Mass disconnection of stations / chargers}
+      \end{beamercolorbox}
     \end{column}
   \end{columns}
 \end{frame}
 
 % ============================================================
-% SLIDE 5 - Testing and production reliability
-% Field comparisons are observational. Do not call them a randomized trial.
+% SLIDE 5 - Pre-deployment gate and operational algorithm comparison
+% Cross-site comparisons are observational; caveat is in speaker notes.
 % ============================================================
 \begin{frame}{NeoPower: Testing \& Production Reliability}
-  \vspace{0.01cm}
-  \smalllabel{04 / Reliability Loop}\par\vspace{0.08cm}
-  \takeaway{Production reliability needs reproducible tests and feedback from real deployments.}
-  \vspace{0.10cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.486\textwidth}
-      \softpanel{panelblue}{Pre-Deployment Testing}{%
-        \textbullet\ Scenario-based validation\\[1.1mm]
-        \textbullet\ Vendor / client simulation\\[1.1mm]
-        \textbullet\ Regression testing\\[1.1mm]
-        \textbullet\ High-load and multi-charger failures}
+    \begin{column}{0.40\textwidth}
+      {\normalsize\bfseries\color{AccentBlue}Pre-Deployment Testing}\par
+      \vspace{0.30cm}
+      \centering
+      \begin{tikzpicture}[>=Latex]
+        \node[scen,text width=4.8cm,minimum height=1.5cm,draw=AccentBlue!65,fill=SoftBlue] (test)
+          {\textbf{Simulator-based validation}\\[2mm]Normal / abnormal conditions\\Regression testing};
+        \node[flowstep,text width=4.8cm,fill=SoftMint] (deploy) at (0,-2.5) {Deploy updated system};
+        \draw[->,thick,Accent] (test) -- node[right,font=\small] {Tests pass} (deploy);
+      \end{tikzpicture}
     \end{column}
-    \begin{column}{0.486\textwidth}
-      \softpanel{panelmint}{Post-Deployment Validation}{%
-        \textbullet\ Operational log analysis\\[1.1mm]
-        \textbullet\ Time-based comparison at the same site\\[1.1mm]
-        \textbullet\ Cross-site comparison, similar conditions\\[1.1mm]
-        \textbullet\ Software behavior and customer feedback}
+    \begin{column}{0.56\textwidth}
+      {\normalsize\bfseries\color{Accent}Post-Deployment Validation}\par
+      \vspace{0.30cm}
+      {\small\bfseries Charging-power allocation algorithms}\par
+      \vspace{0.18cm}
+      {\small Cross-Site Comparison: similar operating conditions}\par
+      \vspace{0.22cm}
+      \centering
+      \begin{tikzpicture}[>=Latex]
+        \node[scen,text width=3.35cm,minimum height=1.15cm,draw=AccentBlue!65,fill=SoftBlue] (old) at (0,0)
+          {Some sites\\\textbf{Previous algorithm}};
+        \node[scen,text width=3.35cm,minimum height=1.15cm,draw=Accent!65,fill=SoftMint] (new) at (4.1,0)
+          {Other sites\\\textbf{Updated algorithm}};
+        \node[scen,text width=6.8cm,minimum height=1.3cm,draw=Accent!65,fill=white] (data) at (2.05,-2.05)
+          {\textbf{Compare operating behavior}\\[2mm]System logs / operating data\\Customer feedback};
+        \draw[->,thick,AccentBlue] (old.south) -- (old.south |- data.north);
+        \draw[->,thick,Accent] (new.south) -- (new.south |- data.north);
+      \end{tikzpicture}
     \end{column}
   \end{columns}
-  \vspace{0.12cm}
-  \begin{center}
-  \begin{tikzpicture}[>=Latex]
-    \node[flowstep] (a) at (0,0) {Field\\Data};
-    \node[flowstep] (b) at (3.05,0) {Scenario\\Reproduction};
-    \node[flowstep] (c) at (6.10,0) {Simulation};
-    \node[flowstep] (d) at (9.15,0) {Regression\\Testing};
-    \node[flowstep, fill=SoftMint!75, draw=Accent!75] (e) at (12.20,0)
-      {Deployment \&\\Monitoring};
-    \foreach \u/\v in {a/b,b/c,c/d,d/e}{
-      \draw[->, thick, Accent] (\u.east) -- (\v.west);
-    }
-  \end{tikzpicture}
-  \end{center}
-  \vspace{0.04cm}
-  {\scriptsize\color{Muted}Field comparisons are observational checks, not randomized experiments.
-  Historical incidents become reusable scenarios for later releases.}
 \end{frame}
 
 % ============================================================
-% SLIDE 6 - Bridge. Safe to skip in the 5-minute cut.
-% ============================================================
-\begin{frame}{From Production Systems to GPU Simulation}
-  \vspace{0.02cm}
-  \smalllabel{05 / Same Engineering Method}\par\vspace{0.08cm}
-  \takeaway{Different systems, same loop: model the behavior, then validate it.}
-  \vspace{0.16cm}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.46\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=0.18cm,wd=\linewidth]{panelmint}
-        \raggedright
-        {\small\bfseries\color{Accent}NeoPower}\par\vspace{0.10cm}
-        {\small Production system simulation for reproducible testing and debugging.}
-      \end{beamercolorbox}
-    \end{column}
-    \begin{column}{0.06\textwidth}
-      \centering{\Large\color{Accent}$\rightarrow$}
-    \end{column}
-    \begin{column}{0.46\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=0.18cm,wd=\linewidth]{panelblue}
-        \raggedright
-        {\small\bfseries\color{AccentBlue}GPU LLM Serving Research}\par\vspace{0.10cm}
-        {\small System-level simulation for evaluating heterogeneous hardware configurations.}
-      \end{beamercolorbox}
-    \end{column}
-  \end{columns}
-  \vspace{0.28cm}
-  \begin{center}
-  \begin{tikzpicture}
-    \node[method, draw=Accent!55, fill=SoftMint] at (0,0) {Simulation};
-    \node[method, draw=AccentBlue!55, fill=SoftBlue] at (3.55,0) {Modeling};
-    \node[method, draw=Accent!55, fill=SoftMint!70] at (7.10,0) {Validation};
-    \node[method, draw=AccentBlue!55, fill=SoftBlue!80] at (10.65,0) {Performance Analysis};
-  \end{tikzpicture}
-  \end{center}
-  \vspace{0.16cm}
-  {\scriptsize\color{Muted}Shared method across a production backend and current graduate research.}
-\end{frame}
-
-% ============================================================
-% SLIDE 7 - Heterogeneous design space
+% SLIDE 6 - Heterogeneous design space
 % Six cells are simulation profiles, not six commercial GPUs.
 % HBF parameters are not direct hardware measurements.
 % ============================================================
 \begin{frame}{LLM Serving: Heterogeneous GPU \& Memory}
   \vspace{0.00cm}
-  \smalllabel{06 / Graduate Research Question}\par\vspace{0.04cm}
-  \takeaway{How should LLM requests be scheduled across GPUs with different compute and memory characteristics?}
+  \takeaway{How can request scheduling balance performance and energy across heterogeneous GPUs?}
   \vspace{0.02cm}
   % Workload demands and the 2 x 3 profile matrix are separate pictures
   % so their coordinates cannot collide. \centering avoids center-env skips.
@@ -480,19 +375,20 @@
     \node[demand, draw=Accent!60, fill=SoftMint!65] at (10.50,0)
       {{\bfseries KV cache}\\latency-sensitive};
   \end{tikzpicture}\par}
-  \vspace{0.02cm}
+  \vspace{0.18cm}
+  {\small\bfseries\color{Accent}Conceptual compute / memory profiles}\par\vspace{0.10cm}
   {\centering
   \begin{tikzpicture}
     % Headers sit just above the high-compute row. Blue = HBM, mint = HBF.
-    \node[anchor=east, align=right, text width=2.45cm, font=\scriptsize\bfseries]
+    \node[anchor=east, align=right, text width=2.45cm, font=\small\bfseries]
       at (3.05,0) {High compute};
-    \node[anchor=east, align=right, text width=2.45cm, font=\scriptsize\bfseries]
+    \node[anchor=east, align=right, text width=2.45cm, font=\small\bfseries]
       at (3.05,-1.40) {Low compute};
-    \node[anchor=south, align=center, font=\scriptsize] at (4.85,0.74)
+    \node[anchor=south, align=center, font=\small] at (4.85,0.74)
       {{\bfseries\color{AccentBlue}HBM-only}\\[-1pt]{\color{Muted}fast memory}};
-    \node[anchor=south, align=center, font=\scriptsize] at (8.25,0.74)
+    \node[anchor=south, align=center, font=\small] at (8.25,0.74)
       {{\bfseries\color{Accent}HBF-dominant}\\[-1pt]{\color{Muted}high capacity}};
-    \node[anchor=south, align=center, font=\scriptsize] at (11.65,0.74)
+    \node[anchor=south, align=center, font=\small] at (11.65,0.74)
       {{\bfseries Hybrid}\\[-1pt]%
        {\color{AccentBlue}\rule{0.22cm}{0.12cm}}\hspace{0.06cm}%
        {\color{Accent}\rule{0.22cm}{0.12cm}}};
@@ -500,109 +396,71 @@
     \node[memcell, draw=AccentBlue!70, fill=SoftBlue] at (4.85,0)
       {Latency-first\\memory};
     \node[memcell, draw=Accent!75, fill=SoftMint] at (8.25,0)
-      {Capacity-first\\may need buffering};
+      {Capacity-first\\memory};
     \node[memcell, draw=AccentBlue!70, fill=SoftBlue!72] at (4.85,-1.40)
       {Latency-first\\memory};
     \node[memcell, draw=Accent!75, fill=SoftMint!78] at (8.25,-1.40)
-      {Capacity-first\\may need buffering};
+      {Capacity-first\\memory};
     \hybridcell{11.65}{0}{HBM + HBF\\split by role}
     \hybridcell{11.65}{-1.40}{HBM + HBF\\split by role}
   \end{tikzpicture}\par}
-  \vspace{0.01cm}
-  \begin{beamercolorbox}[rounded=true,sep=0.045cm,wd=\linewidth]{panelmint}
-    \raggedright
-    {\scriptsize\bfseries\color{Accent}HBF in this study.}\hspace{0.35em}%
-    {\scriptsize Higher capacity, with different latency, bandwidth, power, and endurance.
-    The six cells are conceptual simulation profiles, not commercial GPU products.}
-  \end{beamercolorbox}
 \end{frame}
 
 % ============================================================
-% SLIDE 8 - Proposed methodology
-% Numbered blocks are the workflow. This system is not implemented yet.
+% SLIDE 7 - Proposed methodology, not implemented or validated
 % ============================================================
 \begin{frame}{Research Methodology: Simulation Framework}
-  \vspace{0.00cm}
-  \smalllabel{07 / Proposed Method}\par\vspace{0.07cm}
-  \takeaway{Evaluate routing and energy with a system-level serving model.}
-  \vspace{0.08cm}
+  \takeaway{Proposed framework: evaluate serving performance and energy.}
+  \vspace{0.30cm}
   \begin{center}
   \begin{tikzpicture}[>=Latex]
-    \node[srcbox, draw=AccentBlue!65, fill=SoftBlue!75] (gpu) at (0,0.98)
-      {{\bfseries\color{AccentBlue}1\quad Real GPU profiling}\\[0.8mm]
-       Compute latency\\
-       GPU power\\
-       Memory usage\\
-       Varies with workload};
-    \node[srcbox, draw=Accent!70, fill=SoftMint] (hbf) at (0,-1.02)
-      {{\bfseries\color{Accent}2\quad HBF device modeling}\\[0.8mm]
-       Capacity\\
-       Read/write latency\\
-       Effective bandwidth\\
-       Contention, energy};
-    \node[hubbox, draw=Accent!80, fill=white] (sim) at (5.20,-0.02)
-      {{\bfseries\color{Accent}3\quad System-level serving model}\\[1.6mm]
-       Workload traces\\[1.25mm]
-       Heterogeneous GPU profiles\\[1.25mm]
-       Request routing\\[1.25mm]
-       Batching and scheduling\\[1.25mm]
-       Memory service modeling\\[1.25mm]
-       Performance and energy estimates};
-    \node[hubbox, draw=AccentBlue!60, fill=SoftLilac!65, text width=3.45cm] (out) at (10.15,-0.02)
-      {{\bfseries\color{AccentBlue}4\quad Estimated outputs}\\[1.6mm]
-       Throughput\\[1.35mm]
-       TTFT / TPOT\\[0.2mm]
-       {\color{Muted}first token / per token}\\[1.35mm]
-       SLO goodput\\[1.35mm]
-       Energy per token\\[1.35mm]
-       Peak power};
-    \draw[->, Accent, thick] (gpu.east) -- (sim.west |- gpu.east);
-    \draw[->, Accent, thick] (hbf.east) -- (sim.west |- hbf.east);
-    \draw[->, AccentBlue, thick] (sim.east) -- (out.west);
+    \node[srcbox,draw=AccentBlue!65,fill=SoftBlue!75] (gpu) at (0,1.12)
+      {\textbf{Real GPU Profiling}\\[2mm]Performance\\Power};
+    \node[srcbox,draw=Accent!70,fill=SoftMint] (hbf) at (0,-1.12)
+      {\textbf{HBF Memory Modeling}\\[2mm]Capacity / latency\\Bandwidth / energy};
+    \node[hubbox,draw=Accent!80,fill=white] (sim) at (5.1,0)
+      {\textbf{System-Level}\\\textbf{Serving Simulation}\\[4mm]
+       Heterogeneous GPU profiles\\[2mm]
+       Request scheduling\\[2mm]
+       Compute / memory behavior};
+    \node[hubbox,draw=AccentBlue!60,fill=SoftLilac!65,text width=3.45cm] (out) at (10.15,0)
+      {\textbf{Performance \&}\\\textbf{Energy Evaluation}\\[4mm]
+       Latency / throughput\\[2mm]
+       Energy per token};
+    \draw[->,Accent,thick] (gpu.east) -- (sim.west |- gpu.east);
+    \draw[->,Accent,thick] (hbf.east) -- (sim.west |- hbf.east);
+    \draw[->,AccentBlue,thick] (sim.east) -- (out.west);
   \end{tikzpicture}
   \end{center}
-  \vspace{0.04cm}
-  {\scriptsize\color{Muted}Candidates, not yet integrated: LLMServingSim 2.0 and FlashLab HBFSim.
-  Scope is system-level behavior, including memory-service contention, not GPU cycle simulation.}
 \end{frame}
 
 % ============================================================
-% SLIDE 9 - Progress versus plan
-% No benchmark numbers and no implemented scheduler.
+% SLIDE 8 - Completed exploration versus planned implementation
 % ============================================================
 \begin{frame}{Current Progress \& Research Roadmap}
-  \vspace{0.01cm}
-  \smalllabel{08 / Ongoing Research}\par\vspace{0.08cm}
-  \takeaway{The question and method are in place. Integration and results are still ahead.}
-  \vspace{0.12cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.486\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=0.16cm,wd=\linewidth]{panelmint}
-        \raggedright
-        {\small\bfseries\color{Accent}Current Progress}\hfill
-        \minibadge{Accent}{\color{white}Completed}\par\vspace{0.12cm}
-        {\small\textcolor{Accent}{\checkmark}\hspace{0.35em}Literature survey on heterogeneous GPU serving and HBF memory systems.}\par\vspace{0.12cm}
-        {\small\textcolor{Accent}{\checkmark}\hspace{0.35em}Initial formulation of the heterogeneous compute--memory design space.}\par\vspace{0.12cm}
-        {\small\textcolor{Accent}{\checkmark}\hspace{0.35em}Evaluation of candidate simulation frameworks and the research method.}
+      \begin{beamercolorbox}[rounded=true,sep=0.22cm,wd=\linewidth]{panelmint}
+        {\normalsize\bfseries\color{Accent}Completed}\par\vspace{0.26cm}
+        {\small Literature review}\par\vspace{0.24cm}
+        {\small Research problem \& design-space exploration}\par\vspace{0.24cm}
+        {\small Evaluation of candidate simulation frameworks}
       \end{beamercolorbox}
     \end{column}
     \begin{column}{0.486\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=0.16cm,wd=\linewidth]{panelblue}
-        \raggedright
-        {\small\bfseries\color{AccentBlue}Next Steps}\hfill
-        \minibadge{AccentBlue}{\color{white}Planned}\par\vspace{0.12cm}
-        {\small\textcolor{AccentBlue}{$\rightarrow$}\hspace{0.30em}Reproduce LLM serving simulator baselines.}\par\vspace{0.09cm}
-        {\small\textcolor{AccentBlue}{$\rightarrow$}\hspace{0.30em}Profile real GPU computation and energy.}\par\vspace{0.09cm}
-        {\small\textcolor{AccentBlue}{$\rightarrow$}\hspace{0.30em}Integrate HBM/HBF memory models.}\par\vspace{0.09cm}
-        {\small\textcolor{AccentBlue}{$\rightarrow$}\hspace{0.30em}Explore HBF-aware request routing.}\par\vspace{0.09cm}
-        {\small\textcolor{AccentBlue}{$\rightarrow$}\hspace{0.30em}Evaluate performance--energy trade-offs under latency SLOs.}
+      \begin{beamercolorbox}[rounded=true,sep=0.22cm,wd=\linewidth]{panelblue}
+        {\normalsize\bfseries\color{AccentBlue}Planned}\par\vspace{0.26cm}
+        {\small Reproduce serving baselines}\par\vspace{0.20cm}
+        {\small Profile real GPU performance \& power}\par\vspace{0.20cm}
+        {\small Integrate HBF models}\par\vspace{0.20cm}
+        {\small Explore energy-aware scheduling\\and evaluate trade-offs}
       \end{beamercolorbox}
     \end{column}
   \end{columns}
 \end{frame}
 
 % ============================================================
-% SLIDE 10 - Close
+% SLIDE 9 - Close
 % ============================================================
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
