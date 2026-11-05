@@ -6,21 +6,22 @@ Presenter: Yu-Jui Liang, National Taiwan University, M.S. in Data Science, expec
 
 Presentation date: November 6, 2026.
 
-Target length: 7–8 minutes, 9 slides. Spoken rehearsal notes are in `speaker_notes.md` (Traditional Chinese). Those notes are not part of the compiled PDF.
+Target length: about 7 min 40 sec, 10 slides. Spoken rehearsal notes are in `speaker_notes.md` (Traditional Chinese). Those notes are not part of the compiled PDF.
 
 ## Slide organization
 
 | # | Title | Role in the story | Time |
 | --- | --- | --- | --- |
-| 1 | Software Engineering & System Simulation | Cover | 20 s |
-| 2 | NeoPower: Backend System Architecture | Production platform and where backend work sat | 55 s |
-| 3 | NeoPower: Scenario-Based System Simulation | Why and how external behavior was simulated | 80 s |
-| 4 | NeoPower: Testing & Production Reliability | Pre-deployment tests and observational field checks | 65 s |
-| 5 | From Production Systems to GPU Simulation | Method bridge; safe to skip in a 5-minute cut | 25 s |
-| 6 | LLM Serving: Heterogeneous GPU & Memory | Research question and the 2×3 profile matrix | 70 s |
-| 7 | Research Methodology: Simulation Framework | Proposed system-level simulator | 90 s |
-| 8 | Current Progress & Research Roadmap | Completed work versus the plan | 45 s |
-| 9 | Thank You | Close | ~10 s |
+| 1 | Software Engineering & System Simulation | Cover | 15 s |
+| 2 | Education & Professional Experience | Academic background and two contract software roles | 35 s |
+| 3 | NeoPower: Backend System Architecture | Existing platform and personal backend work | 50 s |
+| 4 | NeoPower: Scenario-Based System Simulation | External behavior simulation | 75 s |
+| 5 | NeoPower: Testing & Production Reliability | Regression and field validation | 60 s |
+| 6 | From Production Systems to GPU Simulation | Transition; optional in 5-minute version | 20 s |
+| 7 | LLM Serving: Heterogeneous GPU & Memory | Research question and design space | 65 s |
+| 8 | Research Methodology: Simulation Framework | Proposed simulator | 85 s |
+| 9 | Current Progress & Research Roadmap | Completed versus planned work | 45 s |
+| 10 | Thank You | Close | 10 s |
 
 Narrative: production backend engineering, then simulation used for reliability, then the same simulation discipline applied to GPU LLM serving.
 
@@ -57,13 +58,13 @@ All diagrams are TikZ pictures in `main.tex`, so they stay editable without imag
 - Keep diagram text on explicit `\\` line breaks. A narrow node will otherwise hyphenate words such as "external" or "vendor".
 - `figures/` is reserved for a future export. It is not used by the current build. `\graphicspath` already includes `./` and `figures/`.
 
-After a layout change, rebuild and check `main.log` for `Overfull` boxes, then look at each PDF page. The 16:9 text block is about 15.3 cm wide.
+After a source change, rebuild and recommit `main.pdf` so the GitHub PDF preview matches the current slides. After a layout change, check `main.log` for `Overfull` boxes, then look at each PDF page. The 16:9 text block is about 15.3 cm wide.
 
 ## Reference presentations
 
 Used only as sources. They were not modified.
 
-- `../NV-Testing/main.tex` — visual identity, NeoPower service diagram, and the reliability workflow.
+- `../NV-Testing/main.tex` — visual identity, Education & Professional Experience (slide 2), NeoPower service diagram, and reliability workflow.
 - `../Mapping-HBF-Project-15min/main.tex` — NeoPower custom-simulator wording, and the rule that HBF is modeled from published parameters rather than measured hardware.
 
 ## Known limitations and source assumptions
