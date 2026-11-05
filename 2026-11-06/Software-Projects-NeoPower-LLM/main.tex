@@ -12,14 +12,15 @@
 %
 % Slide sequence:
 %  1 Cover
-%  2 NeoPower architecture
-%  3 NeoPower scenario simulation
-%  4 NeoPower testing and reliability
-%  5 Bridge
-%  6 Heterogeneous GPU / memory design space
-%  7 Proposed serving-simulation method
-%  8 Progress and roadmap
-%  9 Thank you
+%  2 Education & Professional Experience
+%  3 NeoPower architecture
+%  4 NeoPower scenario simulation
+%  5 NeoPower testing and reliability
+%  6 Bridge
+%  7 Heterogeneous GPU / memory design space
+%  8 Proposed serving-simulation method
+%  9 Progress and roadmap
+% 10 Thank you
 
 \documentclass[aspectratio=169,10pt]{beamer}
 \usepackage[english]{babel}
@@ -182,13 +183,102 @@
 \end{frame}}
 
 % ============================================================
-% SLIDE 2 - NeoPower architecture
+% SLIDE 2 - Education & Professional Experience
+% Copied from NV-Testing slide 2 for consistent education and career history.
+% ============================================================
+\begin{frame}{Education \& Professional Experience}
+  \vspace{0.05cm}
+  \smalllabel{01 / Background}\par
+  \vspace{0.22cm}
+
+  \begin{columns}[T,onlytextwidth]
+
+    % ----- Education -----
+    \begin{column}{0.49\textwidth}
+      \begin{beamercolorbox}[
+        rounded=true,sep=0.20cm,wd=\linewidth
+      ]{panelblue}
+
+        {\normalsize\bfseries\color{AccentBlue}
+          Education}\par
+        \vspace{0.24cm}
+
+        {\small\bfseries
+          National Taiwan University}\par
+        \vspace{0.06cm}
+        {\small
+          M.S. Candidate, Data Science
+          Master's Degree Program}\par
+        \vspace{0.05cm}
+        {\scriptsize\color{Muted}
+          Expected Graduation: June 2027}\par
+
+        \vspace{0.26cm}
+        {\color{Divider}\rule{0.92\linewidth}{0.4pt}}
+        \vspace{0.19cm}
+
+        {\small\bfseries
+          National Chengchi University}\par
+        \vspace{0.06cm}
+        {\small
+          B.S. in Computer Science}\par
+        {\small
+          Double Major in Electronic Physics}\par
+        \vspace{0.05cm}
+        {\scriptsize\color{Muted}
+          Sep. 2021 -- Jun. 2025}\par
+
+      \end{beamercolorbox}
+    \end{column}
+
+    % ----- Professional Experience -----
+    \begin{column}{0.49\textwidth}
+      \begin{beamercolorbox}[
+        rounded=true,sep=0.20cm,wd=\linewidth
+      ]{panelmint}
+
+        {\normalsize\bfseries\color{Accent}
+          Professional Experience}\par
+        \vspace{0.24cm}
+
+        {\small\bfseries
+          AIMobile Co., Ltd.}\par
+        {\scriptsize\color{Muted}
+          Inventec Group}\par
+        \vspace{0.06cm}
+        {\small
+          Contract Software Engineer}\par
+        \vspace{0.05cm}
+        {\scriptsize\color{Muted}
+          Apr. 2025 -- Jul. 2025}\par
+
+        \vspace{0.26cm}
+        {\color{Divider}\rule{0.92\linewidth}{0.4pt}}
+        \vspace{0.19cm}
+
+        {\small\bfseries
+          Neopower Technologies\\Co., Ltd.}\par
+        \vspace{0.06cm}
+        {\small
+          Contract Software Engineer}\par
+        \vspace{0.05cm}
+        {\scriptsize\color{Muted}
+          Jun. 2023 -- Mar. 2025}\par
+
+      \end{beamercolorbox}
+    \end{column}
+
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% SLIDE 3 - NeoPower architecture
 % Personal scope: backend integration and debugging in an existing platform.
 % Do not describe every box as personally designed.
 % ============================================================
 \begin{frame}{NeoPower: Backend System Architecture}
   \vspace{0.01cm}
-  \smalllabel{01 / Production Platform}\par\vspace{0.08cm}
+  \smalllabel{02 / Production Platform}\par\vspace{0.08cm}
   \takeaway{Backend integration and debugging inside a production EV charging platform.}
   \vspace{0.04cm}
   {\centering
@@ -229,13 +319,13 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 3 - Scenario simulation
+% SLIDE 4 - Scenario simulation
 % Supported scope: a custom simulator plus external vendor/client simulators.
 % No protocol names, incident stories, or load numbers.
 % ============================================================
 \begin{frame}{NeoPower: Scenario-Based System Simulation}
   \vspace{0.01cm}
-  \smalllabel{02 / Why Simulate}\par\vspace{0.08cm}
+  \smalllabel{03 / Why Simulate}\par\vspace{0.08cm}
   \takeaway{Scenarios reproduce charger and vendor behavior when live equipment cannot.}
   \vspace{0.08cm}
   \begin{center}
@@ -284,12 +374,12 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 4 - Testing and production reliability
+% SLIDE 5 - Testing and production reliability
 % Field comparisons are observational. Do not call them a randomized trial.
 % ============================================================
 \begin{frame}{NeoPower: Testing \& Production Reliability}
   \vspace{0.01cm}
-  \smalllabel{03 / Reliability Loop}\par\vspace{0.08cm}
+  \smalllabel{04 / Reliability Loop}\par\vspace{0.08cm}
   \takeaway{Production reliability needs reproducible tests and feedback from real deployments.}
   \vspace{0.10cm}
   \begin{columns}[T,onlytextwidth]
@@ -328,11 +418,11 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 5 - Bridge. Safe to skip in the 5-minute cut.
+% SLIDE 6 - Bridge. Safe to skip in the 5-minute cut.
 % ============================================================
 \begin{frame}{From Production Systems to GPU Simulation}
   \vspace{0.02cm}
-  \smalllabel{04 / Same Engineering Method}\par\vspace{0.08cm}
+  \smalllabel{05 / Same Engineering Method}\par\vspace{0.08cm}
   \takeaway{Different systems, same loop: model the behavior, then validate it.}
   \vspace{0.16cm}
   \begin{columns}[c,onlytextwidth]
@@ -368,13 +458,13 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 6 - Heterogeneous design space
+% SLIDE 7 - Heterogeneous design space
 % Six cells are simulation profiles, not six commercial GPUs.
 % HBF parameters are not direct hardware measurements.
 % ============================================================
 \begin{frame}{LLM Serving: Heterogeneous GPU \& Memory}
   \vspace{0.00cm}
-  \smalllabel{05 / Graduate Research Question}\par\vspace{0.04cm}
+  \smalllabel{06 / Graduate Research Question}\par\vspace{0.04cm}
   \takeaway{How should LLM requests be scheduled across GPUs with different compute and memory characteristics?}
   \vspace{0.02cm}
   % Workload demands and the 2 x 3 profile matrix are separate pictures
@@ -428,12 +518,12 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 7 - Proposed methodology
+% SLIDE 8 - Proposed methodology
 % Numbered blocks are the workflow. This system is not implemented yet.
 % ============================================================
 \begin{frame}{Research Methodology: Simulation Framework}
   \vspace{0.00cm}
-  \smalllabel{06 / Proposed Method}\par\vspace{0.07cm}
+  \smalllabel{07 / Proposed Method}\par\vspace{0.07cm}
   \takeaway{Evaluate routing and energy with a system-level serving model.}
   \vspace{0.08cm}
   \begin{center}
@@ -477,12 +567,12 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 8 - Progress versus plan
+% SLIDE 9 - Progress versus plan
 % No benchmark numbers and no implemented scheduler.
 % ============================================================
 \begin{frame}{Current Progress \& Research Roadmap}
   \vspace{0.01cm}
-  \smalllabel{07 / Ongoing Research}\par\vspace{0.08cm}
+  \smalllabel{08 / Ongoing Research}\par\vspace{0.08cm}
   \takeaway{The question and method are in place. Integration and results are still ahead.}
   \vspace{0.12cm}
   \begin{columns}[T,onlytextwidth]
@@ -512,7 +602,7 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 9 - Close
+% SLIDE 10 - Close
 % ============================================================
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
