@@ -15,10 +15,9 @@
 %  3 NeoPower architecture
 %  4 NeoPower scenario simulation
 %  5 NeoPower testing and reliability
-%  6 Heterogeneous GPU / memory design space
-%  7 Proposed serving-simulation method
-%  8 Progress and roadmap
-%  9 Thank you
+%  6 Cross-data-center heterogeneous GPU serving
+%  7 System-level simulation methodology
+%  8 Thank you
 
 \documentclass[aspectratio=169,10pt]{beamer}
 \usepackage[english]{babel}
@@ -354,113 +353,73 @@
 \end{frame}
 
 % ============================================================
-% SLIDE 6 - Heterogeneous design space
-% Six cells are simulation profiles, not six commercial GPUs.
-% HBF parameters are not direct hardware measurements.
+% SLIDE 6 - Cross-data-center scheduling and conceptual hardware profiles
 % ============================================================
-\begin{frame}{LLM Serving: Heterogeneous GPU \& Memory}
-  \vspace{0.00cm}
-  \takeaway{How can request scheduling balance performance and energy across heterogeneous GPUs?}
-  \vspace{0.02cm}
-  % Workload demands and the 2 x 3 profile matrix are separate pictures
-  % so their coordinates cannot collide. \centering avoids center-env skips.
+\begin{frame}{Heterogeneous GPU LLM Serving Across Data Centers}
+  \takeaway{Research objectives: higher serving throughput and lower total power}
+  \vspace{0.16cm}
   {\centering
-  \begin{tikzpicture}
-    \node[demand, draw=AccentBlue!55, fill=SoftBlue!80] at (0,0)
-      {{\bfseries Prefill}\\compute-heavy};
-    \node[demand, draw=AccentBlue!55, fill=SoftBlue!55] at (3.50,0)
-      {{\bfseries Decode}\\memory-sensitive};
-    \node[demand, draw=Accent!50, fill=SoftMint] at (7.00,0)
-      {{\bfseries Model weights}\\large, read-mostly};
-    \node[demand, draw=Accent!60, fill=SoftMint!65] at (10.50,0)
-      {{\bfseries KV cache}\\latency-sensitive};
-  \end{tikzpicture}\par}
-  \vspace{0.18cm}
-  {\small\bfseries\color{Accent}Conceptual compute / memory profiles}\par\vspace{0.10cm}
-  {\centering
-  \begin{tikzpicture}
-    % Headers sit just above the high-compute row. Blue = HBM, mint = HBF.
-    \node[anchor=east, align=right, text width=2.45cm, font=\small\bfseries]
-      at (3.05,0) {High compute};
-    \node[anchor=east, align=right, text width=2.45cm, font=\small\bfseries]
-      at (3.05,-1.40) {Low compute};
-    \node[anchor=south, align=center, font=\small] at (4.85,0.74)
-      {{\bfseries\color{AccentBlue}HBM-only}\\[-1pt]{\color{Muted}fast memory}};
-    \node[anchor=south, align=center, font=\small] at (8.25,0.74)
-      {{\bfseries\color{Accent}HBF-dominant}\\[-1pt]{\color{Muted}high capacity}};
-    \node[anchor=south, align=center, font=\small] at (11.65,0.74)
-      {{\bfseries Hybrid}\\[-1pt]%
-       {\color{AccentBlue}\rule{0.22cm}{0.12cm}}\hspace{0.06cm}%
-       {\color{Accent}\rule{0.22cm}{0.12cm}}};
-
-    \node[memcell, draw=AccentBlue!70, fill=SoftBlue] at (4.85,0)
-      {Latency-first\\memory};
-    \node[memcell, draw=Accent!75, fill=SoftMint] at (8.25,0)
-      {Capacity-first\\memory};
-    \node[memcell, draw=AccentBlue!70, fill=SoftBlue!72] at (4.85,-1.40)
-      {Latency-first\\memory};
-    \node[memcell, draw=Accent!75, fill=SoftMint!78] at (8.25,-1.40)
-      {Capacity-first\\memory};
-    \hybridcell{11.65}{0}{HBM + HBF\\split by role}
-    \hybridcell{11.65}{-1.40}{HBM + HBF\\split by role}
-  \end{tikzpicture}\par}
-\end{frame}
-
-% ============================================================
-% SLIDE 7 - Proposed methodology, not implemented or validated
-% ============================================================
-\begin{frame}{Research Methodology: Simulation Framework}
-  \takeaway{Proposed framework: evaluate serving performance and energy.}
-  \vspace{0.30cm}
-  \begin{center}
   \begin{tikzpicture}[>=Latex]
-    \node[srcbox,draw=AccentBlue!65,fill=SoftBlue!75] (gpu) at (0,1.12)
-      {\textbf{Real GPU Profiling}\\[2mm]Performance\\Power};
-    \node[srcbox,draw=Accent!70,fill=SoftMint] (hbf) at (0,-1.12)
-      {\textbf{HBF Memory Modeling}\\[2mm]Capacity / latency\\Bandwidth / energy};
-    \node[hubbox,draw=Accent!80,fill=white] (sim) at (5.1,0)
-      {\textbf{System-Level}\\\textbf{Serving Simulation}\\[4mm]
-       Heterogeneous GPU profiles\\[2mm]
-       Request scheduling\\[2mm]
-       Compute / memory behavior};
-    \node[hubbox,draw=AccentBlue!60,fill=SoftLilac!65,text width=3.45cm] (out) at (10.15,0)
-      {\textbf{Performance \&}\\\textbf{Energy Evaluation}\\[4mm]
-       Latency / throughput\\[2mm]
-       Energy per token};
-    \draw[->,Accent,thick] (gpu.east) -- (sim.west |- gpu.east);
-    \draw[->,Accent,thick] (hbf.east) -- (sim.west |- hbf.east);
-    \draw[->,AccentBlue,thick] (sim.east) -- (out.west);
-  \end{tikzpicture}
-  \end{center}
+    \node[font=\small\bfseries] (req) at (0,0) {Incoming LLM Requests};
+    \node[svc,draw=Accent!80,fill=SoftMint,text width=4.7cm,minimum height=0.80cm]
+      (sched) at (0,-0.90) {\textbf{Global Scheduler}\\Prefill / Decode assignment};
+    \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=5.5cm,minimum height=1.70cm]
+      (a) at (-3.45,-2.65) {\textbf{Data Center A}\\[1mm]GPU clusters: compute profiles A\\HBM / HBF capacity profiles\\[1mm]\textbf{Prefill / Decode}};
+    \node[svc,draw=Accent!65,fill=SoftMint!65,text width=5.5cm,minimum height=1.70cm]
+      (b) at (3.45,-2.65) {\textbf{Data Center B}\\[1mm]GPU clusters: compute profiles B\\HBM / HBF capacity profiles\\[1mm]\textbf{Prefill / Decode}};
+    \draw[->,Accent,thick] (req) -- (sched);
+    \draw[Accent,thick] (sched.south) -- (0,-1.45);
+    \draw[->,Accent,thick] (0,-1.45) -| (a.north);
+    \draw[->,Accent,thick] (0,-1.45) -| (b.north);
+  \end{tikzpicture}\par}
+  \vspace{0.19cm}
+  {\small\bfseries\color{Accent}Memory configurations in the model}\par
+  \vspace{0.10cm}
+  {\centering
+  \begin{tikzpicture}
+    \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=3.8cm,minimum height=1.34cm] at (0,0)
+      {\textbf{Full-HBM}\\Conventional baseline};
+    \node[svc,draw=Accent!65,fill=SoftMint,text width=3.8cm,minimum height=1.34cm] at (4.45,0)
+      {\textbf{Full-HBF}\\Conceptual configuration};
+    \node[svc,draw=AccentBlue!55,fill=SoftLilac,text width=3.8cm,minimum height=1.34cm] at (8.9,0)
+      {\textbf{Hybrid HBM/HBF}\\Conceptual example\\50/50 capacity};
+  \end{tikzpicture}\par}
 \end{frame}
 
 % ============================================================
-% SLIDE 8 - Completed exploration versus planned implementation
+% SLIDE 7 - System-level methodology; memory integration remains planned
 % ============================================================
-\begin{frame}{Current Progress \& Research Roadmap}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.486\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=0.22cm,wd=\linewidth]{panelmint}
-        {\normalsize\bfseries\color{Accent}Completed}\par\vspace{0.26cm}
-        {\small Literature review}\par\vspace{0.24cm}
-        {\small Research problem \& design-space exploration}\par\vspace{0.24cm}
-        {\small Evaluation of candidate simulation frameworks}
-      \end{beamercolorbox}
-    \end{column}
-    \begin{column}{0.486\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=0.22cm,wd=\linewidth]{panelblue}
-        {\normalsize\bfseries\color{AccentBlue}Planned}\par\vspace{0.26cm}
-        {\small Reproduce serving baselines}\par\vspace{0.20cm}
-        {\small Profile real GPU performance \& power}\par\vspace{0.20cm}
-        {\small Integrate HBF models}\par\vspace{0.20cm}
-        {\small Explore energy-aware scheduling\\and evaluate trade-offs}
-      \end{beamercolorbox}
-    \end{column}
-  \end{columns}
+\begin{frame}{Research Methodology: System-Level Simulation}
+  \takeaway{Model heterogeneous hardware to evaluate LLM serving scheduling.}
+  \vspace{0.25cm}
+  {\centering
+  \begin{tikzpicture}[>=Latex]
+    \node[align=center,font=\small\bfseries,text=AccentBlue] at (0,2.30)
+      {Public specifications\\\& published models};
+    \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=3.25cm,minimum height=1.05cm]
+      (gpu) at (0,0.95) {\textbf{GPU Compute Model}\\Compute performance};
+    \node[svc,draw=Accent!65,fill=SoftMint,text width=3.25cm,minimum height=1.35cm]
+      (mem) at (0,-0.90) {\textbf{HBM/HBF Memory Model}\\Capacity / bandwidth\\Access latency / power};
+    \node[svc,draw=Accent!80,fill=white,text width=4.3cm,minimum height=3.20cm]
+      (sim) at (5,0) {\textbf{System-Level}\\\textbf{LLM Serving Simulator}\\[4mm]
+      Multiple data centers\\Heterogeneous GPU clusters\\[2mm]
+      LLM requests\\Prefill / Decode execution\\Request routing \& scheduling};
+    \node[svc,draw=AccentBlue!65,fill=SoftLilac!65,text width=3.15cm,minimum height=3.20cm]
+      (eval) at (10.05,0) {\textbf{Scheduling Evaluation}\\[4mm]
+      Compare strategies\\[3mm]
+      Serving throughput\\Total system power};
+    \draw[->,AccentBlue,thick] (gpu.east) -- (sim.west |- gpu.east);
+    \draw[->,Accent,thick] (mem.east) -- (sim.west |- mem.east);
+    \draw[->,Accent,thick] (sim.east) -- (eval.west);
+  \end{tikzpicture}\par}
+  \vspace{0.33cm}
+  {\small\color{Accent}\textbf{Architectural starting point:} open-source GPU-cluster serving simulator\par}
+  \vspace{0.13cm}
+  {\small\textbf{Planned integration:} published GPU-memory and storage-system models\par}
 \end{frame}
 
 % ============================================================
-% SLIDE 9 - Close
+% SLIDE 8 - Close
 % ============================================================
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
