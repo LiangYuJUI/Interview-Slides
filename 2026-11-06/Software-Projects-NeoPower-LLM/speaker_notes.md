@@ -2,7 +2,7 @@
 
 日期：2026-11-06  
 對象：Delta Electronics 軟體／AI 軟體，以及 NVIDIA 軟體／系統軟體面試官  
-投影片：9 張，英文。這份筆記不進 PDF。
+投影片：10 張，英文。這份筆記不進 PDF。
 
 上台前先記住這五句。被追問時也回到這裡，不要補故事。
 
@@ -16,42 +16,43 @@
 
 ### 7–8 分鐘（建議）
 
-九張都講。各張目標時間加總約 7 分 30 秒，謝謝約 10 秒。
+十張都講。目標總時間約 7 分 40 秒（含結尾），學經歷頁約 35 秒。
 
 | 張 | 時間 |
 | --- | --- |
-| 1 封面 | 20 秒 |
-| 2 架構 | 55 秒 |
-| 3 情境模擬 | 80 秒 |
-| 4 可靠性 | 65 秒 |
-| 5 橋接 | 25 秒 |
-| 6 設計空間 | 70 秒 |
-| 7 模擬方法 | 90 秒 |
-| 8 進度 | 45 秒 |
-| 9 謝謝 | 10 秒 |
+| 1 封面 | 15 秒 |
+| 2 學經歷 | 35 秒 |
+| 3 NeoPower 架構 | 50 秒 |
+| 4 情境模擬 | 75 秒 |
+| 5 可靠性 | 60 秒 |
+| 6 橋接 | 20 秒 |
+| 7 GPU 設計空間 | 65 秒 |
+| 8 模擬方法 | 85 秒 |
+| 9 研究進度 | 45 秒 |
+| 10 謝謝 | 10 秒 |
 
-Delta 的房間把 2、3、4 講滿。NVIDIA 的房間 2、3 可以略收，把時間留給 6、7、8。不要跳過 3 和 7。
+Delta 的房間把 3、4、5 講清楚。NVIDIA 的房間 3、4 可以略收，把時間留給 7、8、9。不要跳過 4 和 8。
 
 ### 5 分鐘
 
-跳過第 5 張。進第 6 張時用一句話接上：「前面的模擬是為了讓生產系統可重現；這裡換成 GPU serving，方法一樣。」
+跳過第 6 張。進第 7 張時用一句話接上：「前面的模擬是為了讓生產系統可重現；這裡換成 GPU serving，方法一樣。」
 
-- 第 3 張只走四個方塊，底下三個面板用一句話帶過。約 50 秒。
-- 第 4 張只講兩個欄位的標題和底下的箭頭，不要逐條念。約 40 秒。
-- 第 6 張講研究問題、矩陣，和 HBF 的一句取捨。四種 workload 合成一句。約 45 秒。
-- 第 7 張只走「輸入 → 模型 → 輸出」，框架用一句話說明還沒接上。約 55 秒。
-- 第 8 張每欄舉一項，強調研究還在進行。約 30 秒。
-- 封面 15 秒，架構 40 秒，謝謝 10 秒。
+- 第 4 張只走四個方塊，底下三個面板用一句話帶過。約 50 秒。
+- 第 5 張只講兩個欄位的標題和底下的箭頭，不要逐條念。約 40 秒。
+- 第 7 張講研究問題、矩陣，和 HBF 的一句取捨。四種 workload 合成一句。約 45 秒。
+- 第 8 張只走「輸入 → 模型 → 輸出」，框架用一句話說明還沒接上。約 55 秒。
+- 第 9 張每欄舉一項，強調研究還在進行。約 30 秒。
+- 封面 10 秒，學經歷 20 秒，架構 35 秒，謝謝 5 秒。
 
 ### 10 分鐘
 
-不加新題目，也不要改講 ABC Mapper、封裝或製程。多出來的時間只加厚這兩段工程：
+不加新題目，也不要改講 ABC Mapper、封裝或製程。學經歷頁不必擴寫成完整自傳。多出來的時間只加厚這兩段工程：
 
-- 第 2 張加 20 秒：口頭走一條請求。瀏覽器到 backend API，再到外部充電服務；資料層和背景工作在旁邊。容器邊界是為了部署和排查時能把服務分開。
-- 第 3 張加 25 秒：用一個抽象情境走完生命週期，不要編成某次事故。先定義預期流程，模擬器送出 client/vendor 事件和一次失敗，後端跑非同步流程，再用 log 對預期狀態。
-- 第 4 張加 20 秒：同一站點的前後比較回答「這個站改版之後行為變了什麼」；跨站比較回答「類似條件下是否還看得到」。兩者都不能推出因果百分比。
-- 第 6 張加 20 秒：prefill 偏計算，decode 偏記憶體；weights 大、以讀為主，KV cache 對延遲敏感而且會更新。所以排程不能只看 GPU 算力。HBF 提高容量，同時帶來延遲、頻寬、功耗、耐久性的不同取捨。HBF-dominant 可能要緩衝和明確的資料管理。
-- 第 7 張加 25 秒：定義 TTFT、TPOT、SLO goodput、energy per token。真實 GPU profiling 和公開 HBF 參數要分開講。說明為什麼還是要保留 memory-service contention，以及為什麼不做 instruction-level cycle simulation。
+- 第 3 張加 20 秒：口頭走一條請求。瀏覽器到 backend API，再到外部充電服務；資料層和背景工作在旁邊。容器邊界是為了部署和排查時能把服務分開。
+- 第 4 張加 25 秒：用一個抽象情境走完生命週期，不要編成某次事故。先定義預期流程，模擬器送出 client/vendor 事件和一次失敗，後端跑非同步流程，再用 log 對預期狀態。
+- 第 5 張加 20 秒：同一站點的前後比較回答「這個站改版之後行為變了什麼」；跨站比較回答「類似條件下是否還看得到」。兩者都不能推出因果百分比。
+- 第 7 張加 20 秒：prefill 偏計算，decode 偏記憶體；weights 大、以讀為主，KV cache 對延遲敏感而且會更新。所以排程不能只看 GPU 算力。HBF 提高容量，同時帶來延遲、頻寬、功耗、耐久性的不同取捨。HBF-dominant 可能要緩衝和明確的資料管理。
+- 第 8 張加 25 秒：定義 TTFT、TPOT、SLO goodput、energy per token。真實 GPU profiling 和公開 HBF 參數要分開講。說明為什麼還是要保留 memory-service contention，以及為什麼不做 instruction-level cycle simulation。
 
 ## 聽眾開場
 
@@ -63,7 +64,7 @@ NVIDIA：第一句可以補「後半是系統級 serving 模擬；前半用來�
 
 ## 第 1 張 — Software Engineering & System Simulation
 
-目標時間：20 秒。
+目標時間：15 秒。
 
 口述：
 
@@ -71,20 +72,41 @@ NVIDIA：第一句可以補「後半是系統級 serving 模擬；前半用來�
 
 技術重點：
 
-- 身份只留在封面，後面沒有單獨的學歷頁。
+- 封面只簡短介紹身份；下一頁再用學歷與工作經歷建立背景。
 - 主線是軟體工程和系統模擬，不是電路或封裝。
 
 注意事項：
 
-- 不要在封面開始講專案細節。20 秒就翻頁。
+- 不要在封面開始講專案細節。15 秒就翻頁。
 
 可能的問題：
 
 - 「你什麼時候可以到職？」碩士預計 2027 年 6 月畢業。不要自己改日期。
 
-## 第 2 張 — NeoPower: Backend System Architecture
+## 第 2 張 — Education & Professional Experience
 
-目標時間：55 秒。
+目標時間：35 秒。
+
+口述：
+
+我目前在國立臺灣大學資料科學碩士學位學程就讀，預計 2027 年 6 月畢業。大學畢業於政治大學資訊科學系，並雙主修電子物理，所以除了軟體開發，也有一些硬體與系統的基礎。
+
+工作經驗部分，我在 NeoPower 從 2023 年 6 月到 2025 年 3 月擔任合約軟體工程師；2025 年 4 月到 7 月則在 Inventec Group 旗下的 AIMobile 擔任合約軟體工程師。接下來先說明 NeoPower 的後端整合和系統模擬，再介紹目前的 LLM serving 研究。
+
+技術重點：
+
+- 完整沿用 NV-Testing 第 2 頁的雙欄學歷／經歷內容，讓所有面試簡報一致。
+- 跨領域的 CS 與 Electrophysics 背景，能連結軟體與 GPU systems。
+- 這張只建立背景；NeoPower 的技術細節留在下一張。
+
+注意事項：
+
+- 兩段工作都標記 Contract Software Engineer，不要改成全職或擴充來源未提供的 AIMobile 專案內容。
+- 控制在 35 秒，不需照著投影片逐項朗讀。
+
+## 第 3 張 — NeoPower: Backend System Architecture
+
+目標時間：50 秒。
 
 口述：
 
@@ -113,9 +135,9 @@ NeoPower 是電動車充電管理平台。這張是平台的 high-level 架構�
 
 若被追問實作細節而來源沒有寫，停在原則。不要現場補模組清單。
 
-## 第 3 張 — NeoPower: Scenario-Based System Simulation
+## 第 4 張 — NeoPower: Scenario-Based System Simulation
 
-目標時間：80 秒。這是 NeoPower 段最重要的一張。
+目標時間：75 秒。這是 NeoPower 段最重要的一張。
 
 口述：
 
@@ -144,9 +166,9 @@ NeoPower 是電動車充電管理平台。這張是平台的 high-level 架構�
 - 「模擬器是你寫的嗎？」是。用途是重現營運流程和錯誤情境。同時也使用外部 vendor/client simulator。不要再加架構圖上沒有的元件。
 - 「你怎麼知道模擬是對的？」用情境把預期行為寫下來，再對 log。上線之後用同一站點和類似站點的觀察回頭檢查。不宣稱百分之百等價。
 
-## 第 4 張 — NeoPower: Testing & Production Reliability
+## 第 5 張 — NeoPower: Testing & Production Reliability
 
-目標時間：65 秒。
+目標時間：60 秒。
 
 口述：
 
@@ -172,9 +194,9 @@ NeoPower 是電動車充電管理平台。這張是平台的 high-level 架構�
 - 「你們的測試讓故障下降多少？」這份簡報沒有這個數字。我會講方法，不補一個結果。
 - 「跨站比較公平嗎？」它只在條件相近時當作觀察。它不能單獨證明是軟體改版造成的。所以才會和同一站點的前後比較、log、客戶回饋放在一起看。
 
-## 第 5 張 — From Production Systems to GPU Simulation
+## 第 6 張 — From Production Systems to GPU Simulation
 
-目標時間：25 秒。五分鐘版直接跳過。
+目標時間：20 秒。五分鐘版直接跳過。
 
 口述：
 
@@ -189,9 +211,9 @@ NeoPower 是電動車充電管理平台。這張是平台的 high-level 架構�
 
 - 不要在這張開始解釋 HBF。
 
-## 第 6 張 — LLM Serving: Heterogeneous GPU & Memory
+## 第 7 張 — LLM Serving: Heterogeneous GPU & Memory
 
-目標時間：70 秒。
+目標時間：65 秒。
 
 口述：
 
@@ -223,9 +245,9 @@ HBF 可以換到更大的容量，但延遲、頻寬、功耗和耐久性不一�
 - 「HBF 和 HBM 差在哪？」容量更高，延遲、頻寬、功耗、耐久性的取捨不同。HBF-dominant 可能要緩衝。不展開製程。
 - 「你要排的是什麼？」LLM request。考量 prefill/decode、權重和 KV cache 對計算與記憶體的不同需求，以及這六種剖面的差異。策略本身還沒做成結果，那是下一步。
 
-## 第 7 張 — Research Methodology: Simulation Framework
+## 第 8 張 — Research Methodology: Simulation Framework
 
-目標時間：90 秒。這是 LLM 段的主投影片。
+目標時間：85 秒。這是 LLM 段的主投影片。
 
 口述：
 
@@ -259,7 +281,7 @@ TTFT 是時間到第一個 token。TPOT 是每個輸出 token 的時間。SLO go
 - 「為什麼不用 cycle-accurate simulator？」因為決策在 request 怎麼路由、怎麼排、效能和能耗如何取捨。Cycle simulation 太細，也答不了這個排程問題。會影響服務時間的記憶體競爭還是要建模。
 - 「資料從哪來？」GPU 計算和功耗來自真實 profiling，或重用可信的 profiling。HBF 來自公開 device 參數和 HBF 模擬器。兩類來源在圖上是分開的。
 
-## 第 8 張 — Current Progress & Research Roadmap
+## 第 9 張 — Current Progress & Research Roadmap
 
 目標時間：45 秒。
 
@@ -287,7 +309,7 @@ TTFT 是時間到第一個 token。TPOT 是每個輸出 token 的時間。SLO go
 - 「你的第一個實驗是什麼？」先重現 LLM serving simulator 的 baseline，同時 profile 真實 GPU。之後才把記憶體模型接進去。
 - 「你預期 HBF 會比較省電嗎？」這是要評估的取捨，不是結論。容量、延遲、頻寬、功耗、耐久性要一起看，而且要在 SLO 之下看。
 
-## 第 9 張 — Thank You
+## 第 10 張 — Thank You
 
 目標時間：10 秒。
 
