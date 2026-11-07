@@ -1,0 +1,526 @@
+%-------------------------
+% Yu-Jui Liang - IC / EDA Resume
+% English-only resume, ATS-friendly version
+% Target: Novatek 2027 RDSS / EDA and IC Engineering
+% Compile with: XeLaTeX on Overleaf
+%-------------------------
+
+\documentclass[a4paper,11pt]{article}
+
+% ============================================================
+% PAGE / PACKAGES
+% ============================================================
+
+\usepackage[
+  a4paper,
+  margin=0.55in
+]{geometry}
+
+% Unicode fonts (XeLaTeX)
+\usepackage{fontspec}
+\setmainfont{Liberation Sans}[Scale=0.96]
+\setsansfont{Liberation Sans}[Scale=0.96]
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{microtype}
+\microtypesetup{nopatch=footnote}
+
+% XeLaTeX emits searchable Unicode text.
+
+
+% ============================================================
+% COLORS
+% ============================================================
+
+\definecolor{lightgrey}{gray}{0.82}
+\definecolor{darkgrey}{gray}{0.28}
+\definecolor{textgrey}{gray}{0.08}
+
+\color{textgrey}
+
+
+% ============================================================
+% PAGE STYLE
+% ============================================================
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+
+\setlength{\tabcolsep}{0pt}
+\setlength{\parindent}{0pt}
+
+\setstretch{0.94}
+
+\newcommand{\ResumeEntrySep}{
+  \vspace{4pt}
+}
+
+
+% ============================================================
+% SECTION STYLE
+% ============================================================
+
+\titleformat{\section}
+  {\bfseries\large\raggedright}
+  {}
+  {0em}
+  {}
+  [
+    \color{lightgrey}
+    {\titlerule[1.6pt]}
+    \vspace{-5pt}
+  ]
+
+
+% ============================================================
+% USER PROFILE
+% ============================================================
+
+\newcommand{\ResumeName}{
+  Yu-Jui Liang
+}
+
+\newcommand{\ResumePhone}{
+  +886 928 036 397
+}
+
+\newcommand{\ResumeEmail}{
+  liangyujui@gmail.com
+}
+
+\newcommand{\ResumeLinkedInURL}{
+  https://www.linkedin.com/in/yu-jui-liang-735a57316
+}
+
+\newcommand{\ResumeLinkedInDisplay}{
+  linkedin.com/in/yu-jui-liang-735a57316
+}
+
+
+% ============================================================
+% TARGET POSITIONING
+% ============================================================
+
+\newcommand{\ResumeTarget}{
+  EDA / VLSI CAD
+  \enspace|\enspace
+  Logic Synthesis
+  \enspace|\enspace
+  Physical Design / APR / STA
+  \enspace|\enspace
+  Digital IC / SoC / ASIC
+  \enspace|\enspace
+  Design Verification
+}
+
+\newcommand{\ResumeTargetDetail}{
+  2027 RDSS
+  \enspace|\enspace
+  Junior Engineer
+}
+
+
+% ============================================================
+% HEADER
+% ============================================================
+
+\newcommand{\ResumeHeader}{
+
+  \begin{tabular*}{\textwidth}[t]{
+    l@{\extracolsep{\fill}}r
+  }
+
+    \begin{minipage}[t]{0.55\textwidth}
+      {\Huge\bfseries \ResumeName}
+
+      \vspace{3pt}
+
+      {\small\color{darkgrey}
+        \ResumeTargetDetail
+      }
+    \end{minipage}
+    &
+    \begin{minipage}[t]{0.40\textwidth}
+      \raggedleft
+      {\small
+        \href{mailto:\ResumeEmail}{\ResumeEmail}\\[1pt]
+        \ResumePhone\\[1pt]
+        \href{\ResumeLinkedInURL}{\ResumeLinkedInDisplay}
+      }
+    \end{minipage}
+
+  \end{tabular*}
+
+  \vspace{5pt}
+
+  {\small\bfseries\color{darkgrey}
+    \ResumeTarget
+  }
+
+  \vspace{-8pt}
+}
+
+
+% ============================================================
+% RESUME COMPONENTS
+% ============================================================
+
+% Standard bullet item
+\newcommand{\resumeItem}[1]{
+  \item
+  \small{
+    #1
+  }
+}
+
+
+% Start / end of section-level entry list
+\newcommand{\resumeSubHeadingListStart}{
+  \begin{itemize}[
+    leftmargin=0pt,
+    label={},
+    itemsep=0pt,
+    topsep=2pt
+  ]
+}
+
+\newcommand{\resumeSubHeadingListEnd}{
+  \end{itemize}
+}
+
+
+% Start / end of bullet list
+\newcommand{\resumeItemListStart}{
+  \begin{itemize}[
+    leftmargin=0.18in,
+    itemsep=1.5pt,
+    topsep=1.5pt,
+    parsep=0pt,
+    partopsep=0pt
+  ]
+}
+
+\newcommand{\resumeItemListEnd}{
+  \end{itemize}
+  \vspace{-3pt}
+}
+
+
+% Skill line
+\newcommand{\skillBlock}[2]{
+  \textbf{#1}\\[-1pt]
+  #2\\[4pt]
+}
+
+
+% ============================================================
+% EDUCATION / EXPERIENCE ENTRY
+% ============================================================
+
+\newcommand{\resumeSubheadingNoLoc}[3]{
+  \vspace{-1pt}
+  \item
+
+  \begin{tabular*}{\textwidth}[t]{
+    l@{\extracolsep{\fill}}r
+  }
+
+    \textbf{#1}
+    &
+    {\textit{\small\color{darkgrey} #2}}
+    \\
+
+    \textit{\small #3}
+    &
+    \\
+
+  \end{tabular*}
+
+  \vspace{-6pt}
+}
+
+
+% ============================================================
+% PROJECT ENTRY
+% ============================================================
+
+\newcommand{\resumeProjectHeading}[3]{
+  \vspace{-1pt}
+  \item
+
+  \begin{minipage}[t]{\linewidth}
+
+    \textbf{#1}
+    \hfill
+    {\textit{\small\color{darkgrey} #3}}
+
+    \vspace{1pt}
+
+    {\textit{\small\color{darkgrey} #2}}
+
+  \end{minipage}
+
+  \vspace{-4pt}
+}
+
+
+% ============================================================
+% ENTRY SPACING
+% ============================================================
+
+\newcommand{\ProjectEntrySep}{
+  \vspace{0pt}
+}
+
+%-------------------------------------------
+% RESUME STARTS HERE
+%-------------------------------------------
+
+\begin{document}
+
+\ResumeHeader
+
+%-----------EDUCATION-----------
+\section{EDUCATION}
+
+\resumeSubHeadingListStart
+
+  \resumeSubheadingNoLoc
+    {National Taiwan University}
+    {Sep. 2025 -- Expected Jun. 2027}
+    {M.S. Candidate, Data Science Master Degree Program}
+
+  {\small\color{darkgrey}
+    Research Advisors: Prof. Jie-Hong Roland Jiang (NTU); Dr. Hsiang-Yun Cheng (Academia Sinica)\par
+  }
+
+  \ResumeEntrySep
+
+  \resumeSubheadingNoLoc
+    {National Chengchi University}
+    {Sep. 2021 -- Jun. 2025}
+    {B.S. in Computer Science; Double Major in Electronic Physics}
+
+\resumeSubHeadingListEnd
+
+
+%-----------SELECTED EDA / IC RESEARCH & PROJECTS-----------
+\section{EDA / IC RESEARCH \& PROJECTS}
+
+\resumeSubHeadingListStart
+
+
+% ============================================================
+% Project 1
+% ============================================================
+
+\resumeProjectHeading
+  {Multi-Output Standard-Cell Mapping with MILP and Differentiable Optimization}
+  {
+    \textbf{Master's Thesis}
+    \enspace/\enspace
+    Logic Synthesis / Technology Mapping / Multi-Output Cells / ASAP7
+  }
+  {Apr. 2026 -- Present}
+
+\resumeItemListStart
+
+  \resumeItem{
+    Extended a cut-based mapper with multi-output candidate discovery,
+    Boolean matching, and MILP-based candidate selection; integrated the results
+    into Liberty-aware differentiable technology mapping.
+  }
+
+  \resumeItem{
+    Evaluated 30 arithmetic benchmarks, achieving \textbf{6\% average ADP
+    improvement} over the single-output mapping baseline while maintaining
+    functional correctness.
+  }
+
+\resumeItemListEnd
+
+\ProjectEntrySep
+
+
+% ============================================================
+% Project 2
+% ============================================================
+
+\resumeProjectHeading
+  {ICCAD 2025 CAD Contest Problem C -- STA-Driven Incremental Timing ECO Flow}
+  {
+    STA / Timing ECO / Gate Sizing / VT Swapping / Buffer Insertion
+  }
+  {}
+
+\resumeItemListStart
+
+  \resumeItem{
+    Developed an OpenROAD-based timing ECO flow applying critical-path gate
+    sizing, VT swapping, and buffer insertion; explored candidate sequences
+    with bounded best-first search, a branch list, and a global-best checkpoint.
+  }
+
+  \resumeItem{
+    Evaluated five public benchmarks, achieving \textbf{16.7\% median setup TNS}
+    and \textbf{14.6\% average setup WNS} improvements vs. seed DEFs,
+    with approximately 8\% lower power and 2\% higher HPWL, verified by
+    parasitic-aware STA/PPA and placement-legality checks.
+  }
+
+\resumeItemListEnd
+
+\ProjectEntrySep
+
+
+% ============================================================
+% Project 3
+% ============================================================
+
+\resumeProjectHeading
+  {Open-Source Mini-SoC and Macro-Based Physical Implementation}
+  {
+    RTL-to-GDS / SRAM Macro Integration / Timing Closure / ASAP7
+  }
+  {Dec. 2025 -- Jan. 2026}
+
+\resumeItemListStart
+
+  \resumeItem{
+    Integrated a Wishbone-based Mini-SoC with SPI/I2C peripherals,
+    an SRAM controller, and a 1-KiB SRAM hard macro; completed an ASAP7
+    RTL-to-GDS implementation with 11.1k instances at a 500-ps clock.
+  }
+
+  \resumeItem{
+    Achieved post-route timing closure with \textbf{+34.8 ps setup slack},
+    \textbf{zero setup/hold violations}, and 8.94-mW power; \textbf{reduced die area by
+    16\% and wirelength by 6\%}, and extended the flow to an ORFS RV32I
+    design with four 1-KiB SRAM macros, 18.4k instances, and 65\% utilization.
+  }
+
+\resumeItemListEnd
+
+\ProjectEntrySep
+
+
+% ============================================================
+% Project 4
+% ============================================================
+
+\resumeProjectHeading
+  {ICCAD 2026 CAD Contest Problem C -- Diffusion-Guided SoC Floorplanner}
+  {
+    ML for EDA / Floorplanning / Macro Placement / HPWL Optimization
+  }
+  {}
+
+\resumeItemListStart
+
+  \resumeItem{
+    Developed a diffusion-guided SoC floorplanner combining
+    ML-based global initialization with combinatorial refinement
+    for macro placement.
+  }
+
+  \resumeItem{
+    Refined macro placements with constraint-aware simulated annealing
+    to optimize HPWL and floorplan quality after diffusion-based
+    initialization.
+  }
+
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{EXPERIENCE}
+
+\resumeSubHeadingListStart
+
+  \resumeSubheadingNoLoc
+    {AIMobile Co., Ltd. (Inventec Group)}
+    {Apr. 2025 -- Jul. 2025}
+    {Contract Software Engineer}
+
+  \resumeItemListStart
+
+    \resumeItem{
+      Contributed to software development, system integration,
+      testing, and debugging in a corporate R\&D environment.
+    }
+
+  \resumeItemListEnd
+
+  \ResumeEntrySep
+
+  \resumeSubheadingNoLoc
+    {Neopower Technologies Co., Ltd.}
+    {Jun. 2023 -- Mar. 2025}
+    {Contract Software Engineer}
+
+  \resumeItemListStart
+
+    \resumeItem{
+      Developed and maintained web applications, backend services,
+      APIs, and data-processing workflows.
+    }
+
+  \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+
+%-----------SKILLS-----------
+\section{TECHNICAL SKILLS}
+
+\begin{itemize}[
+  leftmargin=0pt,
+  label={},
+  itemsep=1pt,
+  topsep=2pt
+]
+
+\small{
+\item{
+
+  \skillBlock{Programming / HDL}
+  {
+    C/C++, Python, Tcl, Bash, Verilog, SystemVerilog
+  }
+
+  \skillBlock{EDA / IC Design}
+  {
+    Logic synthesis, technology mapping, STA, physical design / APR,
+    RTL-to-GDS, timing closure, timing ECO, PPA analysis
+  }
+
+  \skillBlock{Tools / Platforms}
+  {
+    PyTorch, CUDA, Linux, Docker
+  }
+
+}
+}
+
+\end{itemize}
+
+\vspace{-7pt}
+
+\end{document}
