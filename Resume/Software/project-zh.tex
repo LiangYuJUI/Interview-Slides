@@ -50,37 +50,76 @@
 指導教授：江介宏教授（Jie-Hong Roland Jiang），國立臺灣大學\\[3pt]
 共同指導：鄭湘筠博士（Hsiang-Yun Cheng），中央研究院\\[3pt]
 專業領域：C++/Python, optimization, system simulation, GPU/memory systems, validation}
-\project{01 \quad / \quad ALGORITHMS \& OPTIMIZATION}
-{Multi-Output Standard-Cell Technology Mapping with Differentiable Optimization}
-{Explore algorithmic improvements to a logic-synthesis mapping problem with correctness and measurable cost constraints.}
-{Extended a C++ cut-based mapping codebase with multi-output discovery; integrated Boolean matching, library-based area/delay evaluation, and regression/correctness checks while preserving the original single-output matching path.}
-{Evaluated 30 arithmetic benchmarks; reported a 2\% average ADP improvement over the single-output baseline with mapping correctness maintained.}
-{C++, algorithm development, Boolean matching, regression validation, optimization, benchmarking}
-\flowline{Discover Candidates $\longrightarrow$ Evaluate Constraints $\longrightarrow$ Validate / Benchmark}
+% ============================================================
+% Project 01 - Heterogeneous GPU LLM Serving
+% ============================================================
+
+\project
+{01 \quad / \quad GPU / MEMORY SYSTEMS (ONGOING)}
+{Latency- and Energy-Aware Scheduling for Heterogeneous GPU LLM Serving}
+{
+Study efficient LLM inference serving across heterogeneous GPUs
+with different compute capabilities, HBM / HBF memory configurations,
+and prefill / decode execution characteristics.
+The research focuses on resource imbalance, memory-access overhead,
+and inter-device data movement as potential sources of inference
+latency and energy inefficiency.
+}
+{
+Designing a system-level simulation methodology to investigate
+request-to-GPU scheduling, prefill / decode placement, memory
+allocation, and data-movement policies under varying workloads.
+The planned evaluation compares scheduling and memory-system
+configurations using time to first token (TTFT), time per output
+token (TPOT), end-to-end latency, throughput, power consumption,
+and energy per generated token.
+The objective is to identify configurations and policies that
+improve latency and energy efficiency while respecting compute,
+memory-capacity, and bandwidth constraints.
+}
+{
+Ongoing research focused on developing a system-level
+simulation framework for heterogeneous GPU LLM serving,
+with emphasis on latency-aware scheduling, memory-system
+optimization, and energy-efficient resource allocation.
+}
+{
+C/C++, Python, Linux, Algorithm Design,
+Optimization, System-Level Simulation,
+Performance Modeling, Resource Scheduling,
+Memory Management, Performance Analysis
+}
+
+
+\flowline{
+GPU / Memory Configuration
+$\longrightarrow$ Request Scheduling / Memory Policies
+$\longrightarrow$ Latency / Energy Evaluation
+}
 \separate
-\project{02 \quad / \quad GPU / MEMORY SYSTEMS (ONGOING)}
-{Memory-Aware Hardware--Software Co-Design for Data Center LLM Serving}
-{Study efficient LLM serving in heterogeneous GPU systems, including prefill/decode disaggregation and hierarchical accelerator/host memory.}
-{Investigating simulation-driven design-space exploration for resource scheduling, memory placement, data movement, and hardware--software configuration choices.}
-{Ongoing research; performance evaluation and trade-off analysis remain investigation topics, with no quantified outcomes claimed here.}
-{GPU systems, memory architecture, resource scheduling, performance modeling, design-space exploration}
-\flowline{System Configuration $\longrightarrow$ Scheduling / Memory Policies $\longrightarrow$ Trade-off Study}
-\newpage
-\smallhead{SELECTED PROJECTS \quad | \quad SOFTWARE / SYSTEMS}
-\project{03 \quad / \quad LLM APPLICATIONS \& FORMAL REASONING}
+\project{02 \quad / \quad LLM APPLICATIONS \& FORMAL REASONING}
 {SAT-LEX: LLM and SMT-Based Document Verification System}
 {Support more deterministic checking of domain-specific documents by combining extracted evidence with explicit rules and automated constraint solving.}
 {Translated extracted document evidence and domain rules into structured constraints; applied an SMT solver to identify conflicting conditions and unsupported conclusions beyond unconstrained LLM responses.}
 {The implemented constraint checks are intended to identify logical conflicts, inconsistent conditions, and unsupported conclusions.}
 {LLM applications, SMT / constraint solving, automated reasoning, verification workflows}
 \flowline{Rules / Document Evidence $\longrightarrow$ Structured Constraints $\longrightarrow$ Solver Checks}
+\newpage
+\smallhead{SELECTED PROJECTS \quad | \quad SOFTWARE / SYSTEMS}
+\project{03 \quad / \quad BACKEND SYSTEMS \& SOFTWARE VALIDATION}
+{EV Charging Management System -- NeoPower Technologies}
+{Develop and validate an electric-bus charging management platform integrating vehicles, charging equipment, and external vendor services, with reliable operation across customer sites.}
+{Contributed to system planning and backend development, including APIs, database integration, and log-based debugging. Used a container-based architecture to isolate projects and services on shared servers, reducing interference during deployment and troubleshooting. Independently developed a custom simulator to emulate external vendors acting as clients or servers. Reconstructed normal and failure scenarios from historical database logs and customer feedback, including sudden charging-demand surges and simultaneous charger disconnections caused by site-network failures.}
+{Professional engineering experience (Jun. 2023 -- Mar. 2025). Used scenario-based simulation and regression testing before deployment, followed by validation using production logs, operational data, and customer feedback. Supported A/B-style comparisons of existing and revised algorithms across sites with similar conditions, such as charging-power allocation policies, to assess behavior under real operating conditions.}
+{Backend development, API / database integration, containers, vendor simulation, regression testing, production validation, log analysis, debugging}
+\flowline{Vendor Simulation $\longrightarrow$ Scenario / Regression Tests $\longrightarrow$ Deployment $\longrightarrow$ Operational Validation}
 \separate
-\project{04 \quad / \quad PROFESSIONAL SOFTWARE VALIDATION}
-{System Simulation \& Regression Validation -- Neopower Technologies}
-{Improve test repeatability and problem diagnosis by reducing dependence on live-system testing alone.}
-{Developed a simulator that reproduced operational and error scenarios; combined system-level testing, regression validation, post-deployment checks, customer-side A/B testing, and log/data analysis.}
-{Professional engineering experience (Jun. 2023 -- Mar. 2025) involving repeatable testing, regression checks, and diagnosis of software behavior.}
-{System simulation, software testing, regression validation, debugging, A/B testing, log analysis}
-\flowline{Scenario Simulation $\longrightarrow$ Repeatable Tests $\longrightarrow$ Debug / Release Validation}
+\project{04 \quad / \quad LOGIC SYNTHESIS \& TECHNOLOGY MAPPING}
+{Multi-Output Standard-Cell Mapping with MILP and Differentiable Optimization}
+{Improve area--delay product (ADP) by exploiting multi-output standard cells in the academic ASAP7 7-nm technology library, compared with conventional single-output mapping.}
+{Extended the ABC logic-synthesis tool in C++ with a custom multi-output (MO) cut-discovery path and Boolean matching. Applied area-aware mixed-integer linear programming (MILP) to select matched cut/cell pairs, then passed the selected candidates to a PyTorch-based differentiable mapping optimizer for Liberty-based area/delay evaluation.}
+{Validated correctness and evaluated 30 arithmetic benchmarks. The updated MILP-enhanced mapping flow achieved a 6\% average ADP improvement over the single-output baseline.}
+{C++, ABC, logic synthesis, technology mapping, Boolean matching, PyTorch, Liberty, ASAP7, QoR analysis}
+\flowline{ABC / MO Cut Discovery $\longrightarrow$ Boolean Matching $\longrightarrow$ Area-Aware MILP Selection $\longrightarrow$ Differentiable Mapping}
 \vfill
 \end{document}

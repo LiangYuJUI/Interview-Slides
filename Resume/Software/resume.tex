@@ -16,9 +16,21 @@
   left=0.55in, right=0.55in, top=0.52in, bottom=0.45in
 ]{geometry}
 
+\usepackage{iftex}
+\ifPDFTeX
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[scaled=0.96]{helvet}
+\else
+\usepackage{fontspec}
+\setsansfont{texgyreheros}[
+  Scale=0.96, Extension=.otf,
+  UprightFont=*-regular, BoldFont=*-bold,
+  ItalicFont=*-italic, BoldItalicFont=*-bolditalic
+]
+\usepackage{xeCJK}
+\setCJKsansfont{Noto Sans CJK TC}
+\fi
 \renewcommand{\familydefault}{\sfdefault}
 
 \usepackage{titlesec}
@@ -32,8 +44,10 @@
 \microtypesetup{nopatch=footnote}
 
 % Improve PDF text extraction / ATS compatibility
-\input{glyphtounicode}
-\pdfgentounicode=1
+\ifPDFTeX
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+\fi
 
 
 % ============================================================
@@ -94,7 +108,7 @@
 % USER PROFILE
 % ============================================================
 
-\newcommand{\ResumeName}{
+\providecommand{\ResumeName}{
   Yu-Jui Liang
 }
 
@@ -327,33 +341,37 @@
 
 \resumeSubHeadingListStart
 
-
 % ============================================================
-% Project 1 - Memory-Aware Hardware--Software Co-Design
+% Project 1 - Heterogeneous GPU LLM Serving
 % ============================================================
 
 \resumeProjectHeading
-  {Memory-Aware Hardware--Software Co-Design for Data Center LLM Serving}
+  {Latency- and Energy-Aware Scheduling for Heterogeneous GPU LLM Serving}
   {
-    Resource Scheduling / Data Movement / Design-Space Exploration
+    System-Level Simulation / Resource Scheduling / Performance Modeling
   }
   {Oct. 2026 -- Present}
 
 \resumeItemListStart
 
   \resumeItem{
-    Studying hardware--software co-design for LLM serving on heterogeneous GPUs,
-    with \mbox{prefill / decode} disaggregation and hierarchical accelerator / host memory systems.
+    Investigating LLM serving on heterogeneous GPUs with different
+    compute capabilities and HBM / HBF memory configurations,
+    focusing on \mbox{prefill / decode} disaggregation and
+    latency--energy trade-offs.
   }
 
   \resumeItem{
-    Investigating simulation-driven scheduling, memory placement, data movement,
-    and throughput / latency / energy trade-offs in disaggregated data centers.
+    Designing a simulation-driven methodology to explore
+    request scheduling, GPU assignment, memory placement,
+    and data-movement policies, targeting lower inference latency
+    and energy consumption under varying workloads.
   }
 
 \resumeItemListEnd
 
 \ProjectEntrySep
+
 
 
 % ============================================================
