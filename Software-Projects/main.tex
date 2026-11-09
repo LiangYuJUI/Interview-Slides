@@ -350,39 +350,47 @@
   \end{columns}
 \end{frame}
 
-% ============================================================
-% SLIDE 6 - Cross-data-center scheduling and conceptual hardware profiles
-% ============================================================
-\begin{frame}{Heterogeneous GPU LLM Serving Across Data Centers}
-  \takeaway{Research objectives: higher serving throughput and lower total power}
-  \vspace{0.16cm}
+% Slide 6: Proposed A/E-centric architecture
+\begingroup
+\setbeamerfont{frametitle}{size=\fontsize{12}{14}\selectfont}
+\begin{frame}{MoE Serving: HBM/HBF-Aware Attention--Expert Disaggregation}
+  \takeaway{Co-design worker memory profiles and A/E placement to improve SLO goodput per watt.}
+  \vspace{0.14cm}
   {\centering
   \begin{tikzpicture}[>=Latex]
-    \node[font=\small\bfseries] (req) at (0,0) {Incoming LLM Requests};
-    \node[svc,draw=Accent!80,fill=SoftMint,text width=4.7cm,minimum height=0.80cm]
-      (sched) at (0,-0.90) {\textbf{Global Scheduler}\\Prefill / Decode assignment};
-    \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=5.5cm,minimum height=1.70cm]
-      (a) at (-3.45,-2.65) {\textbf{Data Center A}\\[1mm]GPU clusters: compute profiles A\\HBM / HBF capacity profiles\\[1mm]\textbf{Prefill / Decode}};
-    \node[svc,draw=Accent!65,fill=SoftMint!65,text width=5.5cm,minimum height=1.70cm]
-      (b) at (3.45,-2.65) {\textbf{Data Center B}\\[1mm]GPU clusters: compute profiles B\\HBM / HBF capacity profiles\\[1mm]\textbf{Prefill / Decode}};
-    \draw[->,Accent,thick] (req) -- (sched);
-    \draw[Accent,thick] (sched.south) -- (0,-1.45);
-    \draw[->,Accent,thick] (0,-1.45) -| (a.north);
-    \draw[->,Accent,thick] (0,-1.45) -| (b.north);
+    \node[font=\small\bfseries] (req) at (0,0.30) {Incoming MoE Requests};
+    \node[svc,draw=Accent!80,fill=SoftMint,text width=5.0cm,minimum height=0.84cm]
+      (global) at (0,-0.66) {\textbf{Global Request Router}\\Request routing across data centers};
+    \node[svc,draw=Accent!75,fill=white,text width=5.0cm,minimum height=0.84cm]
+      (local) at (0,-2.10) {\textbf{Local A/E Scheduler}\\Assign GPUs and experts};
+    \node[align=center,font=\small,text=Accent] (dcLeft) at (-4.60,-0.66)
+      {Other data\\centers};
+    \node[align=center,font=\small,text=Accent] (dcRight) at (4.60,-0.66)
+      {Other data\\centers};
+
+    \node[svc,draw=AccentBlue!70,fill=SoftBlue,text width=4.48cm,minimum height=1.58cm]
+      (attn) at (-3.34,-4.08) {\textbf{Attention Worker}\\\textbf{HBM-rich GPU}\\Attention / active KV cache};
+    \node[svc,draw=Accent!70,fill=SoftMint,text width=4.48cm,minimum height=1.58cm]
+      (expert) at (3.34,-4.08) {\textbf{Expert Worker}\\\textbf{HBF-rich GPU}\\Expert weights; HBM hot set};
+
+    \draw[->,Accent,thick] (req) -- (global);
+    \draw[->,Accent,thick] (global.west) -- (dcLeft.east);
+    \draw[->,Accent,thick] (global.east) -- (dcRight.west);
+    \draw[->,Accent,thick] (global) -- (local);
+    \draw[Accent,thick] (local.south) -- (0,-2.92);
+    \draw[->,AccentBlue,thick] (0,-2.92) -| (attn.north);
+    \draw[->,Accent,thick] (0,-2.92) -| (expert.north);
+    \draw[->,AccentBlue,thick]
+      ([yshift=5pt]attn.east) -- node[above,font=\tiny,fill=white,inner sep=0.5pt] {dispatch}
+      ([yshift=5pt]expert.west);
+    \draw[->,Accent,thick]
+      ([yshift=-5pt]expert.west) -- node[below,font=\tiny,fill=white,inner sep=0.5pt] {combine}
+      ([yshift=-5pt]attn.east);
   \end{tikzpicture}\par}
-  \vspace{0.19cm}
-  {\small\bfseries\color{Accent}Memory configurations in the model}\par
-  \vspace{0.10cm}
-  {\centering
-  \begin{tikzpicture}
-    \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=3.8cm,minimum height=1.34cm] at (0,0)
-      {\textbf{Full-HBM}\\Conventional baseline};
-    \node[svc,draw=Accent!65,fill=SoftMint,text width=3.8cm,minimum height=1.34cm] at (4.45,0)
-      {\textbf{Full-HBF}\\Conceptual configuration};
-    \node[svc,draw=AccentBlue!55,fill=SoftLilac,text width=3.8cm,minimum height=1.34cm] at (8.9,0)
-      {\textbf{Hybrid HBM/HBF}\\Conceptual example\\50/50 capacity};
-  \end{tikzpicture}\par}
+  \vspace{0.12cm}
+  {\centering\small\color{Accent}\textbf{Goal:} Balance trade-offs among latency, power, and throughput.\par}
 \end{frame}
+\endgroup
 
 % ============================================================
 % SLIDE 7 - System-level methodology; memory integration remains planned
