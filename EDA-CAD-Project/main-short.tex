@@ -1,6 +1,6 @@
 % EDA / CAD technical interview | technology mapping and ECO
 % English Beamer interview deck, expanded from user-authored ABC Mapper slides.
-% Standalone Beamer source: pdfLaTeX, no external image files required.
+% Standalone Beamer source: pdfLaTeX. The research-pipeline figure is figures/mapping-framework.png.
 % Mapping content preserved; ECO pages are clearly marked as proposed.
 % NeoPower is a company project: keep discussion high-level and do not imply that
 % every current repository module was personally authored during employment.
@@ -326,36 +326,28 @@
 % ==============================================================
 
 % ------------------------------------------------------------------------
-% SLIDE 5 / 16 | Project Overview: NF-Direct MO Mapping
+% SLIDE 5 / 16 | Joint SO / MO Mapping: Research Pipeline
 % ------------------------------------------------------------------------
-\begin{frame}[shrink=8]{Project Overview: NF-Direct MO Mapping}
+\begin{frame}[shrink=8]{Joint SO / MO Mapping: Research Pipeline}
   \vspace{.02cm}
-  \smalllabel{01 / Research Scope}\par\vspace{.10cm}
-  \takeaway{Discover FA/HA opportunities and globally pre-select MO candidates before GradMap.}
-  \vspace{.18cm}
+  \smalllabel{01 / Research Scope}\par\vspace{.08cm}
+  \takeaway{Discover FA/HA opportunities, pre-select non-overlapping MO candidates, then let the optimizer choose SO or BIND.}
+  \vspace{.10cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.47\textwidth}
-      \smallpanel{panelblue}{Problem}{Single-output cut retention does not explicitly optimize two-output FA/HA opportunities.}
-      \vspace{.15cm}
-      \smallpanel{panelmint}{Our Extension}{Add independent NF-direct MO discovery inside ABC \texttt{\&nf}, without changing SO mapping.}
-      \vspace{.15cm}
-      \smallpanel{panellilac}{Proposed Optimization}{Solve an area-aware non-overlapping MO selection MILP before GradMap.}
+    \begin{column}{.32\textwidth}
+      \smallpanel{panelblue}{Problem}{Single-output cut retention does not target two-output FA/HA opportunities.}
     \end{column}
-    \begin{column}{.48\textwidth}
-      \minibadge{SoftMint}{Research Pipeline}\par\vspace{.13cm}
-      \begin{tikzpicture}[>=Latex,font=\scriptsize]
-      \tikzset{b/.style={draw=AccentBlue!60,fill=SoftBlue!85,rounded corners=3pt,text width=4.25cm,minimum height=.61cm,align=center,inner sep=3pt},
-                m/.style={b,draw=Accent!70,fill=SoftMint!82}}
-      \node[b] (nf) at (0,0) {ABC \texttt{\&nf} — original SO baseline};
-      \node[b] (mo) at (0,-.99) {NF-direct MO discovery — FA/HA};
-      \node[m] (ilp) at (0,-1.98) {Area-aware MILP — proposed};
-      \node[b] (grad) at (0,-2.97) {GradMap — SO / BIND decisions};
-      \foreach \a/\b in {nf/mo,mo/ilp,ilp/grad} {\draw[->,Accent,thick](\a.south)--(\b.north);}
-      \end{tikzpicture}
-      \par\vspace{.05cm}
-      {\scriptsize\color{Muted}Input AIG + Liberty $\rightarrow$ selected.matches $\rightarrow$ mapped netlist}
+    \begin{column}{.32\textwidth}
+      \smallpanel{panelmint}{ABC-Based MO Discovery}{A new MO candidate search inside the ABC Mapper. Existing SO enumeration stays unchanged.}
+    \end{column}
+    \begin{column}{.32\textwidth}
+      \smallpanel{panellilac}{MILP Pre-selection}{Keep a non-overlapping, area-aware subset of legal MO candidates. SO matches bypass this step.}
     \end{column}
   \end{columns}
+  \vspace{.08cm}
+  \begin{center}
+    \includegraphics[width=\linewidth,height=3.22cm,keepaspectratio,trim=0 48bp 0 145bp,clip]{mapping-framework.png}
+  \end{center}
 \end{frame}
 
 
@@ -368,9 +360,9 @@
   \vspace{.19cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.45\textwidth}
-      \softpanel{panelblue}{Original NF SO Cut Ranking}{Cuts are retained according to single-output objectives, not complementary FA/HA output pairs.}
+      \softpanel{panelblue}{ABC Mapper SO Ranking}{Cuts are retained for single-output area and delay, not for complementary FA/HA output pairs.}
       \vspace{.22cm}
-      \softpanel{panelmint}{Independent NF-Direct Sidecar}{Propagate additional MO cuts and CON/SN truth projections without modifying NF's SO path.}
+      \softpanel{panelmint}{ABC-Based MO Discovery}{Keep additional MO cuts and CON/SN truth projections without changing the ABC Mapper's SO path.}
     \end{column}
     \begin{column}{.52\textwidth}
       \figurespace{3.24cm}{SO-pruned cut vs MO-retained cut}{Two output roots with a shared legal 3-leaf input support.}
@@ -382,9 +374,9 @@
 
 
 % ------------------------------------------------------------------------
-% SLIDE 7 / 16 | NF-Direct MO Candidate Discovery
+% SLIDE 7 / 16 | MO Candidate Discovery in ABC
 % ------------------------------------------------------------------------
-\begin{frame}[shrink=9]{NF-Direct MO Candidate Discovery}
+\begin{frame}[shrink=9]{MO Candidate Discovery in ABC}
   \vspace{.02cm}\smalllabel{04 / Core Algorithm}\par\vspace{.08cm}
   \takeaway{Pair compatible CON and SN projections over a common input support.}
   \vspace{.18cm}
@@ -394,7 +386,7 @@
       \vspace{.16cm}
       \scitem{02 / Projection Pairing}{Match CON / SN roles using shared leaves, permutation and phase.}
       \vspace{.16cm}
-      \scitem{03 / Legality + Witness}{Validate the pair and export v3 MOCAND records with replacement roots.}
+      \scitem{03 / Legality + Witness}{Validate the pair and record the SO cells this MO candidate would replace.}
     \end{column}
     \begin{column}{.52\textwidth}
       \figurespace{3.38cm}{Example: FA CON / SN cut projections}{Highlight two output roots, same leaves, shared cell configuration.}
@@ -437,7 +429,7 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
 \end{tabular}
   \end{center}
   \vspace{-0.02cm}
-  {\tiny\color{Muted}Source: NF-direct full-corpus census, 364 benchmark entries; simulated parser-policy first-fit, not trained GradMap QoR.}
+  {\tiny\color{Muted}Source: MO-candidate census, 364 benchmark entries; simulated first-fit retention, not mapping-optimizer QoR.}
 \end{frame}
 
 
@@ -445,7 +437,7 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
 % SLIDE 9 / 16 | Area-Aware MO Selection (MILP)
 % ------------------------------------------------------------------------
 \begin{frame}[shrink=15]{Area-Aware MO Selection (MILP)}
-  \vspace{.02cm}\smalllabel{09 / Proposed Global Selection}\par\vspace{.08cm}
+  \vspace{.02cm}\smalllabel{09 / Global Candidate Selection}\par\vspace{.08cm}
   \takeaway{Maximize estimated area savings subject to non-overlapping MO candidates.}
   \vspace{.13cm}
   \begin{columns}[T,onlytextwidth]
@@ -465,52 +457,62 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
         $a_{vi}=1$ iff AIG base node $v$ belongs to MO candidate $i$; otherwise $0$.}
     \end{column}
     \begin{column}{.38\textwidth}
-      \figurespace{2.06cm}{Conflict: (A,B) vs (A,C)}{Shared AIG node A $\Rightarrow$ at most one MO selected.}
-      \vspace{.15cm}
+      \begin{center}
+      \begin{tikzpicture}[font=\scriptsize,>=Latex,line width=0.7pt]
+        \node[circle,draw=AccentBlue!70,fill=SoftBlue,minimum size=0.58cm,inner sep=0pt] (A) at (0,0) {\bfseries A};
+        \node[circle,draw=AccentBlue!70,fill=white,minimum size=0.54cm,inner sep=0pt] (B) at (-1.02,0.78) {\bfseries B};
+        \node[circle,draw=Accent!75,fill=white,minimum size=0.54cm,inner sep=0pt] (C) at (1.02,0.78) {\bfseries C};
+        \draw[AccentBlue,thick] (A) -- (B);
+        \draw[Accent,thick] (A) -- (C);
+        \node[font=\tiny,text=AccentBlue,anchor=east] at (-0.72,1.22) {(A,\,B)};
+        \node[font=\tiny,text=Accent,anchor=west] at (0.72,1.22) {(A,\,C)};
+        \node[font=\scriptsize,text=Ink] at (0,-0.62) {$x_{AB}+x_{AC}\leq 1$};
+      \end{tikzpicture}
+      \end{center}
+      \vspace{.06cm}
       \smallpanel{panelmint}{Implementation}{Python + HiGHS (\texttt{highspy}); emit selected.matches.}
     \end{column}
   \end{columns}
-  \vspace{.12cm}
-  {\scriptsize\color{Muted}Objective weights estimate local SO-to-MO benefits; actual GradMap final mapped area is measured later.}
+  \vspace{.08cm}
+  {\scriptsize\color{Muted}Objective weights estimate local SO-to-MO benefits. Final QoR is measured after the mapping optimizer; MILP retention does not force every selected candidate into the netlist.}
 \end{frame}
 
 
 % ------------------------------------------------------------------------
-% SLIDE 10 / 16 | Research Status & Next Steps
+% SLIDE 10 / 16 | Current Mapping Flow & ADP Improvement
+% Same reported comparison as main.tex: SO mode 1.00 vs SO+MO mode 0.94.
+% This is not a FIFO-versus-MILP ablation.
 % ------------------------------------------------------------------------
-\begin{frame}[shrink=5]{Research Status \& Next Steps}
-  \vspace{.02cm}\smalllabel{11 / Outlook}\par\vspace{.08cm}
-  \takeaway{Verified NF-direct discovery today; area-aware MILP is the next research step.}
-  \vspace{.23cm}
+\begin{frame}{Current Mapping Flow \& ADP Improvement}
+  \smalllabel{11 / Current Results}\par\vspace{.10cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.48\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=.23cm,wd=\linewidth]{panelblue}
-        {\normalsize\bfseries\color{Accent}Completed / Verified}\par\vspace{.16cm}
-        {\small
-        $\bullet$ Independent NF-direct MO discovery\\[1mm]
-        $\bullet$ Boolean / structural legality\\[1mm]
-        $\bullet$ SO witness + MOCAND integration\\[1mm]
-        $\bullet$ 364-design candidate census}
-      \end{beamercolorbox}
+    \begin{column}{.43\textwidth}
+      {\large\bfseries\color{Accent}Current flow}\par\vspace{.18cm}
+      {\normalsize
+      MO candidate discovery in ABC\par\vspace{.14cm}
+      Boolean / structural legality\par\vspace{.14cm}
+      SO witnesses + area weights\par\vspace{.14cm}
+      MILP candidate pre-selection\par\vspace{.14cm}
+      Mapping optimizer SO / BIND choice\par}
+      \vspace{.24cm}
+      {\small Measure final mapped QoR after optimization; MILP weights are local estimates.}
     \end{column}
-    \begin{column}{.48\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=.23cm,wd=\linewidth]{panelmint}
-        {\normalsize\bfseries\color{Accent}Next / Proposed}\par\vspace{.16cm}
-        {\small
-        $\bullet$ Estimate SO witness area weights\\[1mm]
-        $\bullet$ Solve MO selection with HiGHS\\[1mm]
-        $\bullet$ Compare FIFO versus MILP\\[1mm]
-        $\bullet$ Evaluate final mapped area / CEC}
-      \end{beamercolorbox}
+    \begin{column}{.54\textwidth}
+      {\fontsize{32}{36}\selectfont\bfseries\color{Accent}6\%}\par
+      {\small Lower ADP vs. SO Mode}\par\vspace{.16cm}
+      {\scriptsize\color{Muted}Normalized ADP (SO Mode = 1.00)}\par\vspace{.20cm}
+      \begin{tikzpicture}[x=4.7cm,y=1cm]
+        \node[anchor=west,font=\small] at (0,1.75) {SO Mode};
+        \fill[AccentBlue!65] (0,1.05) rectangle (1,1.48);
+        \node[anchor=west,font=\small\bfseries] at (1.03,1.265) {1.00};
+        \node[anchor=west,font=\small] at (0,.70) {SO + MO Mode};
+        \fill[Accent!75] (0,0) rectangle (.94,.43);
+        \node[anchor=west,font=\small\bfseries] at (.97,.215) {0.94};
+      \end{tikzpicture}\par
+      \vspace{.15cm}
+      {\scriptsize ADP = area $\times$ delay. Comparison is SO mode versus SO+MO mode.}
     \end{column}
   \end{columns}
-  \vspace{.33cm}
-  \begin{beamercolorbox}[rounded=true,sep=.19cm,wd=\linewidth]{panelwhite}
-    {\scriptsize\bfseries\color{Accent}Research question}\par\vspace{.08cm}
-    {\small\bfseries Can area-aware global pre-selection improve the MO opportunities available to GradMap?}
-  \end{beamercolorbox}
-  \vfill
-  {\scriptsize\color{Muted}QoR results intentionally left pending until the new code and benchmark runs are complete.}
 \end{frame}
 
 

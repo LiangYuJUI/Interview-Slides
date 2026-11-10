@@ -378,48 +378,31 @@
     via Differentiable Optimization\par}
   \vspace{.18cm}
   {\small\color{Muted}
-    NF-direct MO discovery in ABC, area-aware MILP pre-selection, and GradMap.\par}
+    MO candidate discovery in ABC, area-aware MILP pre-selection, and a mapping optimizer adapted from prior work.\par}
   \vfill
 \end{frame}}
 
 % ------------------------------------------------------------------------
-% SLIDE 6 / 18 | Joint SO / MO Mapping: Research Pipeline
+% SLIDE 6 / 18 | ABC Mapper: SO Technology Mapper Baseline
 % ------------------------------------------------------------------------
-\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-baseline}{\beamerbutton{SO baseline}}\hspace{.12cm}\hyperlink{summary-11}{\beamerbutton{GradMap integration}}}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
 \renewcommand{\slideposition}{Summary 6 / 18}
-% Reserved for a revised framework figure. Do not drop in
-% figures/mapping-framework-legacy.png: it sends every MO candidate
-% straight to the differentiable mapper and has no MILP stage.
-% Replacement should show:
-%   AIG -> SO matches (unchanged) + legal MO candidates
-%       -> area-aware MILP -> GradMap SO/BIND -> netlist
-\begin{frame}[shrink=8,label=summary-6]{Joint SO / MO Mapping: Research Pipeline}
+\begin{frame}[label=summary-6]{ABC Mapper: SO Technology Mapper Baseline}
   \vspace{.02cm}
-  \slidesubtitle{01 / Research Scope}\par\vspace{.08cm}
-  \takeaway{Discover FA/HA opportunities, then pre-select non-overlapping MO candidates before GradMap.}
-  \vspace{.12cm}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{.32\textwidth}
-      \smallpanel{panelblue}{Problem}{Single-output cut retention does not target two-output FA/HA opportunities.}
-    \end{column}
-    \begin{column}{.32\textwidth}
-      \smallpanel{panelmint}{NF-Direct Discovery}{Independent MO cut search inside ABC \texttt{\&nf}. SO mapping stays unchanged.}
-    \end{column}
-    \begin{column}{.32\textwidth}
-      \smallpanel{panellilac}{MILP Pre-selection}{Keep a non-overlapping, area-aware subset of legal MO candidates.}
-    \end{column}
-  \end{columns}
+  \slidesubtitle{02 / Baseline Mapping}\par\vspace{.08cm}
+  \takeaway{Preserve the original ABC Mapper single-output behavior while exposing its candidate search space.}
   \vspace{.16cm}
   \begin{center}
-    \figurespace{3.15cm}{Joint SO / MO mapping framework}{SO matches stay available. Legal MO candidates go through MILP, then GradMap chooses SO or BIND.}
+    \includegraphics[width=\linewidth,height=4.15cm,keepaspectratio]{aig-technology-mapping.png}\par
+    \vspace{.08cm}
+    {\scriptsize\color{Muted}Same Boolean behavior, realized with library cells.}
   \end{center}
 \end{frame}
 
 
+% SLIDE 7 / 18 | Single-output vs multi-output motivation
 % ------------------------------------------------------------------------
-% SLIDE 7 / 18 | Why an Independent MO Discovery Path?
-% ------------------------------------------------------------------------
-\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-baseline}{\beamerbutton{SO baseline}}}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-6}{\beamerbutton{SO baseline}}}
 \renewcommand{\slideposition}{Summary 7 / 18}
 \begin{frame}[label=summary-7]{Single-Output vs Multi-Output Cell Mapping}
   \slidesubtitle{03 / Motivation}\par\vspace{.10cm}
@@ -440,11 +423,39 @@
 
 
 % ------------------------------------------------------------------------
-% SLIDE 8 / 18 | NF-Direct MO Candidate Discovery
+% SLIDE 8 / 18 | Joint SO / MO Mapping: Research Pipeline
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-6}{\beamerbutton{SO baseline}}\hspace{.12cm}\hyperlink{summary-11}{\beamerbutton{Optimizer integration}}}
+\renewcommand{\slideposition}{Summary 8 / 18}
+\begin{frame}[shrink=8,label=summary-8]{Joint SO / MO Mapping: Research Pipeline}
+  \vspace{.02cm}
+  \slidesubtitle{01 / Research Scope}\par\vspace{.08cm}
+  \takeaway{Discover FA/HA opportunities, pre-select non-overlapping MO candidates, then let the optimizer choose SO or BIND.}
+  \vspace{.10cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.32\textwidth}
+      \smallpanel{panelblue}{Problem}{Single-output cut retention does not target two-output FA/HA opportunities.}
+    \end{column}
+    \begin{column}{.32\textwidth}
+      \smallpanel{panelmint}{ABC-Based MO Discovery}{A new MO candidate search inside the ABC Mapper. Existing SO enumeration stays unchanged.}
+    \end{column}
+    \begin{column}{.32\textwidth}
+      \smallpanel{panellilac}{MILP Pre-selection}{Keep a non-overlapping, area-aware subset of legal MO candidates. SO matches bypass this step.}
+    \end{column}
+  \end{columns}
+  \vspace{.08cm}
+  \begin{center}
+    \includegraphics[width=\linewidth,height=3.22cm,keepaspectratio,trim=0 48bp 0 145bp,clip]{mapping-framework.png}
+  \end{center}
+\end{frame}
+
+
+% ------------------------------------------------------------------------
+% SLIDE 9 / 18 | MO Candidate Discovery in ABC
 % ------------------------------------------------------------------------
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-legality}{\beamerbutton{Pair legality}}\hspace{.12cm}\hyperlink{detail-witness}{\beamerbutton{SO witness}}}
-\renewcommand{\slideposition}{Summary 8 / 18}
-\begin{frame}[shrink=9,label=summary-8]{NF-Direct MO Candidate Discovery}
+\renewcommand{\slideposition}{Summary 9 / 18}
+\begin{frame}[shrink=9,label=summary-9]{MO Candidate Discovery in ABC}
   \vspace{.02cm}\slidesubtitle{04 / Core Algorithm}\par\vspace{.08cm}
   \takeaway{Pair compatible CON and SN projections over a common input support.}
   \vspace{.18cm}
@@ -454,7 +465,7 @@
       \vspace{.16cm}
       \scitem{02 / Projection Pairing}{Match CON / SN roles using shared leaves, permutation and phase.}
       \vspace{.16cm}
-      \scitem{03 / Legality + Witness}{Validate the pair and export v3 MOCAND records with replacement roots.}
+      \scitem{03 / Legality + Witness}{Validate the pair and record the SO cells this MO candidate would replace.}
     \end{column}
     \begin{column}{.52\textwidth}
       \centering
@@ -464,44 +475,6 @@
       \minibadge{SoftMint}{OUTPUT: BIND / ROOTS / FANINS / REPLACE\_ROOTS}
     \end{column}
   \end{columns}
-\end{frame}
-
-
-% ------------------------------------------------------------------------
-% SLIDE 9 / 18 | Baseline: File-Order Candidate Loss
-% ------------------------------------------------------------------------
-\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-11}{\beamerbutton{GradMap integration}}}
-\renewcommand{\slideposition}{Summary 9 / 18}
-\begin{frame}[shrink=8,label=summary-9]{Baseline: File-Order Candidate Loss}
-  \vspace{.02cm}\slidesubtitle{08 / Motivation for MILP}\par\vspace{.08cm}
-  \takeaway{File-order greedy filtering ignores estimated area benefits of conflicting MO candidates.}
-  \vspace{.17cm}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{.319\textwidth}\statcard{41,476}{Original MO candidate BIND records}\end{column}
-    \begin{column}{.319\textwidth}\statcard{7,024}{FIFO retained (offline simulation)}\end{column}
-    \begin{column}{.319\textwidth}\statcard{16.9\%}{Overall retention rate}\end{column}
-  \end{columns}
-  \vspace{.07cm}
-  \begin{center}
-  \footnotesize
-\begin{tabular}{@{}lrrrr@{}}
-\toprule
-\textbf{Design} & \textbf{Original MO} & \textbf{FIFO Retained} & \textbf{Dropped} & \textbf{Retention} \\
-\midrule
-EPFL hyp & 25,440 & 4,180 & 21,260 & 16.4\% \\
-EPFL square & 3,658 & 544 & 3,114 & 14.9\% \\
-EPFL log2 & 2,798 & 400 & 2,398 & 14.3\% \\
-EPFL multiplier & 2,190 & 349 & 1,841 & 15.9\% \\
-EPFL voter & 632 & 106 & 526 & 16.8\% \\
-ISCAS c6288 & 258 & 37 & 221 & 14.3\% \\
-ISCAS c7552 & 102 & 11 & 91 & 10.8\% \\
-EPFL adder & 6 & 1 & 5 & 16.7\% \\
-\textbf{All 364 designs} & \textbf{41,476} & \textbf{7,024} & \textbf{34,452} & \textbf{16.9\%} \\
-\bottomrule
-\end{tabular}
-  \end{center}
-  \vspace{-0.02cm}
-  {\tiny\color{Muted}Source: NF-direct full-corpus census, 364 benchmark entries; simulated parser-policy first-fit, not trained GradMap QoR.}
 \end{frame}
 
 
@@ -531,24 +504,33 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
         $a_{vi}=1$ iff AIG base node $v$ belongs to MO candidate $i$; otherwise $0$.}
     \end{column}
     \begin{column}{.38\textwidth}
-      % No legacy figure for this conflict. Draw two MO candidates that
-      % both contain AIG node A, labeled (A,B) and (A,C).
-      \figurespace{2.06cm}{Conflict: (A,B) vs (A,C)}{Shared AIG node A, so MILP keeps at most one candidate.}
-      \vspace{.15cm}
+      \begin{center}
+      \begin{tikzpicture}[font=\scriptsize,>=Latex,line width=0.7pt]
+        \node[circle,draw=AccentBlue!70,fill=SoftBlue,minimum size=0.58cm,inner sep=0pt] (A) at (0,0) {\bfseries A};
+        \node[circle,draw=AccentBlue!70,fill=white,minimum size=0.54cm,inner sep=0pt] (B) at (-1.02,0.78) {\bfseries B};
+        \node[circle,draw=Accent!75,fill=white,minimum size=0.54cm,inner sep=0pt] (C) at (1.02,0.78) {\bfseries C};
+        \draw[AccentBlue,thick] (A) -- (B);
+        \draw[Accent,thick] (A) -- (C);
+        \node[font=\tiny,text=AccentBlue,anchor=east] at (-0.72,1.22) {(A,\,B)};
+        \node[font=\tiny,text=Accent,anchor=west] at (0.72,1.22) {(A,\,C)};
+        \node[font=\scriptsize,text=Ink] at (0,-0.62) {$x_{AB}+x_{AC}\leq 1$};
+      \end{tikzpicture}
+      \end{center}
+      \vspace{.06cm}
       \smallpanel{panelmint}{Implementation}{Python + HiGHS (\texttt{highspy}); emit selected.matches.}
     \end{column}
   \end{columns}
-  \vspace{.12cm}
-  {\scriptsize\color{Muted}Objective weights estimate local SO-to-MO benefits; final QoR is evaluated after GradMap mapping.}
+  \vspace{.08cm}
+  {\scriptsize\color{Muted}Objective weights estimate local SO-to-MO benefits. Final QoR is measured after the mapping optimizer; MILP retention does not force every selected candidate into the netlist.}
 \end{frame}
 
 
-% SLIDE 11 / 18 | GradMap integration
+% SLIDE 11 / 18 | Mapping Optimizer: SO / BIND Decisions
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-verification}{\beamerbutton{Verification}}}
 \renewcommand{\slideposition}{Summary 11 / 18}
-\begin{frame}[shrink=6,label=summary-11]{Connecting \texttt{\&nf -Y} to GradMap}
+\begin{frame}[shrink=6,label=summary-11]{Mapping Optimizer: SO / BIND Decisions}
   \vspace{.02cm}\slidesubtitle{07 / Decision Integration}\par\vspace{.06cm}
-  \takeaway{MILP passes non-overlapping MO candidates to GradMap, which still chooses SO or BIND.}
+  \takeaway{MILP pre-selects non-overlapping MO candidates, while the mapping optimizer makes the final SO/BIND decisions.}
   \vspace{.10cm}
   {\centering
     \includegraphics[width=.96\textwidth,height=5.05cm,keepaspectratio,trim=6bp 112bp 6bp 130bp,clip]{optimizer-binding-decision.png}\par
@@ -568,11 +550,11 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
     \begin{column}{.43\textwidth}
       {\large\bfseries\color{Accent}Current flow}\par\vspace{.18cm}
       {\normalsize
-      NF-direct MO discovery\par\vspace{.14cm}
+      MO candidate discovery in ABC\par\vspace{.14cm}
       Boolean / structural legality\par\vspace{.14cm}
       SO witnesses + area weights\par\vspace{.14cm}
       MILP candidate pre-selection\par\vspace{.14cm}
-      GradMap SO / MO optimization\par}
+      Mapping optimizer SO / BIND choice\par}
       \vspace{.24cm}
       {\small Measure final mapped QoR after optimization; MILP weights are local estimates.}
     \end{column}
@@ -872,7 +854,7 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
   \begin{columns}[T,onlytextwidth]
 \begin{column}{.48\textwidth}
 {\normalsize\bfseries\color{Accent}Multi-Output Technology Mapping}\par\vspace{.25cm}
-\hyperlink{detail-baseline}{\beamerbutton{D01 / SO baseline}}\par\vspace{.22cm}
+\hyperlink{detail-fifo}{\beamerbutton{D01 / FIFO candidate loss}}\par\vspace{.22cm}
 \hyperlink{detail-legality}{\beamerbutton{D02 / Pair legality}}\par\vspace{.22cm}
 \hyperlink{detail-witness}{\beamerbutton{D03 / SO witness}}\par\vspace{.22cm}
 \hyperlink{detail-verification}{\beamerbutton{D04 / Verification}}\par\vspace{.22cm}
@@ -887,43 +869,43 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
 \end{column}
 \end{columns}\end{frame}
 
-% DETAIL 01 / 9 | SO baseline (original full-deck slide 6)
-\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-6}{\beamerreturnbutton{Summary 6}}\hspace{.12cm}\hyperlink{summary-7}{\beamerreturnbutton{Summary 7}}}
+% DETAIL 01 / 9 | File-order candidate loss
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-10}{\beamerreturnbutton{Summary 10}}\hspace{.12cm}\hyperlink{summary-11}{\beamerreturnbutton{Summary 11}}}
 \renewcommand{\slideposition}{Detail 1 / 9}
-\begin{frame}[label=detail-baseline]{ABC \texttt{\&nf}: The Single-Output Baseline}
-  \vspace{.02cm}\slidesubtitle{02 / Baseline Mapping}\par\vspace{.08cm}
-  \takeaway{Preserve original NF SO behavior while exposing its candidate search space.}
+\begin{frame}[shrink=8,label=detail-fifo]{Baseline: File-Order Candidate Loss}
+  \vspace{.02cm}\slidesubtitle{08 / Motivation for MILP}\par\vspace{.08cm}
+  \takeaway{File-order greedy filtering ignores estimated area benefits of conflicting MO candidates.}
   \vspace{.17cm}
-  \begin{center}
-  \begin{tikzpicture}[>=Latex,font=\scriptsize]
-    \tikzset{b/.style={draw=AccentBlue!65,fill=SoftBlue!78,rounded corners=3pt,text width=2.41cm,minimum height=.68cm,align=center}}
-    \node[b](a) at (0,0) {AIG + Liberty};
-    \node[b](b) at (3.12,0) {SO cut enumeration};
-    \node[b](c) at (6.24,0) {Delay / Area mapping};
-    \node[b](d) at (9.36,0) {C / M match dump};
-    \foreach \u/\v in {a/b,b/c,c/d}{\draw[->,Accent,thick](\u.east)--(\v.west);}
-  \end{tikzpicture}
-  \end{center}
-  \vspace{.10cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.64\textwidth}
-      \centering
-      \includegraphics[width=\linewidth,height=3.15cm,keepaspectratio]{aig-technology-mapping.png}\par
-      \vspace{.05cm}
-      {\scriptsize\color{Muted}Same Boolean behavior, realized with library cells.}
-    \end{column}
-    \begin{column}{.33\textwidth}
-      \smallpanel{panelblue}{Classic C Records}{All retained single-output cut $\times$ library-cell matches.}
-      \vspace{.14cm}
-      \smallpanel{panelmint}{Classic M Records}{The final SO cover selected by ABC NF.}
-    \end{column}
+    \begin{column}{.319\textwidth}\statcard{41,476}{Original MO candidate BIND records}\end{column}
+    \begin{column}{.319\textwidth}\statcard{7,024}{FIFO retained (offline simulation)}\end{column}
+    \begin{column}{.319\textwidth}\statcard{16.9\%}{Overall retention rate}\end{column}
   \end{columns}
-  \vspace{.08cm}
-  {\scriptsize\bfseries\color{Accent}Invariant: enabling NF-direct MO discovery preserves classic C/M, vCellMapping, SO area and delay.}
+  \vspace{.07cm}
+  \begin{center}
+  \footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Design} & \textbf{Original MO} & \textbf{FIFO Retained} & \textbf{Dropped} & \textbf{Retention} \\
+\midrule
+EPFL hyp & 25,440 & 4,180 & 21,260 & 16.4\% \\
+EPFL square & 3,658 & 544 & 3,114 & 14.9\% \\
+EPFL log2 & 2,798 & 400 & 2,398 & 14.3\% \\
+EPFL multiplier & 2,190 & 349 & 1,841 & 15.9\% \\
+EPFL voter & 632 & 106 & 526 & 16.8\% \\
+ISCAS c6288 & 258 & 37 & 221 & 14.3\% \\
+ISCAS c7552 & 102 & 11 & 91 & 10.8\% \\
+EPFL adder & 6 & 1 & 5 & 16.7\% \\
+\textbf{All 364 designs} & \textbf{41,476} & \textbf{7,024} & \textbf{34,452} & \textbf{16.9\%} \\
+\bottomrule
+\end{tabular}
+  \end{center}
+  \vspace{-0.02cm}
+  {\tiny\color{Muted}Source: MO-candidate census, 364 benchmark entries; simulated first-fit retention, not mapping-optimizer QoR.}
 \end{frame}
 
 % DETAIL 02 / 9 | Pair legality (original full-deck slide 9)
-\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-8}{\beamerreturnbutton{Summary 8}}}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-9}{\beamerreturnbutton{Summary 9}}}
 \renewcommand{\slideposition}{Detail 2 / 9}
 \begin{frame}[label=detail-legality]{MO Pair Matching \& Structural Legality}
   \vspace{.02cm}\slidesubtitle{05 / Candidate Validation}\par\vspace{.08cm}
@@ -952,7 +934,7 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
 \end{frame}
 
 % DETAIL 03 / 9 | SO witness (original full-deck slide 10)
-\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-8}{\beamerreturnbutton{Summary 8}}\hspace{.12cm}\hyperlink{summary-10}{\beamerreturnbutton{Summary 10}}}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-9}{\beamerreturnbutton{Summary 9}}\hspace{.12cm}\hyperlink{summary-10}{\beamerreturnbutton{Summary 10}}}
 \renewcommand{\slideposition}{Detail 3 / 9}
 \begin{frame}[label=detail-witness]{SO Witness: Replacing Multiple SO Cells}
   \slidesubtitle{06 / Replacement Semantics}\par\vspace{.10cm}
@@ -978,32 +960,34 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
 \renewcommand{\slideposition}{Detail 4 / 9}
 \begin{frame}[shrink=8,label=detail-verification]{Python + HiGHS: Verification Pipeline}
   \vspace{.02cm}\slidesubtitle{10 / Reproducible Evaluation}\par\vspace{.08cm}
-  \takeaway{Separate pre-selection quality from GradMap final mapped area.}
+  \takeaway{Separate MILP pre-selection quality from the mapping optimizer's final mapped area.}
   \vspace{.18cm}
   \begin{center}
   \begin{tikzpicture}[>=Latex,font=\scriptsize]
     \tikzset{b/.style={draw=AccentBlue!65,fill=SoftBlue!72,rounded corners=3pt,
-      text width=1.86cm,minimum height=.79cm,align=center}}
-    \node[b](a) at (0,0) {ABC \texttt{\&nf -Y}};
-    \node[b,fill=SoftMint!80](b) at (2.47,0) {Area weights + MILP};
+      text width=1.86cm,minimum height=.92cm,align=center}}
+    \node[b](a) at (0,0) {ABC Mapper\\ \texttt{\&nf -Y}};
+    \node[b,fill=SoftMint!80](b) at (2.47,0) {MO weights + MILP};
     \node[b,fill=SoftMint!80](c) at (4.94,0) {selected.matches};
-    \node[b](d) at (7.41,0) {GradMap SO/MO};
+    \node[b](d) at (7.41,0) {Mapping Optimizer};
     \node[b](e) at (9.88,0) {CEC + Area};
     \foreach \u/\v in {a/b,b/c,c/d,d/e}{\draw[->,Accent,thick](\u.east)--(\v.west);}
-  \end{tikzpicture}
+  \end{tikzpicture}\par
+  \vspace{.04cm}
+  {\scriptsize\color{Muted}The MILP filters MO candidates. SO matches from the ABC Mapper stay available to the optimizer.}
   \end{center}
   \vspace{.21cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.48\textwidth}
-      \softpanel{panelblue}{Correctness Checks}{Gate A: unchanged original NF mapping\\ Gate B: individual MO legality\\ Gate C: GradMap materialization + CEC}
+      \softpanel{panelblue}{Correctness Checks}{Gate A: unchanged ABC Mapper results\\ Gate B: individual MO legality\\ Gate C: optimizer materialization + CEC}
     \end{column}
     \begin{column}{.48\textwidth}
-      \softpanel{panelmint}{Experimental Comparison}{SO-only vs FIFO vs MILP-selected MO; same AIG, library, GradMap settings, and seed.}
+      \softpanel{panelmint}{Experimental Comparison}{SO-only vs FIFO vs MILP-selected MO; same AIG, library, optimizer settings, and seed.}
     \end{column}
   \end{columns}
   \vspace{.20cm}
   % The old results graphic reported 2\% extra ADP reduction and is not reusable.
-  % Summary slide 11 already states the current 6\% ADP reduction versus SO mode.
+  % Summary slide 12 already states the current 6\% ADP reduction versus SO mode.
   % This slot is for a later SO-only / FIFO / MILP comparison if that chart is drawn.
   \figurespace{1.15cm}{ADP and runtime chart}{SO-only, FIFO, and MILP-selected MO, under the same settings.}
 \end{frame}
