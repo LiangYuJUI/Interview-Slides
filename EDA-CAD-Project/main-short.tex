@@ -1,4 +1,4 @@
-% Silicon Motion technical interview | technology mapping and ECO
+% EDA / CAD technical interview | technology mapping and ECO
 % English Beamer interview deck, expanded from user-authored ABC Mapper slides.
 % Standalone Beamer source: pdfLaTeX, no external image files required.
 % Mapping content preserved; ECO pages are clearly marked as proposed.
@@ -158,7 +158,7 @@
 }
 
 
-\title[SMI CAD Technical Interview]{EDA / CAD Software Development \& Physical Design Optimization}
+\title[CAD Technical Interview]{EDA / CAD Engineering Projects}
 \subtitle{Selected Research and Engineering Projects}
 \author{Yu-Jui (Stanley) Liang}
 \institute{National Taiwan University}
@@ -188,26 +188,25 @@
 % ------------------------------------------------------------------------
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
-  \vspace*{0.80cm}
-  \smalllabel{Silicon Motion / CAD Engineering Technical Interview}\par
+  \vspace*{1.65cm}
+  \smalllabel{CAD Engineering Technical Interview}\par
   \vspace{0.51cm}
   {\raggedright\fontsize{21}{27}\selectfont\bfseries\color{Ink}
-    EDA / CAD Software Development\\[2mm]
-    \& Physical Design Optimization\par}
+    EDA / CAD Engineering Projects\par}
   \vspace{0.29cm}
-  {\normalsize\color{Muted}Logic Synthesis \quad / \quad Static Timing Analysis \quad / \quad Timing ECO\par}
+  {\normalsize\color{Muted}Logic Synthesis \enspace / \enspace Physical Design \enspace / \enspace Timing ECO \enspace / \enspace CAD Flow Automation\par}
   \vspace{0.70cm}
   {\Large\bfseries\color{Ink}Yu-Jui (Stanley) Liang}\par
   \vspace{0.10cm}
   {\normalsize\color{Muted}M.S. Candidate, Data Science Master Degree Program\par}
-  {\small\color{Muted}National Taiwan University \quad | \quad Expected Graduation: June 2027\par}
-  \vspace{0.20cm}
+  {\normalsize\color{Muted}National Taiwan University\par}
+  \vskip0pt plus 1filll
+  {\color{Accent}\rule{\textwidth}{0.7pt}}\par
+  \vspace{0.16cm}
   {\small\href{mailto:liangyujui@gmail.com}{liangyujui@gmail.com}
      \quad | \quad
      \href{https://www.linkedin.com/in/yu-jui-liang-735a57316}{linkedin.com/in/yu-jui-liang-735a57316}\par}
-  \vfill
-  {\color{Accent}\rule{\textwidth}{0.7pt}}\par\vspace{0.07cm}
-  {\small\bfseries\color{Muted}EDA Tool Development \quad / \quad C++--Python--Tcl Automation \quad / \quad PPA Optimization}
+  \vspace*{0.55cm}
 \end{frame}}
 
 % ============================================================
@@ -218,42 +217,42 @@
 \begin{frame}{Education \& Research Interests}
   \vspace{0.05cm}
   \smalllabel{01 / Profile}\par\vspace{0.10cm}
-  \takeaway{Computer science and electronic physics backgrounds applied to IC design automation.}
   \vfill
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelblue}
-        {\normalsize\bfseries\color{AccentBlue}Education}\par
+        {\large\bfseries\color{AccentBlue}Education}\par
         \vspace{0.14cm}
-        {\small\bfseries National Taiwan University}\par
-        {\small M.S. Candidate, Data Science Master Degree Program}\par
-        {\scriptsize\color{Muted}Sep. 2025 -- Expected Jun. 2027}\par
+        {\normalsize\bfseries National Taiwan University}\par
+        {\normalsize M.S. Candidate, Data Science Master Degree Program}\par
+        {\small\color{Muted}Sep. 2025 -- Expected Jun. 2027}\par
         \vspace{0.23cm}
-        {\small\bfseries National Chengchi University}\par
-        {\small B.S. in Computer Science}\par
-        {\small Double Major in Electronic Physics}\par
-        {\scriptsize\color{Muted}Sep. 2021 -- Jun. 2025}
+        {\normalsize\bfseries National Chengchi University}\par
+        {\normalsize B.S. in Computer Science}\par
+        {\normalsize Double Major in Electronic Physics}\par
+        {\small\color{Muted}Sep. 2021 -- Jun. 2025}
       \end{beamercolorbox}
     \end{column}
     \begin{column}{0.49\textwidth}
       \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelmint}
-        {\normalsize\bfseries\color{Accent}Research Interests}\par
+        {\large\bfseries\color{Accent}Research Interests}\par
         \vspace{0.15cm}
-        {\small\bfseries EDA / CAD \& VLSI Design Automation}\par
+        {\normalsize\bfseries EDA / CAD \& VLSI Design Automation}\par
         \vspace{0.09cm}
-        {\small Logic Synthesis and Technology Mapping}\par
-        {\small Static Timing Analysis / Timing Closure}\par
-        {\small Physical Design, Incremental ECO and PPA}\par
+        {\normalsize Logic Synthesis}\par
+        {\normalsize Technology Mapping}\par
+        {\normalsize Static Timing Analysis}\par
+        {\normalsize Timing Closure}\par
+        {\normalsize Physical Design}\par
+        {\normalsize Incremental ECO}\par
+        {\normalsize PPA}\par
         \vspace{0.15cm}
-        {\small\bfseries Algorithm \& Software Development}\par
+        {\normalsize\bfseries Algorithm \& Software Development}\par
         \vspace{0.09cm}
-        {\small C++ / Python / Tcl Flow Automation}\par
-        {\small Digital IC / SoC Design and Verification}
+        {\normalsize C++ / Python / Tcl Flow Automation}\par
       \end{beamercolorbox}
     \end{column}
   \end{columns}
-  \vfill
-  {\small\color{Muted}Technical interests: front-end synthesis, back-end timing optimization, and reproducible EDA flows.}
   \vfill
 \end{frame}
 
@@ -301,25 +300,22 @@
 \begin{frame}{Selected Projects \& Discussion Topics}
   \vspace{0.03cm}
   \smalllabel{03 / Project Overview}\par\vspace{0.11cm}
-  \takeaway{Two projects connecting front-end technology mapping with back-end timing optimization.}
   \vfill
   \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelblue}
-    {\small\bfseries\color{AccentBlue}01 \quad Master's Research --- Logic Synthesis}\par
+    {\small\bfseries\color{AccentBlue}01 \quad Master's Research --- Logic Synthesis (Front End)}\par
     \vspace{0.05cm}
-    {\normalsize\bfseries Multi-Output Technology Mapping in ABC \texttt{\&nf} and GradMap}\par
+    {\normalsize\bfseries Joint Single- and Multi-Output Cell Mapping\\via Differentiable Optimization}\par
     \vspace{0.07cm}
-    {\small C++ EDA Tool Development \quad / \quad Boolean Matching \quad / \quad Area--Delay Optimization}
+    {\small EDA Tool Development \quad / \quad Boolean Matching \quad / \quad Area--Delay Optimization}
   \end{beamercolorbox}
   \vfill
   \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panellilac}
-    {\small\bfseries\color{Accent}02 \quad ICCAD 2025 Problem C --- CAD Methodology}\par
+    {\small\bfseries\color{Accent}02 \quad ICCAD 2025 Problem C --- CAD Methodology (Back End)}\par
     \vspace{0.05cm}
     {\normalsize\bfseries STA-Driven Incremental Timing ECO Search}\par
     \vspace{0.07cm}
     {\small OpenROAD / OpenSTA \quad / \quad Python--Tcl Flow Automation \quad / \quad Heuristic PPA Search}
   \end{beamercolorbox}
-  \vfill
-  {\scriptsize\color{Muted}Project 01: implemented MO discovery; area-aware selection is proposed. \quad Project 02: contest-inspired methodology under development.}
   \vfill
 \end{frame}
 

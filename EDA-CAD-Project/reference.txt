@@ -1,0 +1,537 @@
+% ============================================================
+% General Technical Interview Portfolio - corrected 19-frame meeting edition
+% Compile with pdfLaTeX. 16:9 Beamer, Madrid-inspired.
+% Order: Introduction 1-4 / Mapping 5-12 / FloorSet 13-18 / Closing 19.
+% English slides; use the separate Chinese conversation notes.
+% Timing ECO is optional backup, not included in this meeting edition.
+% This preamble replaces the NVIDIA-specific preamble ONLY in a new
+% combined file; do not edit the original Mapping Project source.
+% ============================================================
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{hyperref}
+\graphicspath{{./}{figures/}}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+\definecolor{Ink}{HTML}{243748}
+\definecolor{Muted}{HTML}{667B8B}
+\definecolor{Accent}{HTML}{347E74}
+\definecolor{AccentBlue}{HTML}{507DAD}
+\definecolor{SoftMint}{HTML}{E6F4EE}
+\definecolor{SoftBlue}{HTML}{E9F2F9}
+\definecolor{SoftLilac}{HTML}{F1EEF8}
+\definecolor{Paper}{HTML}{FBFCFE}
+\definecolor{Divider}{HTML}{D8E4EB}
+\setbeamercolor{background canvas}{bg=Paper}
+\setbeamercolor{normal text}{fg=Ink}
+\setbeamercolor{structure}{fg=Accent}
+\setbeamercolor{frametitle}{fg=Ink,bg=SoftBlue}
+\setbeamercolor{block title}{fg=Ink,bg=SoftBlue}
+\setbeamercolor{block body}{fg=Ink,bg=white}
+\setbeamercolor{footline}{fg=Muted,bg=Paper}
+\setbeamercolor{panelblue}{fg=Ink,bg=SoftBlue!68}
+\setbeamercolor{panelmint}{fg=Ink,bg=SoftMint!72}
+\setbeamercolor{panellilac}{fg=Ink,bg=SoftLilac!78}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{footline}{size=\tiny}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=.30cm,dp=.16cm,rightskip=.60cm plus 1fil]{footline}%
+      \hfill\insertframenumber\,/\,\inserttotalframenumber
+    \end{beamercolorbox}}}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=.77cm,dp=.18cm,leftskip=.64cm]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}}
+\newcommand{\smalllabel}[1]{{\scriptsize\bfseries\color{Accent}\MakeUppercase{#1}}}
+\newcommand{\hint}[1]{{\scriptsize\color{Muted}#1}}
+\newcommand{\takeaway}[1]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.15cm,wd=\linewidth]{block title}%
+    \strut\textbf{#1}\strut
+  \end{beamercolorbox}}
+\newcommand{\minibadge}[2]{%
+  \tikz[baseline=(badge.base)]\node[fill=#1,rounded corners=3pt,
+    inner xsep=6pt,inner ysep=3pt] (badge) {\scriptsize\bfseries #2};}
+\newcommand{\skillpanel}[3]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.11cm,wd=\linewidth]{#1}%
+    \raggedright
+    {\small\bfseries\color{Accent}#2\par}\vspace{0.04cm}
+    {\small\color{Ink}#3\par}%
+  \end{beamercolorbox}}
+
+% Image placeholders: literal filenames are safe even with underscores.
+% Keep this definition before \begin{document}.
+\providecommand{\aiplaceholder}[3]{}
+\renewcommand{\aiplaceholder}[3]{%
+  \par\noindent
+  \begin{tikzpicture}
+    \node[draw=AccentBlue!55,dashed,line width=0.6pt,
+      rounded corners=4pt,fill=SoftBlue!35,
+      text width=\dimexpr\linewidth-0.82cm\relax,
+      minimum height=#1,inner xsep=0.40cm,inner ysep=0.12cm,
+      outer sep=0pt,align=center] {%
+      {\small\bfseries\color{AccentBlue}IMAGE PLACEHOLDER}\par
+      \vspace{0.12cm}
+      {\small\color{Ink}#2\par}
+      \vspace{0.10cm}
+      {\scriptsize\ttfamily\color{Muted}\detokenize{#3}\par}%
+    };
+  \end{tikzpicture}\par
+}
+
+\title[Technical Interview Portfolio]{EDA / CAD Software Development \& Digital IC Design}
+\subtitle{Selected Research and Engineering Projects}
+\author{Yu-Jui Liang}
+\institute{National Taiwan University}
+\date{}
+\begin{document}
+
+% ============================================================
+% SLIDE 1 - General cover (company-agnostic)
+% ============================================================
+{\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+  \vspace*{0.91cm}
+  \smalllabel{Technical Interview Portfolio \quad / \quad Selected Projects}\par
+  \vspace{0.56cm}
+  {\raggedright\fontsize{21}{27}\selectfont\bfseries\color{Ink}
+    EDA / CAD Software Development\\[2mm]
+    \& Digital IC Design\par}
+  \vspace{0.32cm}
+  {\normalsize\color{Muted}Logic Synthesis \quad / \quad Physical Design \quad / \quad IC Design Automation\par}
+  \vspace{0.76cm}
+  {\Large\bfseries\color{Ink}Yu-Jui Liang}\par
+  \vspace{0.10cm}
+  {\normalsize\color{Muted}M.S. Candidate, Data Science Master Degree Program\par}
+  {\small\color{Muted}National Taiwan University \quad | \quad Expected Graduation: June 2027\par}
+  \vspace{0.20cm}
+    {\small\href{mailto:liangyujui@gmail.com}{liangyujui@gmail.com}
+       \quad | \quad
+       \href{https://www.linkedin.com/in/yu-jui-liang-735a57316}{linkedin.com/in/yu-jui-liang-735a57316}\par}
+  \vfill
+  {\color{Accent}\rule{\textwidth}{0.7pt}}\par\vspace{0.07cm}
+  {\small\bfseries\color{Muted}EDA Tool Development \quad / \quad Algorithms \quad / \quad Software Engineering}
+\end{frame}}
+
+% ============================================================
+% SLIDE 2 - Education and research background
+% ============================================================
+\begin{frame}{Education \& Research Interests}
+  \vspace{0.05cm}
+  \smalllabel{01 / Profile}\par\vspace{0.10cm}
+  \takeaway{Computer science and electronic physics foundations for EDA and digital systems.}
+  \vspace{0.15cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.49\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelblue}
+        {\normalsize\bfseries\color{AccentBlue}Education}\par
+        \vspace{0.14cm}
+        {\small\bfseries National Taiwan University}\par
+        {\small M.S. Candidate, Data Science Master Degree Program}\par
+        {\scriptsize\color{Muted}Sep. 2025 -- Expected Jun. 2027}\par
+        \vspace{0.23cm}
+        {\small\bfseries National Chengchi University}\par
+        {\small B.S. in Computer Science}\par
+        {\small Double Major in Electronic Physics}\par
+        {\scriptsize\color{Muted}Sep. 2021 -- Jun. 2025}
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelmint}
+        {\normalsize\bfseries\color{Accent}Research Interests}\par
+        \vspace{0.15cm}
+        {\small\bfseries Design Automation \& VLSI CAD}\par
+        \vspace{0.09cm}
+        {\small Logic Synthesis and Technology Mapping}\par
+        {\small Physical Design / APR / STA}\par
+        {\small EDA Tool and Algorithm Development}\par
+        \vspace{0.15cm}
+        {\small\bfseries Digital Systems \& Architecture}\par
+        \vspace{0.09cm}
+        {\small Digital IC / SoC Design}\par
+        {\small Computer Architecture}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+  \vspace{0.15cm}
+  {\small\color{Muted}Technical focus: logic synthesis, physical design, and computer architecture.}
+\end{frame}
+
+% ============================================================
+% SLIDE 3 - Industry software engineering experience
+% ============================================================
+\begin{frame}{Professional Software Engineering Experience}
+  \vspace{0.04cm}
+  \smalllabel{02 / Work Experience}\par\vspace{0.10cm}
+  \takeaway{Hands-on software development experience across two industry roles.}
+  \vspace{0.22cm}
+
+  \begin{beamercolorbox}[rounded=true,sep=0.19cm,wd=\linewidth]{panelblue}
+    {\normalsize\bfseries\color{Ink}AIMobile Co., Ltd. (Inventec Group)}\hfill
+    {\scriptsize\color{Muted}Apr. 2025 -- Jul. 2025}\par
+    \vspace{0.07cm}
+    {\small\bfseries\color{AccentBlue}Contract Software Engineer}\par
+    \vspace{0.14cm}
+    {\small\color{Ink}Contributed to software development and system integration in an R\&D environment.}\par
+    \vspace{0.08cm}
+    {\small\color{Ink}Supported software testing and debugging.}\par
+  \end{beamercolorbox}
+
+  \vspace{0.22cm}
+  \begin{beamercolorbox}[rounded=true,sep=0.19cm,wd=\linewidth]{panelmint}
+    {\normalsize\bfseries\color{Ink}Neopower Technologies Co., Ltd.}\hfill
+    {\scriptsize\color{Muted}Jun. 2023 -- Mar. 2025}\par
+    \vspace{0.07cm}
+    {\small\bfseries\color{Accent}Contract Software Engineer}\par
+    \vspace{0.14cm}
+    {\small\color{Ink}Developed and maintained web applications and backend services.}\par
+    \vspace{0.08cm}
+    {\small\color{Ink}Worked on APIs and data-processing workflows.}\par
+  \end{beamercolorbox}
+\end{frame}
+
+% ============================================================
+% SLIDE 4 - Mapping first, FloorSet second; Timing ECO is optional backup
+% ============================================================
+\begin{frame}{Selected Projects \& Discussion Topics}
+  \vspace{0.03cm}
+  \smalllabel{03 / Project Overview}\par\vspace{0.11cm}
+  \takeaway{Two projects: logic synthesis and AI-assisted floorplanning.}
+  \vspace{0.19cm}
+  \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelblue}
+    {\small\bfseries\color{AccentBlue}01 \quad Master's Research}\par
+    \vspace{0.05cm}
+    {\normalsize\bfseries Joint Single- and Multi-Output Cell Mapping via Differentiable Optimization}\par
+    \vspace{0.07cm}
+    {\small Logic Synthesis \quad / \quad EDA Tool Development \quad / \quad Area--Delay Product Optimization}
+  \end{beamercolorbox}
+  \vspace{0.19cm}
+  \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panellilac}
+    {\small\bfseries\color{Accent}02 \quad ICCAD 2026 FloorSet}\par
+    \vspace{0.05cm}
+    {\normalsize\bfseries Diffusion-Guided SoC Floorplanning with B*-Tree Refinement}\par
+    \vspace{0.07cm}
+    {\small ML for EDA \quad / \quad Macro Placement \quad / \quad Constraint-Aware Optimization}
+  \end{beamercolorbox}
+\end{frame}
+
+% ----- SLIDE 5 (original NVIDIA slide 2): technology mapping background -----
+\begin{frame}{What Is Technology Mapping?}
+  \vspace{0.07cm}
+  \smalllabel{01 / Background}\par
+  \vspace{0.08cm}
+  {\small\color{Muted}From a technology-independent Boolean network to a standard-cell implementation.}
+  \vspace{-0.16cm}
+  \begin{center}
+    % Slide 2: the existing AIGmapping.png from your Overleaf project.
+    \includegraphics[width=\linewidth,height=4.45cm,keepaspectratio,
+        trim=0 155bp 0 119bp,clip]{AIGmapping.png}%
+  \end{center}
+  \vspace{-0.03cm}
+  \takeaway{Choose library cells to preserve logic and optimize area and delay.}
+  \vspace{0.10cm}
+  {\normalsize\bfseries\color{Ink}Result: a mapped gate-level netlist for downstream Physical Design (placement and routing).\par}
+\end{frame}
+
+% ----- SLIDE 6 (original NVIDIA slide 3): motivation -----
+% Side-by-side comparisons use uploaded SO_mapping.png and MO_mapping.png.
+% The PNG headings/extra whitespace are cropped, as the slide adds badges.
+% Both figures include surrounding upstream and downstream logic; only the
+% highlighted region changes from SO cells to a single multi-output cell.
+% The ASAP7 FA example uses inverted SN and CON outputs.
+\begin{frame}{Why Consider Multi-Output Cells?}
+  \vspace{0.05cm}
+  \smalllabel{02 / Motivation}
+  \vspace{0.12cm}
+  \takeaway{Single-output mapping may miss joint implementations.}
+  \vspace{-0.25cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.492\textwidth}
+      \minibadge{SoftLilac}{Single-output cell mapping}
+      \vspace{0.02cm}
+      \begin{center}
+        \includegraphics[width=\linewidth,height=3.95cm,keepaspectratio,trim=0 105bp 0 250bp,clip]{SO_mapping.png}
+      \end{center}
+      \vspace{-0.18cm}
+      % The SO circuit diagram already illustrates the separate-cell implementation.
+    \end{column}
+    \begin{column}{0.492\textwidth}
+      \minibadge{SoftMint}{Multi-output cell mapping}
+      \vspace{0.02cm}
+      \begin{center}
+        \includegraphics[width=\linewidth,height=3.95cm,keepaspectratio,trim=0 180bp 0 175bp,clip]{MO_mapping.png}
+      \end{center}
+      \vspace{-0.18cm}
+      % The MO circuit diagram already illustrates the joint-cell implementation.
+    \end{column}
+  \end{columns}
+  \vspace{-0.16cm}
+  \begin{center}
+    {\small\bfseries\color{Accent}Potential benefit: }
+    {\small\color{Ink}One multi-output cell can reduce area and delay versus separate single-output cells.}
+  \end{center}
+\end{frame}
+
+% ----- SLIDE 7 (original NVIDIA slide 4): proposed mapping framework -----
+% ABC-native architecture: original SO match enumeration plus independent
+% cut-based MO discovery, output-pair binding, and legality validation.
+% Crop the generated graphic's own title to avoid repeating the Beamer title.
+% Slide 8's 30-case QoR results come from the earlier bridge-based evaluation.
+\begin{frame}{Proposed Mapping Framework}
+  \vspace{0.06cm}
+  \smalllabel{03 / Framework}\par
+  \vspace{0.10cm}
+  \takeaway{Extend ABC with multi-output candidate discovery and output-pair binding.}
+  \vspace{-0.08cm}
+  \begin{center}
+    \includegraphics[width=\linewidth,height=4.70cm,keepaspectratio,
+        trim=0 80bp 0 132bp,clip]{MappingFramework.png}%
+  \end{center}
+\end{frame}
+
+% ----- SLIDE 8 (original NVIDIA slide 5): new independent MO match discovery -----
+% Both SO and MO use cut-based search, but the new MO search stores its
+% cuts separately and retains candidates matching MO output roles.
+\begin{frame}{New Multi-Output Match Discovery}
+  \vspace{0.03cm}
+  \smalllabel{04 / Candidate Discovery}\par
+  \vspace{0.12cm}
+  \takeaway{SO-oriented cut pruning may miss matches useful for multi-output cells.}
+  \vspace{0.02cm}
+  \begin{center}
+  \begin{tikzpicture}[>=Latex, font=\small, line width=0.65pt]
+    \tikzset{
+      soStep/.style={draw=AccentBlue!60,fill=white,rounded corners=2pt,
+        text width=4.82cm,minimum height=.83cm,inner xsep=3.5pt,
+        inner ysep=2pt,align=center},
+      moStep/.style={draw=Accent!60,fill=white,rounded corners=2pt,
+        text width=4.82cm,minimum height=.83cm,inner xsep=3.5pt,
+        inner ysep=2pt,align=center}
+    }
+    \fill[SoftBlue!65,rounded corners=4pt] (-6.00,-0.52) rectangle (-0.24,3.16);
+    \draw[AccentBlue!55,rounded corners=4pt] (-6.00,-0.52) rectangle (-0.24,3.16);
+    \fill[SoftMint!70,rounded corners=4pt] (0.24,-0.52) rectangle (6.00,3.16);
+    \draw[Accent!55,rounded corners=4pt] (0.24,-0.52) rectangle (6.00,3.16);
+    \node[font=\bfseries\small,text=Ink] at (-3.12,2.78) {Existing SO Enumeration};
+    \node[font=\bfseries\small,text=Ink] at (3.12,2.78) {New MO Match Discovery};
+    \node[soStep]
+      (so1) at (-3.12,2.03) {Cut enumeration};
+    \node[moStep]
+      (mo1) at (3.12,2.03) {Independent cut enumeration};
+    \node[soStep]
+      (so2) at (-3.12,1.08) {SO-oriented area / delay pruning};
+    \node[moStep]
+      (mo2) at (3.12,1.08) {Boolean matching to\\MO output roles};
+    \draw[AccentBlue,->,thick] (so1.south) -- (so2.north);
+    \draw[Accent,->,thick] (mo1.south) -- (mo2.north);
+    \node[soStep]
+      (so3) at (-3.12,0.13) {SO matches};
+    \node[moStep]
+      (mo3) at (3.12,0.13) {Role-aware cut retention};
+    \draw[AccentBlue,->,thick] (so2.south) -- (so3.north);
+    \draw[Accent,->,thick] (mo2.south) -- (mo3.north);
+    \node[font=\scriptsize\itshape,text=Muted,anchor=north]
+      at (-3.12,-.68) {Some MO-useful cuts may be pruned};
+    \node[font=\scriptsize\bfseries,text=Accent,anchor=north]
+      at (3.12,-.68) {Preserve output-role matches for pairing};
+  \end{tikzpicture}
+  \end{center}
+  \vspace{-0.21cm}
+  {\small\color{Muted}The existing SO enumeration remains unchanged; new MO cuts are kept separately.\par}
+\end{frame}
+
+% ----- SLIDE 9 (original NVIDIA slide 6): output-pair binding and legality -----
+% sharedLeaves.png illustrates two independently matched AIG cut cones
+% with the same shared support. MOCnadidate.png is a LEGAL CANDIDATE,
+% not the final cell selection; optimization decides that on Slide 7.
+\begin{frame}{Output-Pair Binding \& Legality}
+  \vspace{0.02cm}
+  \smalllabel{05 / Candidate Integration}\par
+  \vspace{0.09cm}
+  \takeaway{Two matched outputs need compatible pins and a safely replaceable SO cover.}
+  \vspace{-0.05cm}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.30\textwidth}
+      \begin{center}
+        \includegraphics[width=\linewidth,height=4.40cm,keepaspectratio,
+          trim=0 40bp 0 0bp,clip]{sharedLeaves.png}%
+      \end{center}
+    \end{column}
+    \begin{column}{0.385\textwidth}
+      \vspace{0.27cm}
+      {\scriptsize\bfseries\color{Accent}01 \quad Shared support \& pin mapping}\par
+      \vspace{0.05cm}
+      {\small\color{Ink}Same cut leaves; compatible pin configuration.}\par
+      \vspace{0.26cm}
+      {\scriptsize\bfseries\color{Accent}02 \quad Structural legality}\par
+      \vspace{0.05cm}
+      {\small\color{Ink}No dependency between output roots.}\par
+      \vspace{0.26cm}
+      {\scriptsize\bfseries\color{Accent}03 \quad SO replacement witness}\par
+      \vspace{0.05cm}
+      {\small\color{Ink}Find a safely replaceable SO subcover.}\par
+    \end{column}
+    \begin{column}{0.285\textwidth}
+      \vspace{0.33cm}
+      \begin{center}
+        \includegraphics[width=\linewidth,height=3.45cm,keepaspectratio,
+          trim=0 12bp 0 0bp,clip]{MOCnadidate.png}%
+      \end{center}
+      \vspace{-0.06cm}
+      {\centering\scriptsize\color{Accent}Candidate only; final mapping is selected later.\par}
+    \end{column}
+  \end{columns}
+  \vspace{-0.14cm}
+  {\small\bfseries\color{Ink}Result: a legal MO binding, ready for joint SO/MO optimization.\par}
+\end{frame}
+
+% ----- SLIDE 10 (original NVIDIA slide 7): differentiable SO/MO binding decision -----
+% Decision graph is optimizer-side control, not an AIG/timing node.
+% SO: each endpoint root independently selects from its SO match candidates.
+% MO: one physical cell drives both endpoint roots.
+% Crop the image's embedded title and bottom summary; retain central graph.
+\begin{frame}{Joint SO/MO Mapping Decision}
+  \vspace{0.02cm}
+  \smalllabel{06 / Differentiable Optimization}\par
+  \vspace{-0.16cm}
+  \begin{center}
+    \includegraphics[width=\linewidth,height=6.00cm,keepaspectratio,
+        trim=8bp 116bp 8bp 138bp,clip]{mapper.png}%
+  \end{center}
+  \vspace{-0.19cm}
+  % Soft: differentiable probabilities optimized through continuous relaxation.
+  % Hard: argmax over SO/MO branch scores gives a one-hot decision.
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.59\textwidth}
+      {\small\bfseries\color{Ink}Soft: optimize differentiable SO/MO probabilities.\par}
+    \end{column}
+    \begin{column}{0.39\textwidth}
+      {\small\bfseries\color{Ink}Hard: argmax $\rightarrow$ one-hot selection.\par}
+    \end{column}
+  \end{columns}
+  \vspace{0.00cm}
+  {\small\color{Muted}Physical model: count MO area once; evaluate timing at each output pin.\par}
+\end{frame}
+
+
+% ----- SLIDE 11 (original NVIDIA slide 8): reproducible data chart -----
+\begin{frame}{Experimental Results \& Conclusion}
+  \vspace{0.08cm}
+  \smalllabel{07 / Evaluation}
+  \vspace{0.10cm}
+  {\small\color{Muted}30 benchmark cases \quad | \quad 7nm ASAP7 \quad | \quad GMean normalized ADP}
+  \vspace{0.02cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.58\textwidth}
+      {\normalsize\bfseries Normalized ADP (Area--Delay Product)}\par
+      \vspace{0.08cm}
+      \centering
+
+      \begin{tikzpicture}[x=5.25cm,y=.78cm]
+        % guide lines for 0%, 50%, 100%
+        \draw[Divider,thin] (0,0) -- (0,4.6);
+        \draw[Divider,dashed,thin] (.5,0) -- (.5,4.6);
+        \draw[Divider,dashed,thin] (1,0) -- (1,4.6);
+        \foreach \x/\t in {0/0,0.5/0.5,1/1.0}{\node[font=\tiny,text=Muted,anchor=north] at (\x,0) {\t};}
+        % value bars, true to scale
+        \fill[AccentBlue!40,rounded corners=2pt] (0,3.65) rectangle (1,4.25);
+        \fill[AccentBlue!72,rounded corners=2pt] (0,2.25) rectangle (.6400,2.85);
+        \fill[Accent!75,rounded corners=2pt] (0,.85) rectangle (.6274,1.45);
+        % visible values on bars
+        \node[font=\small\bfseries,text=Ink,anchor=west] at (.67,4.0) {1.000};
+        \node[font=\small\bfseries,text=Ink,anchor=west] at (.66,2.60) {0.640};
+        \node[font=\small\bfseries,text=Accent,anchor=west] at (.65,1.15) {0.627};
+        % row captions
+        \node[font=\scriptsize,text=Ink,anchor=south west] at (0,4.29) {ABC Mapper (SO Baseline)};
+        \node[font=\scriptsize,text=Ink,anchor=south west] at (0,2.89) {Our Approach (SO Mode)};
+        \node[font=\scriptsize\bfseries,text=Ink,anchor=south west] at (0,1.49) {Our Approach (SO+MO Mode)};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.37\textwidth}
+      \vspace{0.10cm}
+      \begin{beamercolorbox}[rounded=true,sep=0.19cm,wd=\linewidth]{block title}
+        {\fontsize{21}{23}\selectfont\bfseries\color{Accent}37.3\%}\\[1.5mm]
+        {\small lower ADP vs. ABC baseline}
+      \end{beamercolorbox}
+      \vspace{0.22cm}
+      \begin{beamercolorbox}[rounded=true,sep=0.19cm,wd=\linewidth]{block title}
+        {\fontsize{21}{23}\selectfont\bfseries\color{AccentBlue}2.0\%}\\[1.5mm]
+        {\small additional reduction vs. SO Mode}
+      \end{beamercolorbox}
+
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+% ----- SLIDE 12 (original NVIDIA slide 9): software engineering, correctness, and scalability -----
+% Independent ABC MO discovery and end-to-end validation.
+% N = AIG nodes, C = maximum retained MO cuts/node.
+% O(C^2) counts cut-pair attempts at binary nodes; O(NC) is retained-pool storage.
+\begin{frame}{Software Engineering: Correctness \& Scalability}
+  \vspace{0.02cm}
+  \smalllabel{08 / Implementation \& Testing}\par
+  \vspace{0.03cm}
+  \setbeamercolor{engleft}{fg=Ink,bg=SoftBlue!58}
+  \setbeamercolor{engright}{fg=Ink,bg=SoftMint!62}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.485\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.17cm,wd=\linewidth]{engleft}
+        {\large\bfseries\color{AccentBlue}Correctness \& Testing}\par
+        \vspace{0.06cm}
+        {\normalsize\bfseries Smoke Regression}\par
+        {\small Small circuit benchmarks after\\ code changes.}\par
+        \vspace{0.05cm}
+        {\color{Divider}\rule{\dimexpr\linewidth-0.36cm\relax}{0.55pt}}\par
+        \vspace{0.06cm}
+        {\normalsize\bfseries CEC Verification}\par
+        {\small Combinational Equivalence Checking:\par
+        input logic function vs.\par
+        mapped netlist function.}\par
+        \vspace{0.05cm}
+        {\color{Divider}\rule{\dimexpr\linewidth-0.36cm\relax}{0.55pt}}\par
+        \vspace{0.06cm}
+        {\normalsize\bfseries Three-Stage Validation}\par
+        {\small {\color{AccentBlue}\bfseries 1.}\quad SO mapping regression\par
+        {\color{AccentBlue}\bfseries 2.}\quad MO Boolean \& structural checks\par
+        {\color{AccentBlue}\bfseries 3.}\quad Netlist generation + CEC.}\par
+        \vspace{0.01cm}
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{0.485\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.17cm,wd=\linewidth]{engright}
+        {\large\bfseries\color{Accent}Complexity \& Scalability}\par
+        \vspace{0.06cm}
+        {\normalsize\bfseries Cut Enumeration}\par
+        {\small Binary node: $O(C^{2})$ cut-pair attempts.\par Retained-cut storage: $O(NC)$.}\par
+        \vspace{0.05cm}
+        {\color{Divider}\rule{\dimexpr\linewidth-0.36cm\relax}{0.55pt}}\par
+        \vspace{0.06cm}
+        {\normalsize\bfseries Search-Space Limits}\par
+        {\small $K=3$ maximum leaves; $C=128$ retained MO cuts per node.}\par
+        \vspace{0.05cm}
+        {\color{Divider}\rule{\dimexpr\linewidth-0.36cm\relax}{0.55pt}}\par
+        \vspace{0.06cm}
+        {\normalsize\bfseries Runtime \& Memory Control}\par
+        {\small Early pruning and deduplication;\par
+        runtime and peak-memory monitoring.}\par
+        \vspace{0.01cm}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+\end{frame}

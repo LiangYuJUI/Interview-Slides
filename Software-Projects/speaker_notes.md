@@ -138,7 +138,7 @@ Prefill 負責處理輸入 Prompt，通常比較需要 GPU 的運算能力；Dec
 
 在實作方面，我目前以開源的 GPU Cluster Serving Simulator 作為系統架構的基礎，並規劃整合相關學術研究所使用的 GPU Memory 和 Storage Simulators，來模擬不同硬體配置下的記憶體傳輸與功耗行為。
 
-接著，在這個模擬環境中建立多個 Data Centers 和不同規格的 GPU Clusters，研究如何將 LLM Requests，以及 Prefill 和 Decode 工作，分配到不同的 GPU 上。
+接著，在這個模擬環境中建立多個 Data Centers 和不同規格的 GPU Clusters，研究如何將 LLM Requests，以及 Attention 和 Expert 的分割工作，分配到不同的 GPU 上。
 
 最後透過模擬結果，比較不同 Scheduling Strategies 對系統 Throughput 和 Power Consumption 的影響。
 
