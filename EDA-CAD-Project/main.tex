@@ -389,13 +389,13 @@
 \renewcommand{\slideposition}{Summary 6 / 18}
 \begin{frame}[label=summary-6]{ABC Mapper: SO Technology Mapper Baseline}
   \vspace{.02cm}
-  \slidesubtitle{02 / Baseline Mapping}\par\vspace{.08cm}
-  \takeaway{Preserve the original ABC Mapper single-output behavior while exposing its candidate search space.}
-  \vspace{.16cm}
+  \slidesubtitle{01 / Baseline Mapping}\par\vspace{.08cm}
+  \takeaway{The open-source ABC synthesis framework primarily targets single-output cell mapping, leaving joint FA/HA output mapping unsupported in the baseline flow.}
+  \vspace{.08cm}
   \begin{center}
-    \includegraphics[width=\linewidth,height=4.15cm,keepaspectratio]{aig-technology-mapping.png}\par
-    \vspace{.08cm}
-    {\scriptsize\color{Muted}Same Boolean behavior, realized with library cells.}
+    \includegraphics[width=\linewidth,height=4.22cm,keepaspectratio,trim=8bp 158bp 8bp 125bp,clip]{aig-technology-mapping.png}\par
+    \vspace{.06cm}
+    {\small\color{Muted}Same Boolean behavior, realized with ASAP7 7nm library cells.}
   \end{center}
 \end{frame}
 
@@ -405,7 +405,7 @@
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-6}{\beamerbutton{SO baseline}}}
 \renewcommand{\slideposition}{Summary 7 / 18}
 \begin{frame}[label=summary-7]{Single-Output vs Multi-Output Cell Mapping}
-  \slidesubtitle{03 / Motivation}\par\vspace{.10cm}
+  \slidesubtitle{02 / Motivation}\par\vspace{.10cm}
   \takeaway{A shared FA cell can implement two output functions over the same input boundary.}
   \vfill
   \begin{columns}[T,onlytextwidth]
@@ -429,23 +429,11 @@
 \renewcommand{\slideposition}{Summary 8 / 18}
 \begin{frame}[shrink=8,label=summary-8]{Joint SO / MO Mapping: Research Pipeline}
   \vspace{.02cm}
-  \slidesubtitle{01 / Research Scope}\par\vspace{.08cm}
-  \takeaway{Discover FA/HA opportunities, pre-select non-overlapping MO candidates, then let the optimizer choose SO or BIND.}
-  \vspace{.10cm}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{.32\textwidth}
-      \smallpanel{panelblue}{Problem}{Single-output cut retention does not target two-output FA/HA opportunities.}
-    \end{column}
-    \begin{column}{.32\textwidth}
-      \smallpanel{panelmint}{ABC-Based MO Discovery}{A new MO candidate search inside the ABC Mapper. Existing SO enumeration stays unchanged.}
-    \end{column}
-    \begin{column}{.32\textwidth}
-      \smallpanel{panellilac}{MILP Pre-selection}{Keep a non-overlapping, area-aware subset of legal MO candidates. SO matches bypass this step.}
-    \end{column}
-  \end{columns}
-  \vspace{.08cm}
+  \slidesubtitle{03 / Research Scope}\par\vspace{.08cm}
+  \takeaway{We extend the ABC Mapper with multi-output candidate discovery and area-aware MILP selection, while preserving the original single-output mapping path.}
+  \vspace{.16cm}
   \begin{center}
-    \includegraphics[width=\linewidth,height=3.22cm,keepaspectratio,trim=0 48bp 0 145bp,clip]{mapping-framework.png}
+    \includegraphics[width=\linewidth,height=4.55cm,keepaspectratio,trim=0 48bp 0 145bp,clip]{mapping-framework.png}
   \end{center}
 \end{frame}
 
@@ -455,24 +443,30 @@
 % ------------------------------------------------------------------------
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-legality}{\beamerbutton{Pair legality}}\hspace{.12cm}\hyperlink{detail-witness}{\beamerbutton{SO witness}}}
 \renewcommand{\slideposition}{Summary 9 / 18}
-\begin{frame}[shrink=9,label=summary-9]{MO Candidate Discovery in ABC}
-  \vspace{.02cm}\slidesubtitle{04 / Core Algorithm}\par\vspace{.08cm}
-  \takeaway{Pair compatible CON and SN projections over a common input support.}
-  \vspace{.18cm}
+\begin{frame}[label=summary-9]{MO Candidate Discovery in ABC}
+  \vspace{.02cm}\slidesubtitle{04 / Core Algorithm}\par\vspace{.06cm}
+  \takeaway{Identify pairs of logic outputs that can be implemented by a single multi-output standard cell.}
+  \vspace{.10cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.45\textwidth}
-      \scitem{01 / MO Cut Propagation}{Independent retention of FA/HA-relevant truth functions and supports.}
-      \vspace{.16cm}
-      \scitem{02 / Projection Pairing}{Match CON / SN roles using shared leaves, permutation and phase.}
-      \vspace{.16cm}
-      \scitem{03 / Legality + Witness}{Validate the pair and record the SO cells this MO candidate would replace.}
+    \begin{column}{.32\textwidth}
+      \scitem{01 / MO Cut Discovery}{Search for FA/HA-compatible logic cuts independently of SO-oriented pruning.}
     \end{column}
-    \begin{column}{.52\textwidth}
+    \begin{column}{.32\textwidth}
+      \scitem{02 / Output Pair Matching}{Find SUM and CARRY functions with shared inputs and compatible pin mapping.}
+    \end{column}
+    \begin{column}{.32\textwidth}
+      \scitem{03 / Candidate Validation}{Verify functional and structural legality, then identify the SO logic that the MO cell could replace.}
+    \end{column}
+  \end{columns}
+  \vspace{.12cm}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.48\textwidth}
       \centering
-      \includegraphics[height=4.05cm,width=\linewidth,keepaspectratio]{shared-cut-leaves.png}\par
-      {\scriptsize $r_1,r_2$: complementary output-role matches; common leaves $A,B,CI$.}
-      \vspace{.11cm}
-      \minibadge{SoftMint}{OUTPUT: BIND / ROOTS / FANINS / REPLACE\_ROOTS}
+      \includegraphics[height=2.95cm,width=\linewidth,keepaspectratio]{shared-cut-leaves.png}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \centering
+      \includegraphics[height=2.95cm,width=\linewidth,keepaspectratio]{legal-mo-candidate.png}
     \end{column}
   \end{columns}
 \end{frame}
@@ -483,45 +477,47 @@
 % ------------------------------------------------------------------------
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-witness}{\beamerbutton{SO witness}}\hspace{.12cm}\hyperlink{detail-verification}{\beamerbutton{Verification}}}
 \renewcommand{\slideposition}{Summary 10 / 18}
-\begin{frame}[shrink=15,label=summary-10]{Area-Aware MO Selection (MILP)}
-  \vspace{.02cm}\slidesubtitle{09 / Global Candidate Selection}\par\vspace{.08cm}
+\begin{frame}[label=summary-10]{Area-Aware MO Selection (MILP)}
+  \vspace{.02cm}\slidesubtitle{05 / Global Candidate Selection}\par\vspace{.04cm}
   \takeaway{Maximize estimated area savings subject to non-overlapping MO candidates.}
-  \vspace{.13cm}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{.59\textwidth}
-      \begin{beamercolorbox}[rounded=true,sep=.12cm,wd=\linewidth]{panelwhite}
-      {\small
+  \vspace{.06cm}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.56\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.08cm,wd=\linewidth]{panelwhite}
+      {\normalsize
+      \setlength{\abovedisplayskip}{0pt}%
+      \setlength{\belowdisplayskip}{0pt}%
+      \setlength{\abovedisplayshortskip}{0pt}%
+      \setlength{\belowdisplayshortskip}{0pt}%
       \[\boxed{\begin{aligned}
-        \max\quad &\sum_{i=1}^{N}\bigl(A_i^{SO}-A_i^{MO}\bigr)x_i\\[4pt]
-        \text{s.t.}\quad &\sum_{i=1}^{N} a_{vi}x_i\leq1,\quad\forall v\in\mathcal V\\[4pt]
+        \max\quad &\sum_{i=1}^{N}\bigl(A_i^{SO}-A_i^{MO}\bigr)x_i\\[1pt]
+        \text{s.t.}\quad &\sum_{i=1}^{N} a_{vi}x_i\leq1,\quad\forall v\in\mathcal V\\[1pt]
         &x_i\in\{0,1\},\quad i=1,\ldots,N
       \end{aligned}}\]
       }
       \end{beamercolorbox}
-      \vspace{.17cm}
-      \smallpanel{panelblue}{Notation}{%
-        $x_i$: select MO $i$; $A_i^{SO}$: SO witness area; $A_i^{MO}$: MO cell area;\\
-        $a_{vi}=1$ iff AIG base node $v$ belongs to MO candidate $i$; otherwise $0$.}
     \end{column}
-    \begin{column}{.38\textwidth}
-      \begin{center}
-      \begin{tikzpicture}[font=\scriptsize,>=Latex,line width=0.7pt]
-        \node[circle,draw=AccentBlue!70,fill=SoftBlue,minimum size=0.58cm,inner sep=0pt] (A) at (0,0) {\bfseries A};
-        \node[circle,draw=AccentBlue!70,fill=white,minimum size=0.54cm,inner sep=0pt] (B) at (-1.02,0.78) {\bfseries B};
-        \node[circle,draw=Accent!75,fill=white,minimum size=0.54cm,inner sep=0pt] (C) at (1.02,0.78) {\bfseries C};
+    \begin{column}{.42\textwidth}
+      \centering
+      \begin{tikzpicture}[font=\footnotesize,>=Latex,line width=0.9pt,scale=1.22,transform shape]
+        \node[circle,draw=AccentBlue!70,fill=SoftBlue,minimum size=0.62cm,inner sep=0pt] (A) at (0,0) {\bfseries A};
+        \node[circle,draw=AccentBlue!70,fill=white,minimum size=0.58cm,inner sep=0pt] (B) at (-1.05,0.82) {\bfseries B};
+        \node[circle,draw=Accent!75,fill=white,minimum size=0.58cm,inner sep=0pt] (C) at (1.05,0.82) {\bfseries C};
         \draw[AccentBlue,thick] (A) -- (B);
         \draw[Accent,thick] (A) -- (C);
-        \node[font=\tiny,text=AccentBlue,anchor=east] at (-0.72,1.22) {(A,\,B)};
-        \node[font=\tiny,text=Accent,anchor=west] at (0.72,1.22) {(A,\,C)};
-        \node[font=\scriptsize,text=Ink] at (0,-0.62) {$x_{AB}+x_{AC}\leq 1$};
+        \node[font=\scriptsize,text=AccentBlue,anchor=east] at (-0.78,1.28) {(A,\,B)};
+        \node[font=\scriptsize,text=Accent,anchor=west] at (0.78,1.28) {(A,\,C)};
+        \node[font=\footnotesize,text=Ink] at (0,-0.68) {$x_{AB}+x_{AC}\leq 1$};
       \end{tikzpicture}
-      \end{center}
-      \vspace{.06cm}
-      \smallpanel{panelmint}{Implementation}{Python + HiGHS (\texttt{highspy}); emit selected.matches.}
     \end{column}
   \end{columns}
-  \vspace{.08cm}
-  {\scriptsize\color{Muted}Objective weights estimate local SO-to-MO benefits. Final QoR is measured after the mapping optimizer; MILP retention does not force every selected candidate into the netlist.}
+  \vspace{.02cm}
+  \begin{beamercolorbox}[rounded=true,sep=.11cm,wd=\textwidth]{panelblue}
+    {\large\bfseries\color{Accent}Notation}\par\vspace{.06cm}
+    {\normalsize\color{Ink}
+      $x_i$: select MO $i$;\quad $A_i^{SO}$: SO witness area;\quad $A_i^{MO}$: MO cell area;\\[2pt]
+      $a_{vi}=1$ iff AIG base node $v$ belongs to MO candidate $i$; otherwise $0$.}
+  \end{beamercolorbox}
 \end{frame}
 
 
@@ -529,49 +525,64 @@
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-verification}{\beamerbutton{Verification}}}
 \renewcommand{\slideposition}{Summary 11 / 18}
 \begin{frame}[shrink=6,label=summary-11]{Mapping Optimizer: SO / BIND Decisions}
-  \vspace{.02cm}\slidesubtitle{07 / Decision Integration}\par\vspace{.06cm}
+  \vspace{.02cm}\slidesubtitle{06 / Decision Integration}\par\vspace{.06cm}
   \takeaway{MILP pre-selects non-overlapping MO candidates, while the mapping optimizer makes the final SO/BIND decisions.}
-  \vspace{.10cm}
+  \vspace{.08cm}
   {\centering
-    \includegraphics[width=.96\textwidth,height=5.05cm,keepaspectratio,trim=6bp 112bp 6bp 130bp,clip]{optimizer-binding-decision.png}\par
-    \vspace{.04cm}
-    {\scriptsize\color{Muted}MO area is counted once. Timing is read at each output pin.}\par
+    \includegraphics[width=\linewidth,height=5.38cm,keepaspectratio,trim=6bp 112bp 6bp 130bp,clip]{optimizer-binding-decision.png}\par
   }
 \end{frame}
 
 % ------------------------------------------------------------------------
-% SLIDE 12 / 18 | Research Status & Next Steps
+% SLIDE 12 / 18 | Normalized ADP results
+% Without MILP, ABC = 1.000, SO mode = 0.640, MO mode (FIFO) = 0.627.
+% 37.3% is MO mode (FIFO) versus ABC. 2% is that same MO mode versus SO mode.
+% 6% below SO mode on the ABC scale: 0.640 x 0.94 = 0.6016, shown as 0.602.
 % ------------------------------------------------------------------------
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-verification}{\beamerbutton{Verification}}}
 \renewcommand{\slideposition}{Summary 12 / 18}
-\begin{frame}[label=summary-12]{Current Mapping Flow \& ADP Improvement}
-  \slidesubtitle{11 / Current Results}\par\vspace{.10cm}
+\begin{frame}[label=summary-12]{Normalized ADP Results}
+  \slidesubtitle{07 / Current Results}\par\vspace{.06cm}
+  \takeaway{Evaluation of four mapping configurations across 30 arithmetic logic circuit benchmarks using the ASAP7 7nm standard-cell library.}
+  \vspace{.06cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.43\textwidth}
-      {\large\bfseries\color{Accent}Current flow}\par\vspace{.18cm}
-      {\normalsize
-      MO candidate discovery in ABC\par\vspace{.14cm}
-      Boolean / structural legality\par\vspace{.14cm}
-      SO witnesses + area weights\par\vspace{.14cm}
-      MILP candidate pre-selection\par\vspace{.14cm}
-      Mapping optimizer SO / BIND choice\par}
-      \vspace{.24cm}
-      {\small Measure final mapped QoR after optimization; MILP weights are local estimates.}
-    \end{column}
     \begin{column}{.54\textwidth}
-      {\fontsize{32}{36}\selectfont\bfseries\color{Accent}6\%}\par
-      {\small Lower ADP vs. SO Mode}\par\vspace{.16cm}
-      {\scriptsize\color{Muted}Normalized ADP (SO Mode = 1.00)}\par\vspace{.20cm}
-      \begin{tikzpicture}[x=4.7cm,y=1cm]
-        \node[anchor=west,font=\small] at (0,1.75) {SO Mode};
-        \fill[AccentBlue!65] (0,1.05) rectangle (1,1.48);
-        \node[anchor=west,font=\small\bfseries] at (1.03,1.265) {1.00};
-        \node[anchor=west,font=\small] at (0,.70) {SO + MO Mode};
-        \fill[Accent!75] (0,0) rectangle (.94,.43);
-        \node[anchor=west,font=\small\bfseries] at (.97,.215) {0.94};
+      {\small\bfseries\color{Ink}GMean Normalized ADP (Area--Delay Product)}\par\vspace{.02cm}
+      \begin{tikzpicture}[x=4.15cm,y=.97cm]
+        \fill[AccentBlue!38,rounded corners=1.5pt] (0,3.00) rectangle (1,3.30);
+        \fill[AccentBlue!72,rounded corners=1.5pt] (0,2.00) rectangle (.640,2.30);
+        \fill[Accent!55,rounded corners=1.5pt] (0,1.00) rectangle (.627,1.30);
+        \fill[Accent,rounded corners=1.5pt] (0,0.00) rectangle (.6016,.30);
+        \node[anchor=west,font=\small\bfseries] at (1.05,3.15) {1.000};
+        \node[anchor=west,font=\small\bfseries] at (.72,2.15) {0.640};
+        \node[anchor=west,font=\small\bfseries] at (.71,1.12) {0.627};
+        \node[anchor=west,font=\small\bfseries,text=Accent] at (.70,.15) {0.602};
+        \node[anchor=west,font=\scriptsize] at (0,3.58) {ABC Mapper (SO Baseline)};
+        \node[anchor=west,font=\scriptsize] at (0,2.58) {Our Approach (SO Mode)};
+        \node[anchor=west,font=\scriptsize] at (0,1.66) {Our Approach (MO Mode without MILP, FIFO)};
+        \node[anchor=west,font=\scriptsize\bfseries] at (0,.58) {Our Approach (MO Mode with MILP)};
       \end{tikzpicture}\par
-      \vspace{.15cm}
-      {\scriptsize ADP = area $\times$ delay.}
+      \vspace{.02cm}
+      {\scriptsize\color{Muted}FIFO rejects an MO candidate whose root is already used.}
+    \end{column}
+    \begin{column}{.44\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
+        {\fontsize{18}{20}\selectfont\bfseries\color{Accent}37.3\%}\quad
+        {\footnotesize\color{Ink}lower ADP than ABC Mapper}\\[1pt]
+        {\scriptsize\color{Muted}Our Approach MO mode (FIFO): 0.627 vs.\ 1.000}
+      \end{beamercolorbox}
+      \vspace{.06cm}
+      \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
+        {\fontsize{18}{20}\selectfont\bfseries\color{AccentBlue}2\%}\quad
+        {\footnotesize\color{Ink}lower ADP than SO mode}\\[1pt]
+        {\scriptsize\color{Muted}Our Approach MO mode (FIFO): 0.627 vs.\ 0.640}
+      \end{beamercolorbox}
+      \vspace{.06cm}
+      \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
+        {\fontsize{18}{20}\selectfont\bfseries\color{Accent}6\%}\quad
+        {\footnotesize\color{Ink}lower ADP than SO mode}\\[1pt]
+        {\scriptsize\color{Muted}Our Approach MO mode (MILP): 0.602 vs.\ 0.640}
+      \end{beamercolorbox}
     \end{column}
   \end{columns}
 \end{frame}
@@ -908,29 +919,36 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-9}{\beamerreturnbutton{Summary 9}}}
 \renewcommand{\slideposition}{Detail 2 / 9}
 \begin{frame}[label=detail-legality]{MO Pair Matching \& Structural Legality}
-  \vspace{.02cm}\slidesubtitle{05 / Candidate Validation}\par\vspace{.08cm}
-  \takeaway{Boolean matching is necessary, but not sufficient, for legal MO binding.}
-  \vspace{.17cm}
+  \vspace{.02cm}\slidesubtitle{05 / Candidate Validation}\par\vspace{.06cm}
+  \takeaway{Individual legality is checked here; the MILP selects a conflict-free set.}
+  \vspace{.04cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.318\textwidth}
-      \smallpanel{panelblue}{Boolean Matching}{CON and SN roots match the cell's two truth-table projections.}
+      \smallpanel{panelblue}{Boolean Matching}{CON and SN roots match the cell's SUM and CARRY truth tables.}
     \end{column}
     \begin{column}{.318\textwidth}
-      \smallpanel{panelmint}{Physical Compatibility}{Same input support and a compatible pin permutation / polarity.}
+      \smallpanel{panelmint}{Pin Compatibility}{Shared input support, with a compatible pin permutation and polarity.}
     \end{column}
     \begin{column}{.318\textwidth}
-      \smallpanel{panellilac}{Structural Legality}{Distinct roots; reject direct-dangling and TFI / cycle conflicts.}
+      \smallpanel{panellilac}{Structural Legality}{Distinct roots. Reject direct-dangling and TFI or cycle conflicts.}
     \end{column}
   \end{columns}
-  \vspace{.22cm}
+  \vspace{.10cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.60\textwidth}
-      \includegraphics[width=\linewidth,height=2.65cm,keepaspectratio]{legal-mo-candidate.png}
+    \begin{column}{.56\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,height=2.05cm,keepaspectratio]{legal-mo-candidate.png}
     \end{column}
-    \begin{column}{.36\textwidth}
-      \softpanel{panelmint}{Before MILP}{Only individually legal, witness-backed MO records enter global selection.}
+    \begin{column}{.42\textwidth}
+      {\small\bfseries\color{Accent}Individual MO Candidate Legality}\par\vspace{.04cm}
+      {\scriptsize Function, pins, structure, and the SO replacement witness are checked for one candidate.}
+      \vspace{.12cm}
+      {\small\bfseries\color{Accent}Global Conflict-Free MO Selection}\par\vspace{.04cm}
+      {\scriptsize Overlapping candidates are resolved by the area-aware MILP, not by this check.}
     \end{column}
   \end{columns}
+  \vspace{.02cm}
+  {\scriptsize\color{Muted}CON/SN name the two output roles. A legal record stores BIND, ROOTS, FANINS, and REPLACE\_ROOTS.}
 \end{frame}
 
 % DETAIL 03 / 9 | SO witness (original full-deck slide 10)
@@ -976,7 +994,9 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
   \vspace{.04cm}
   {\scriptsize\color{Muted}The MILP filters MO candidates. SO matches from the ABC Mapper stay available to the optimizer.}
   \end{center}
-  \vspace{.21cm}
+  \vspace{.14cm}
+  \smallpanel{panelmint}{Implementation}{Python + HiGHS (\texttt{highspy}); emit selected.matches.}
+  \vspace{.12cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.48\textwidth}
       \softpanel{panelblue}{Correctness Checks}{Gate A: unchanged ABC Mapper results\\ Gate B: individual MO legality\\ Gate C: optimizer materialization + CEC}
@@ -985,11 +1005,11 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
       \softpanel{panelmint}{Experimental Comparison}{SO-only vs FIFO vs MILP-selected MO; same AIG, library, optimizer settings, and seed.}
     \end{column}
   \end{columns}
-  \vspace{.20cm}
+  \vspace{.12cm}
   % The old results graphic reported 2\% extra ADP reduction and is not reusable.
   % Summary slide 12 already states the current 6\% ADP reduction versus SO mode.
   % This slot is for a later SO-only / FIFO / MILP comparison if that chart is drawn.
-  \figurespace{1.15cm}{ADP and runtime chart}{SO-only, FIFO, and MILP-selected MO, under the same settings.}
+  \figurespace{0.78cm}{ADP and runtime chart}{SO-only, FIFO, and MILP-selected MO, under the same settings.}
 \end{frame}
 
 % DETAIL 05 / 9 | STA targets (original full-deck slide 19)

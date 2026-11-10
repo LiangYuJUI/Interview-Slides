@@ -378,20 +378,21 @@
 % ------------------------------------------------------------------------
 \begin{frame}[shrink=9]{MO Candidate Discovery in ABC}
   \vspace{.02cm}\smalllabel{04 / Core Algorithm}\par\vspace{.08cm}
-  \takeaway{Pair compatible CON and SN projections over a common input support.}
-  \vspace{.18cm}
+  \takeaway{Identify pairs of logic outputs that can be implemented by a single multi-output standard cell.}
+  \vspace{.14cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.45\textwidth}
-      \scitem{01 / MO Cut Propagation}{Independent retention of FA/HA-relevant truth functions and supports.}
+      \scitem{01 / MO Cut Discovery}{Search for FA/HA-compatible logic cuts independently of SO-oriented pruning.}
       \vspace{.16cm}
-      \scitem{02 / Projection Pairing}{Match CON / SN roles using shared leaves, permutation and phase.}
+      \scitem{02 / Output Pair Matching}{Find SUM and CARRY functions with shared inputs and compatible pin mapping.}
       \vspace{.16cm}
-      \scitem{03 / Legality + Witness}{Validate the pair and record the SO cells this MO candidate would replace.}
+      \scitem{03 / Candidate Validation}{Verify functional and structural legality, then identify the SO logic that the MO cell could replace.}
     \end{column}
     \begin{column}{.52\textwidth}
-      \figurespace{3.38cm}{Example: FA CON / SN cut projections}{Highlight two output roots, same leaves, shared cell configuration.}
-      \vspace{.11cm}
-      \minibadge{SoftMint}{OUTPUT: BIND / ROOTS / FANINS / REPLACE\_ROOTS}
+      \centering
+      \includegraphics[height=4.05cm,width=\linewidth,keepaspectratio]{shared-cut-leaves.png}\par
+      \vspace{.06cm}
+      {\scriptsize Two output roots share the same input boundary ($X$, $Y$, $CI$) and match the SUM/CARRY functions of a full-adder cell.}
     \end{column}
   \end{columns}
 \end{frame}
