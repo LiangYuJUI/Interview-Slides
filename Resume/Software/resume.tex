@@ -322,8 +322,7 @@
   \vspace{2pt}
   {\small
     \textbf{Ongoing Research:}
-    Data Center / GPU Systems, Memory Architecture, HW--SW Co-Design, LLM Serving\\[-1pt]
-    \textbf{Research Advisors:} Prof. Jie-Hong Roland Jiang (NTU); Dr. Hsiang-Yun Cheng (Academia Sinica)
+    Data Center / GPU Systems, Memory Architecture, HW--SW Co-Design, LLM Serving
   }
 
   \ResumeEntrySep
@@ -342,36 +341,40 @@
 \resumeSubHeadingListStart
 
 % ============================================================
-% Project 1 - Heterogeneous GPU LLM Serving
+% Project 1 - HBM/HBF-Aware MoE Serving
 % ============================================================
 
 \resumeProjectHeading
-  {Latency- and Energy-Aware Scheduling for Heterogeneous GPU LLM Serving}
+  {HBM/HBF-Aware MoE Serving with Attention--Expert Disaggregation}
   {
-    System-Level Simulation / Resource Scheduling / Performance Modeling
+    System-Level Simulation / GPU Scheduling / Memory-System Co-Design
   }
   {Oct. 2026 -- Present}
 
 \resumeItemListStart
 
   \resumeItem{
-    Investigating LLM serving on heterogeneous GPUs with different
-    compute capabilities and HBM / HBF memory configurations,
-    focusing on \mbox{prefill / decode} disaggregation and
-    latency--energy trade-offs.
+    Investigating cross-data-center Mixture-of-Experts (MoE) serving with global
+    request routing and local Attention--Expert scheduling, targeting higher
+    SLO-compliant throughput per watt.
   }
 
   \resumeItem{
-    Designing a simulation-driven methodology to explore
-    request scheduling, GPU assignment, memory placement,
-    and data-movement policies, targeting lower inference latency
-    and energy consumption under varying workloads.
+    Exploring worker memory profiles and workload placement: HBM-rich GPUs for
+    attention and active KV cache; HBF-rich GPUs for expert weights with an HBM
+    hot set, balancing latency, power, and throughput.
+  }
+
+  \resumeItem{
+    Developing a system-level simulation methodology using an open-source
+    GPU-cluster serving simulator as the architectural starting point; planning
+    GPU-memory and storage-model integration based on public specifications
+    and published models to evaluate scheduling strategies.
   }
 
 \resumeItemListEnd
 
 \ProjectEntrySep
-
 
 
 % ============================================================
@@ -403,36 +406,7 @@
 
 
 % ============================================================
-% Project 3 - STA-Driven Incremental Timing ECO
-% ============================================================
-
-\resumeProjectHeading
-  {ICCAD 2025 CAD Contest Problem C -- STA-Driven Incremental Timing ECO Flow}
-  {
-    CAD Flow Automation / STA / Heuristic Search / OpenROAD
-  }
-  {}
-
-\resumeItemListStart
-
-  \resumeItem{
-    Built an OpenROAD-based incremental ECO automation flow and designed an STA-guided
-    branch-list heuristic to combine timing-repair operations into candidate sequences.
-  }
-
-  \resumeItem{
-    Automated parasitic-aware QoR checks and rollback; earlier ECO experiments
-    across five benchmarks improved \textbf{median setup TNS by 16.7\%} and
-    \textbf{average setup WNS by 14.6\%} vs. seed DEFs.
-  }
-
-\resumeItemListEnd
-
-\ProjectEntrySep
-
-
-% ============================================================
-% Project 4 - Multi-Output Mapping with MILP
+% Project 3 - Multi-Output Mapping with MILP
 % ============================================================
 
 \resumeProjectHeading
@@ -535,7 +509,7 @@
 
   \skillBlock{EDA / IC Design}
   {
-    Logic Synthesis, Technology Mapping, MILP, STA / Timing ECO, APR, RTL-to-GDS, PPA Analysis
+    Logic Synthesis, Physical Design, STA / Timing ECO, APR, RTL-to-GDS, PPA Analysis
   }
 
 }
