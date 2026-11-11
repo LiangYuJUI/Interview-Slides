@@ -1216,11 +1216,11 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
     \node[font=\footnotesize\bfseries] at (7.8,-2.27) {ABC Logic Synthesis};
     \node[opt] (dcopt) at (0,-2.92) {\textbf{Logic Optimization}};
     \node[opt] (abcopt) at (7.8,-2.92)
-      {\textbf{Logic Optimization}\\[1.5pt]{\scriptsize e.g.\ \texttt{balance, rewrite, refactor}}};
+      {\textbf{Logic Optimization}};
     \node[mapping] (dcmap) at (0,-4.25)
       {\textbf{Technology Mapping}\\[1.5pt]{\footnotesize + Target Standard Cell Library}};
     \node[mapping] (abcmap) at (7.8,-4.25)
-      {\textbf{Technology Mapping}\\[1.5pt]{\scriptsize e.g.\ \texttt{map, amap}}\\[1.5pt]{\footnotesize + Standard Cell Library}};
+      {\textbf{Technology Mapping}\\[1.5pt]{\footnotesize + Standard Cell Library}};
     \draw[flow] (gtech.south)--(0,-2.02);
     \draw[flow] (aig.south)--(7.8,-2.02);
     \draw[flow] (dcopt.south)--(dcmap.north);
