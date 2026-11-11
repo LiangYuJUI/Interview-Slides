@@ -664,7 +664,7 @@
 % ------------------------------------------------------------------------
 % SLIDE 15 / 19 | Multi-Objective Timing ECO Optimization
 % ------------------------------------------------------------------------
-\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-targets}{\beamerbutton{STA targets}}\hspace{.12cm}\hyperlink{detail-quality}{\beamerbutton{QoR / budget}}}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-targets}{\beamerbutton{STA targets}}\hspace{.12cm}\hyperlink{detail-quality}{\beamerbutton{QoR / budget}}\hspace{.12cm}\hyperlink{detail-pd-flow}{\beamerbutton{PD Flow}}}
 \renewcommand{\slideposition}{Summary 15 / 19}
 \begin{frame}[label=summary-15]{Multi-Objective Timing ECO Optimization}
   \vspace{.01cm}
@@ -748,7 +748,6 @@
 \begin{frame}[label=summary-16]{Five Automatic ECO Strategy Candidates}
   \vspace{.01cm}
   \slidesubtitle{02 / Candidate Set}\par\vspace{.12cm}
-  \takeaway{The candidate is an automatic repair policy and editable region, not a manually chosen cell replacement.}
   \vspace{.37cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.32\textwidth}
@@ -1298,23 +1297,19 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
       flow/.style={->,Accent,thick}
     }
     \node[stage] (synthesis) at (0,0) {\textbf{Logic Synthesis}};
-    \node[stage] (floorplan) at (0,-.70) {\textbf{Floorplanning}};
-    \node[stage] (global) at (0,-1.40) {\textbf{Global Placement}};
-    \node[stage] (detailed) at (0,-2.10) {\textbf{Detailed Placement}};
-    \node[approach] (eco) at (0,-3.65) {
+    \node[stage] (floorplan) at (0,-.85) {\textbf{Floorplanning}};
+    \node[stage] (global) at (0,-1.70) {\textbf{Global Placement}};
+    \node[stage] (detailed) at (0,-2.55) {\textbf{Detailed Placement}};
+    \node[approach] (eco) at (0,-4.15) {
       {\small\bfseries\color{Accent}Our Approach: Post-Placement Incremental ECO}\\[3pt]
       Gate Sizing \quad / \quad Buffer Insertion \quad / \quad Cell Relocation\\[3pt]
-      \textbf{STA-Driven Timing / Power / Wirelength Optimization}\\[3pt]
-      {\scriptsize Improve setup timing; control power, HPWL and cell displacement.}\\[1pt]
-      {\scriptsize Input: placed design. Preserve legal placement after ECO.}};
-    \node[stage] (subsequent) at (0,-5.20)
+      \textbf{STA-Driven Timing / Power / Wirelength Optimization}};
+    \node[stage] (subsequent) at (0,-5.75)
       {\textbf{Clock Optimization / Routing / Signoff (as applicable)}};
     \foreach \from/\to in {synthesis/floorplan,floorplan/global,global/detailed,detailed/eco,eco/subsequent}{
       \draw[flow] (\from.south)--(\to.north);
     }
   \end{tikzpicture}\par
-  \vspace{.12cm}
-  {\scriptsize\color{Muted}Relative position only: clock-tree synthesis and timing optimization may interleave.\par}
 \end{frame}
 
 \end{document}
