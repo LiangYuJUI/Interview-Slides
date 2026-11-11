@@ -696,7 +696,7 @@
     \end{column}
   \end{columns}
 
-  \vspace{.13cm}
+  \vspace{.40cm}
   % ---- Conceptual ECO pipeline, not the proposed branch-search algorithm ----
   \smalllabel{Basic ECO Evaluation Pipeline}\par\vspace{.09cm}
   \centering
@@ -713,26 +713,26 @@
       \mbox{Netlist / DEF}\\[.8mm]
       \mbox{SDC}\\[.8mm]
       \mbox{Liberty}};
-    \node[ecoStage] (detect) at (3.00,0) {%
+    \node[ecoStage] (detect) at (3.55,0) {%
       {\bfseries\color{AccentBlue}02 / Analyze}\\[1.6mm]
       \mbox{Critical paths}\\[.8mm]
       \mbox{Setup endpoints}\\[.8mm]
       \mbox{Critical cells / nets}};
-    \node[ecoMint] (repair) at (6.00,0) {%
+    \node[ecoMint] (repair) at (7.10,0) {%
       {\bfseries\color{Accent}03 / ECO Repair}\\[1.6mm]
       \mbox{Gate sizing}\\[.8mm]
       \mbox{Buffer insertion}\\[.8mm]
       \mbox{Cell relocation}};
-    \node[ecoLilac] (evaluate) at (9.00,0) {%
+    \node[ecoLilac] (evaluate) at (10.65,0) {%
       {\bfseries\color{AccentBlue}04 / Evaluate}\\[1.6mm]
       \mbox{Legalize + STA}\\[.8mm]
       \mbox{TNS / Power}\\[.8mm]
       {\fontsize{6.65}{8}\selectfont\mbox{HPWL / Displacement}}};
     \foreach \from/\to in {input/detect,detect/repair,repair/evaluate}{%
       \draw[->,Accent,thick] (\from.east)--(\to.west);}
+    \draw[->,Accent,thick] (evaluate.south) -- ++(0,-.35cm)
+      -| (detect.south);
   \end{tikzpicture}\par
-  \vspace{.17cm}
-  {\small\bfseries\color{Accent}Key challenge: a timing fix can worsen power or physical cost.\par}
 \end{frame}
 
 % ------------------------------------------------------------------------
