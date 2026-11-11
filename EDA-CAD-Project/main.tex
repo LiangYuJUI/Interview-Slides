@@ -1184,8 +1184,7 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
 \renewcommand{\slideposition}{Detail 10 / 10}
 \begin{frame}[label=detail-dc-abc]{Design Compiler vs. ABC: Logic Synthesis Stages}
   \vspace{.02cm}\slidesubtitle{D10 / Logic Synthesis}\par\vspace{.08cm}
-  {\small\takeaway{DC and ABC: comparable synthesis tasks, different technology-independent representations.}}
-  \vspace{.04cm}
+  \vspace{.18cm}
   \centering
   \begin{tikzpicture}[>=Latex,font=\footnotesize]
     \tikzset{
@@ -1198,48 +1197,46 @@ EPFL adder & 6 & 1 & 5 & 16.7\% \\
     }
     \node[font=\small\bfseries,text=AccentBlue] at (0,0) {Synopsys Design Compiler};
     \node[font=\small\bfseries,text=AccentBlue] at (7.8,0) {Berkeley ABC};
-    \node[stage,fill=white,minimum height=.32cm,font=\footnotesize] (front) at (0,-.40)
+    \node[stage,fill=white,minimum height=.32cm,font=\footnotesize] (front) at (0,-.55)
       {RTL $\rightarrow$ \texttt{analyze + elaborate}};
-    \node[font=\footnotesize,text=Muted] at (7.8,-.40) {Research flow starts from AIG};
-    \node[stage] (gtech) at (0,-1.12)
-      {\textbf{GTECH}\\{\footnotesize Generic Technology Representation}};
-    \node[stage] (aig) at (7.8,-1.12)
-      {\textbf{AIG}\\{\footnotesize AND-Inverter Graph}};
+    \node[font=\footnotesize,text=Muted] at (7.8,-.55) {Research flow starts from AIG};
+    \node[stage] (gtech) at (0,-1.40)
+      {\textbf{GTECH}\\[1.5pt]{\footnotesize Generic Technology Representation}};
+    \node[stage] (aig) at (7.8,-1.40)
+      {\textbf{AIG}\\[1.5pt]{\footnotesize AND-Inverter Graph}};
     \draw[flow] (front.south)--(gtech.north);
-    \node[font=\footnotesize,text=Muted,align=center,text width=2.6cm] at (3.9,-1.12)
+    \node[font=\footnotesize,text=Muted,align=center,text width=2.6cm] at (3.9,-1.40)
       {Technology-independent\\representations};
     % Separate containers: these are independent tool flows, not a conversion.
     \foreach \x in {0,7.8}{
       \draw[draw=AccentBlue!55,dashed,rounded corners=4pt,fill=SoftBlue!25]
-        (\x-2.55,-1.65) rectangle (\x+2.55,-4.10);
+        (\x-2.55,-2.02) rectangle (\x+2.55,-4.90);
     }
-    \node[font=\footnotesize\ttfamily\bfseries] at (0,-1.85) {compile / compile\_ultra};
-    \node[font=\footnotesize\bfseries] at (7.8,-1.85) {ABC Logic Synthesis};
-    \node[opt] (dcopt) at (0,-2.40) {\textbf{Logic Optimization}};
-    \node[opt] (abcopt) at (7.8,-2.40)
-      {\textbf{Logic Optimization}\\{\scriptsize e.g.\ \texttt{balance, rewrite, refactor}}};
-    \node[mapping] (dcmap) at (0,-3.50)
-      {\textbf{Technology Mapping}\\{\footnotesize + Target Standard Cell Library}};
-    \node[mapping] (abcmap) at (7.8,-3.50)
-      {\textbf{Technology Mapping}\\{\scriptsize e.g.\ \texttt{map, amap}}\\{\footnotesize + Standard Cell Library}};
-    \draw[flow] (gtech.south)--(0,-1.65);
-    \draw[flow] (aig.south)--(7.8,-1.65);
+    \node[font=\footnotesize\ttfamily\bfseries] at (0,-2.27) {compile / compile\_ultra};
+    \node[font=\footnotesize\bfseries] at (7.8,-2.27) {ABC Logic Synthesis};
+    \node[opt] (dcopt) at (0,-2.92) {\textbf{Logic Optimization}};
+    \node[opt] (abcopt) at (7.8,-2.92)
+      {\textbf{Logic Optimization}\\[1.5pt]{\scriptsize e.g.\ \texttt{balance, rewrite, refactor}}};
+    \node[mapping] (dcmap) at (0,-4.25)
+      {\textbf{Technology Mapping}\\[1.5pt]{\footnotesize + Target Standard Cell Library}};
+    \node[mapping] (abcmap) at (7.8,-4.25)
+      {\textbf{Technology Mapping}\\[1.5pt]{\scriptsize e.g.\ \texttt{map, amap}}\\[1.5pt]{\footnotesize + Standard Cell Library}};
+    \draw[flow] (gtech.south)--(0,-2.02);
+    \draw[flow] (aig.south)--(7.8,-2.02);
     \draw[flow] (dcopt.south)--(dcmap.north);
     \draw[flow] (abcopt.south)--(abcmap.north);
     % Dashed guides deliberately have no arrowheads: correspondence, not data flow.
     \draw[cue] (dcopt.east)--(abcopt.west);
     \draw[cue] (dcmap.east)--(abcmap.west);
     \node[fill=Paper,text=Muted,font=\footnotesize,align=center,text width=2.35cm,
-      inner sep=2pt] at (3.9,-2.95) {Approximate functional\\correspondence};
-    \node[stage,draw=Accent!70,fill=SoftMint!70] (dcout) at (0,-4.60)
-      {\textbf{Mapped Gate-Level Netlist}\\{\footnotesize Standard-cell mapped}};
-    \node[stage,draw=Accent!70,fill=SoftMint!70] (abcout) at (7.8,-4.60)
-      {\textbf{Mapped Gate-Level Netlist}\\{\footnotesize Standard-cell mapped}};
+      inner sep=2pt] at (3.9,-3.58) {Approximate functional\\correspondence};
+    \node[stage,draw=Accent!70,fill=SoftMint!70] (dcout) at (0,-5.50)
+      {\textbf{Mapped Gate-Level Netlist}\\[1.5pt]{\footnotesize Standard-cell mapped}};
+    \node[stage,draw=Accent!70,fill=SoftMint!70] (abcout) at (7.8,-5.50)
+      {\textbf{Mapped Gate-Level Netlist}\\[1.5pt]{\footnotesize Standard-cell mapped}};
     \draw[flow] (dcmap.south)--(dcout.north);
     \draw[flow] (abcmap.south)--(abcout.north);
   \end{tikzpicture}\par
-  \vspace{.06cm}
-  {\scriptsize\color{Muted}Conceptual correspondence only: GTECH and AIG differ; DC compile provides additional optimization capabilities.\par}
 \end{frame}
 
 \end{document}
