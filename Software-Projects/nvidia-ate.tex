@@ -301,16 +301,6 @@
   \end{columns}
 \end{frame}
 
-% MAPPING OPTIMIZER --------------------------------------------
-\begin{frame}{Mapping Optimizer: SO / BIND Decisions}
-  \takeaway{MILP pre-selects non-overlapping MO candidates, while the mapping optimizer makes the final SO/BIND decisions.}
-  \vfill
-  {\centering
-    \includegraphics[width=\linewidth,height=5.00cm,keepaspectratio,trim=6bp 112bp 6bp 130bp,clip]{../EDA-CAD-Project/figures/optimizer-binding-decision.png}\par
-  }
-  \vfill
-\end{frame}
-
 % 10 / QUANTITATIVE RESULTS ------------------------------------
 \begin{frame}{Normalized ADP Results}
   \takeaway{Area--Delay Product (ADP): lower is better.}
@@ -385,5 +375,37 @@
   {\fontsize{19}{24}\selectfont\color{Muted}Questions \& Discussion}\par
   \vfill
 \end{frame}}
+
+% MAPPING OPTIMIZER --------------------------------------------
+\begin{frame}{Mapping Optimizer: SO / BIND Decisions}
+  \takeaway{MILP pre-selects non-overlapping MO candidates, while the mapping optimizer makes the final SO/BIND decisions.}
+  \vfill
+  {\centering
+    \includegraphics[width=\linewidth,height=5.00cm,keepaspectratio,trim=6bp 112bp 6bp 130bp,clip]{../EDA-CAD-Project/figures/optimizer-binding-decision.png}\par
+  }
+  \vfill
+\end{frame}
+
+% SOFTWARE RESEARCH BACKUP: original Software slides 6--7 -------
+\foreach \softwarepage in {6,7}{%
+  \begingroup
+  \setbeamertemplate{background}{%
+    \includegraphics[page=\softwarepage,width=\paperwidth,height=\paperheight]{main.pdf}%
+  }
+  \begin{frame}[plain]
+  \end{frame}
+  \endgroup
+}
+
+% ECO BACKUP: original EDA/CAD slides 14--18 ---------------------
+\foreach \ecopage in {14,...,18}{%
+  \begingroup
+  \setbeamertemplate{background}{%
+    \includegraphics[page=\ecopage,width=\paperwidth,height=\paperheight]{../EDA-CAD-Project/main.pdf}%
+  }
+  \begin{frame}[plain]
+  \end{frame}
+  \endgroup
+}
 
 \end{document}
