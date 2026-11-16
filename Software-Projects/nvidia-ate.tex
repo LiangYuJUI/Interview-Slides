@@ -1,5 +1,5 @@
 % NVIDIA ATE Test Methodology Engineer - interview project presentation
-% Standalone, editable 16:9 Beamer. No external assets required.
+% Editable 16:9 Beamer; mapping figures are shared with EDA-CAD-Project.
 % Source projects: Software-Projects/main.tex and EDA-CAD-Project/main.tex.
 % Scope: NeoPower scenario-based testing, earlier ABC SO/MO mapping research.
 % Not an ATE silicon test experience claim. Rehearsal target: 10-12 minutes.
@@ -97,15 +97,16 @@
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
   \vspace*{.88cm}
-  {\normalsize\bfseries\color{Accent}NVIDIA ATE TEST METHODOLOGY ENGINEER}\par
+  {\normalsize\bfseries\color{Accent}TECHNICAL INTERVIEW}\par
   \vspace{.44cm}
   {\fontsize{23}{27}\selectfont\bfseries\color{Ink}Software Engineering\\[2mm]\& Test Methodology}\par
   \vspace{.28cm}
   {\color{Muted}\fontsize{11}{14}\selectfont
      Scenario-Based Simulation\quad $\cdot$\quad C++ Algorithm Development\quad $\cdot$\quad Verification}\par
   \vspace{.70cm}
-  {\large\bfseries Yu-Jui (Stanley) Liang}\par
-  {\small\color{Muted}National Taiwan University}\par
+  {\fontsize{17}{21}\selectfont\bfseries Yu-Jui (Stanley) Liang}\par
+  \vspace{.08cm}
+  {\fontsize{14}{18}\selectfont\color{Muted}National Taiwan University}\par
   \vfill
 \end{frame}}
 
@@ -177,7 +178,7 @@
   \vspace{.20cm}
   \centering
   \begin{tikzpicture}[>=Latex]
-    \node[flow,text width=2.40cm,minimum height=.75cm] (logs) at (0,1.46)
+    \node[flow,text width=2.40cm,minimum height=.75cm] (logs) at (0,1.86)
        {Historical logs /\\Customer feedback};
     \node[flow,text width=2.35cm,minimum height=1.64cm] (scenario) at (0,-.12)
        {\textbf{Scenario}\\\textbf{definition}};
@@ -237,57 +238,55 @@
   \takeaway{Testing is repeatable before release; operational data supports follow-up evaluation.}
 \end{frame}
 
+% TECHNOLOGY MAPPING INTRODUCTION -------------------------------
+\begin{frame}{What Is Technology Mapping?}
+  \takeaway{The final step of logic synthesis: map Boolean logic to cells in a target standard-cell library.}
+  \vfill
+  \begin{center}
+    \includegraphics[width=\linewidth,height=4.22cm,keepaspectratio,trim=8bp 158bp 8bp 125bp,clip]{../EDA-CAD-Project/figures/aig-technology-mapping.png}\par
+    \vspace{.12cm}
+    {\small\color{Muted}Same Boolean function, implemented with standard cells.}
+  \end{center}
+  \vfill
+\end{frame}
+
 % 06 / MAPPING MOTIVATION --------------------------------------
-\begin{frame}{Earlier Research: Why Multi-Output Mapping?}
+\begin{frame}{Multi-Output Cells Can Improve Area and Delay}
   \takeaway{Standard-cell mapping can jointly implement correlated output functions.}
-  \vspace{.22cm}
-  \centering
-  \begin{tikzpicture}[>=Latex]
-    \node[font=\normalsize\bfseries,text=AccentBlue] at (2.65,2.0) {Single-Output Mapping};
-    \node[font=\normalsize\bfseries,text=Accent] at (8.65,2.0) {Multi-Output Mapping};
-    % left AIG/individual implementation
-    \foreach \x/\lab in {1.0/A,2.2/B,3.4/Cin} {
-      \node[mini,text width=.52cm,minimum height=.50cm] (l\lab) at (\x,1.03) {\lab};
-      \node[mini,text width=.52cm,minimum height=.50cm] (r\lab) at (\x+6.0,1.03) {\lab};
-    }
-    \node[flow,text width=1.58cm,minimum height=.82cm] (s) at (1.78,-.16) {SUM\\logic};
-    \node[flow,text width=1.58cm,minimum height=.82cm] (c) at (3.75,-.16) {CARRY\\logic};
-    \node[mint,text width=2.10cm,minimum height=1.08cm] (fa) at (8.62,-.16) {\textbf{Full Adder}\\Multi-output cell};
-    \foreach \n in {lA,lB,lCin} {
-      \draw[arrblue] (\n.south) -- (s.north);
-      \draw[arrblue] (\n.south) -- (c.north);
-    }
-    \foreach \n in {rA,rB,rCin} {\draw[arr] (\n.south) -- (fa.north);}
-    \node[font=\small,text=Muted] at (1.78,-1.0) {SUM output};
-    \node[font=\small,text=Muted] at (3.75,-1.0) {CARRY output};
-    \node[font=\small,text=Muted] at (8.62,-1.0) {SUM + CARRY};
-    \draw[Divider,thick] (5.55,-1.25) -- (5.55,1.80);
-  \end{tikzpicture}
+  \vfill
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.49\textwidth}
+      \includegraphics[width=\linewidth,height=3.65cm,keepaspectratio,trim=0 105bp 0 250bp,clip]{../EDA-CAD-Project/figures/single-output-cell-mapping.png}
+    \end{column}
+    \begin{column}{.49\textwidth}
+      \includegraphics[width=\linewidth,height=3.65cm,keepaspectratio,trim=0 180bp 0 175bp,clip]{../EDA-CAD-Project/figures/multi-output-cell-mapping.png}
+    \end{column}
+  \end{columns}
   \par\vspace{.19cm}
   {\small\color{Muted}One full-adder cell may replace multiple single-output cells when both outputs share a valid input and pin mapping.}
 \end{frame}
 
 % 07 / END-TO-END PIPELINE --------------------------------------
 \begin{frame}{C++ EDA Project: Joint SO/MO Mapping Pipeline}
-  \takeaway{Extend ABC's mapping path while preserving single-output alternatives.}
+  \takeaway{Extend an open-source logic synthesis tool while preserving single-output alternatives.}
   \vspace{.33cm}
   \centering
   \begin{tikzpicture}[>=Latex]
-    \node[flow,text width=2.25cm,minimum height=.88cm] (aig) at (0,1.15) {AIG Network};
+    \node[flow,text width=2.25cm,minimum height=.88cm] (aig) at (-.55,1.15) {AIG Network};
     \node[flow,text width=2.45cm,minimum height=1.03cm] (so) at (3.20,2.00)
        {Existing SO\\Candidate Discovery};
     \node[mint,text width=2.45cm,minimum height=1.03cm] (mo) at (3.20,.30)
        {New MO\\Candidate Discovery};
     \node[mint,text width=2.55cm,minimum height=1.08cm] (milp) at (6.76,.30)
        {Area-Aware\\MILP Preselection};
-    \node[lilac,text width=2.60cm,minimum height=1.20cm] (opt) at (10.15,1.15)
+    \node[lilac,text width=2.60cm,minimum height=1.20cm] (opt) at (10.80,1.15)
        {Differentiable\\Mapping Optimizer};
-    \draw[arrblue] (aig.east) -- ++(.35,0) |- (so.west);
-    \draw[arr] (aig.east) -- ++(.35,0) |- (mo.west);
+    \draw[arrblue] (aig.east) -- ++(.60,0) |- (so.west);
+    \draw[arr] (aig.east) -- ++(.60,0) |- (mo.west);
     \draw[arr] (mo) -- (milp);
-    \draw[arrblue] (so.east) -- ++(1.20,0) -| (opt.north);
-    \draw[arr] (milp.east) -- ++(.45,0) |- (opt.south);
-    \node[outline,text width=2.65cm,minimum height=.58cm] (net) at (10.15,-.67)
+    \draw[arrblue] (so.east) -- (8.78,2.00) |- ([yshift=.28cm]opt.west);
+    \draw[arr] (milp.east) -- (8.78,.30) |- ([yshift=-.28cm]opt.west);
+    \node[outline,text width=2.65cm,minimum height=.58cm] (net) at (10.80,-.67)
        {Mapped netlist};
     \draw[arr] (opt) -- (net);
   \end{tikzpicture}
@@ -302,74 +301,14 @@
   \end{columns}
 \end{frame}
 
-% 08 / CANDIDATE DISCOVERY --------------------------------------
-\begin{frame}{Multi-Output Candidate Discovery}
-  \takeaway{Both outputs must pass one joint Boolean and pin mapping check.}
-  \vspace{.24cm}
-  \centering
-  \begin{tikzpicture}[>=Latex]
-    \node[flow,text width=2.42cm,minimum height=1.25cm] (cut) at (0,0)
-       {\textbf{Cut Discovery}\\AIG roots + leaves};
-    \node[flow,text width=2.42cm,minimum height=1.25cm] (pair) at (3.22,0)
-       {\textbf{Output Pairing}\\Shared input boundary};
-    \node[mint,text width=2.42cm,minimum height=1.25cm] (match) at (6.44,0)
-       {\textbf{Joint Boolean Match}\\Permutation / polarity};
-    \node[mint,text width=2.42cm,minimum height=1.25cm] (legal) at (9.66,0)
-       {\textbf{Legality Check}\\Connectivity / coverage};
-    \draw[arrblue] (cut) -- (pair);
-    \draw[arr] (pair) -- (match);
-    \draw[arr] (match) -- (legal);
-  \end{tikzpicture}
-  \par\vspace{.35cm}
-  \begin{columns}[T,onlytextwidth]
-  \begin{column}{.49\textwidth}
-    \softpanel{panelblue}{Example: Full Adder}{SUM and CARRY may share cuts with leaves $\{A,B,C_{in}\}$.}
-  \end{column}
-  \begin{column}{.49\textwidth}
-    \softpanel{panelmint}{Important Constraint}{Independent SO matches do not guarantee a legal common FA cell.}
-  \end{column}
-  \end{columns}
-  \vspace{.28cm}
-  {\small\color{Muted}Candidate matches are checked for functional equivalence and safe replacement connectivity.}
-\end{frame}
-
-% 09 / AREA AWARE MILP -----------------------------------------
-\begin{frame}{Area-Aware Selection: MILP vs. FIFO}
-  \takeaway{Select promising multi-output candidates without conflicting bindings.}
-  \vspace{.18cm}
-  \begin{columns}[T,onlytextwidth]
-  \begin{column}{.51\textwidth}
-    {\small\bfseries\color{AccentBlue}Overlapping output bindings}\par\vspace{.12cm}
-    \centering
-    \begin{tikzpicture}[>=Latex]
-      \node[mini,text width=.70cm,minimum height=.60cm] (a) at (0,0) {A};
-      \node[mini,text width=.70cm,minimum height=.60cm] (b) at (2.05,0) {B};
-      \node[mini,text width=.70cm,minimum height=.60cm] (c) at (4.10,0) {C};
-      \draw[line width=2.0pt,AccentBlue] (a.east) -- node[above,font=\small,text=AccentBlue] {$M_1$} (b.west);
-      \draw[line width=2.0pt,Accent] (b.east) -- node[above,font=\small,text=Accent] {$M_2$} (c.west);
-      \node[font=\small,text=Muted,align=center] at (2.05,-1.02)
-         {Both candidates use root B.\\They cannot both be selected.};
-    \end{tikzpicture}
-    \vspace{.18cm}
-    \softpanel{panelblue}{FIFO Baseline}{Keep the first legal candidate; reject later conflicts.}
-  \end{column}
-  \begin{column}{.47\textwidth}
-    {\small\bfseries\color{Accent}Optimization Model}\par\vspace{.10cm}
-    {\scriptsize Binary variable $x_i \in\{0,1\}$ for each candidate.}\par\vspace{.20cm}
-    \[
-       \max \sum_i \Delta A_i x_i
-    \]
-    \vspace{-.26cm}
-    {\scriptsize $\Delta A_i$: estimated SO area minus MO area.}\par\vspace{.07cm}
-    \[
-       \sum_{i:\,r\in C_i} x_i \leq 1
-    \]
-    \vspace{-.22cm}
-    
-  \end{column}
-  \end{columns}
-  \vspace{.05cm}
-  {\small\color{Muted}MILP preselects candidates; the optimizer makes final mapping decisions.}
+% MAPPING OPTIMIZER --------------------------------------------
+\begin{frame}{Mapping Optimizer: SO / BIND Decisions}
+  \takeaway{MILP pre-selects non-overlapping MO candidates, while the mapping optimizer makes the final SO/BIND decisions.}
+  \vfill
+  {\centering
+    \includegraphics[width=\linewidth,height=5.00cm,keepaspectratio,trim=6bp 112bp 6bp 130bp,clip]{../EDA-CAD-Project/figures/optimizer-binding-decision.png}\par
+  }
+  \vfill
 \end{frame}
 
 % 10 / QUANTITATIVE RESULTS ------------------------------------
@@ -436,24 +375,15 @@
   \end{beamercolorbox}
 \end{frame}
 
-% 12 / CONCLUSION ----------------------------------------------
+% 12 / THANK YOU -----------------------------------------------
 {\setbeamertemplate{footline}{}
 \begin{frame}[plain]
-  \vspace*{.72cm}
-  {\fontsize{23}{28}\selectfont\bfseries\color{Ink}Engineering Takeaways}\par
-  \vspace{.44cm}
-  \begin{columns}[T,onlytextwidth]
-  \begin{column}{.49\textwidth}
-    \softpanel{panelblue}{Scenario-Based Testing}{Build repeatable simulations to reproduce failures and support regression testing.}
-  \end{column}
-  \begin{column}{.49\textwidth}
-    \softpanel{panelmint}{C++ Tool Development}{Extend complex algorithms while verifying correctness, performance, and maintainability.}
-  \end{column}
-  \end{columns}
-  \vspace{.40cm}
-  {\normalsize\color{Muted}I hope to apply these software and verification skills to robust semiconductor test methodology.}\par
+  \centering
   \vfill
-  {\large\bfseries\color{Accent}Thank you. Questions \& Discussion}\par\vspace{.20cm}
+  {\fontsize{36}{42}\selectfont\bfseries\color{Ink}THANK YOU}\par
+  \vspace{.37cm}
+  {\fontsize{19}{24}\selectfont\color{Muted}Questions \& Discussion}\par
+  \vfill
 \end{frame}}
 
 \end{document}
