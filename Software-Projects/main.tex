@@ -18,6 +18,9 @@
 %  6 Cross-data-center heterogeneous GPU serving
 %  7 System-level simulation methodology
 %  8 Thank you
+%  9 SAT-LEX document verification
+% 10 ABC single-output mapping baseline
+% 11 Single-output vs multi-output mapping
 
 \documentclass[aspectratio=169,10pt]{beamer}
 \usepackage[english]{babel}
@@ -437,5 +440,74 @@
   \end{center}
   \vfill
 \end{frame}}
+
+
+% ============================================================
+% SLIDE 9 - SAT-LEX backup: two document inputs and solver verification
+% ============================================================
+\begin{frame}{SAT-LEX: LLM and SMT-Based Document Verification}
+  \takeaway{Verify report or scenario facts against constraints derived from legal documents.}
+  \vspace{0.50cm}
+  {\centering
+  \begin{tikzpicture}[>=Latex]
+    \node[flowstep,fill=SoftBlue,text width=2.45cm,minimum height=1.25cm]
+      (legal) at (0,1.15) {\textbf{Legal}\\\textbf{Documents}};
+    \node[flowstep,fill=SoftLilac,text width=2.45cm,minimum height=1.25cm]
+      (report) at (0,-1.15) {\textbf{Report /}\\\textbf{Scenario Documents}};
+    \node[flowstep,fill=SoftBlue,text width=2.70cm,minimum height=1.25cm]
+      (constraints) at (4.0,1.15) {\textbf{SMT Constraints}\\[2mm]Legal requirements};
+    \node[flowstep,fill=SoftLilac,text width=2.70cm,minimum height=1.25cm]
+      (variables) at (4.0,-1.15) {\textbf{Logical Variables}\\[2mm]Extracted facts};
+    \draw[->,AccentBlue,thick] (legal) -- node[above,font=\small,text=AccentBlue] {LLM} (constraints);
+    \draw[->,AccentBlue,thick] (report) -- node[above,font=\small,text=AccentBlue] {LLM} (variables);
+    \node[flowstep,fill=SoftMint,text width=2.10cm,minimum height=1.35cm]
+      (solver) at (7.85,0) {\textbf{SMT Solver}\\[2mm]Consistency check};
+    \draw[->,Accent,thick] (constraints.east) -- (6.15,1.15) |- ([yshift=0.28cm]solver.west);
+    \draw[->,Accent,thick] (variables.east) -- (6.15,-1.15) |- ([yshift=-0.28cm]solver.west);
+    \node[flowstep,fill=white,text width=2.10cm,minimum height=1.35cm]
+      (result) at (11.05,0) {\textbf{Result}\\[2mm]Consistent\\or conflicting};
+    \draw[->,Accent,thick] (solver) -- (result);
+  \end{tikzpicture}\par}
+\end{frame}
+
+% Mapping backup slides reuse EDA-CAD-Project/main.tex slides 6 and 7.
+% Keep the original content and crops, with this deck's page numbering.
+\begingroup
+\newcommand{\slidesubtitle}[1]{\smalllabel{#1}}
+\renewcommand{\takeaway}[1]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.15cm,wd=\linewidth]{block title}%
+    \strut\textbf{#1}\strut
+  \end{beamercolorbox}%
+}
+
+% SLIDE 10 - Mapping backup
+\begin{frame}[label=summary-6]{ABC Mapper: SO Technology Mapper Baseline}
+  \vspace{.02cm}
+  \takeaway{The open-source ABC synthesis framework primarily targets single-output cell mapping, leaving joint FA/HA output mapping unsupported in the baseline flow.}
+  \vspace{.08cm}
+  \begin{center}
+    \includegraphics[width=\linewidth,height=4.22cm,keepaspectratio,trim=8bp 158bp 8bp 125bp,clip]{../EDA-CAD-Project/figures/aig-technology-mapping.png}\par
+    \vspace{.06cm}
+    {\small\color{Muted}Same Boolean behavior, realized with ASAP7 7nm library cells.}
+  \end{center}
+\end{frame}
+
+% SLIDE 11 - Mapping backup
+\begin{frame}[label=summary-7]{Single-Output vs Multi-Output Cell Mapping}
+  \takeaway{A shared FA cell can implement two output functions over the same input boundary.}
+  \vfill
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.49\textwidth}
+      \includegraphics[width=\linewidth,height=3.65cm,keepaspectratio,trim=0 105bp 0 250bp,clip]{../EDA-CAD-Project/figures/single-output-cell-mapping.png}
+    \end{column}
+    \begin{column}{.49\textwidth}
+      \includegraphics[width=\linewidth,height=3.65cm,keepaspectratio,trim=0 180bp 0 175bp,clip]{../EDA-CAD-Project/figures/multi-output-cell-mapping.png}
+    \end{column}
+  \end{columns}
+  \vspace{.12cm}
+  {\small Independent MO discovery exposes joint output matches beyond SO-oriented cut retention.}
+  \vfill
+\end{frame}
+\endgroup
 
 \end{document}

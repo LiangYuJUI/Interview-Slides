@@ -2,7 +2,7 @@
 
 Software engineering interview presentation by Yu-Jui Liang, dated November 6, 2026. The deck covers production software work at NeoPower and ongoing research on cross-data-center Prefill/Decode scheduling across heterogeneous GPU clusters with HBM/HBF memory configurations, targeting higher aggregate serving throughput and lower total system power.
 
-**8 slides; standard speaking target: 7 min 40 sec, including 2.5–3 minutes of research.** Traditional Chinese rehearsal notes and 10-minute extension guidance are in `speaker_notes.md`, separate from the PDF. Both versions use the same slide order and adjust spoken detail. Timing is a rehearsal target.
+**8 main slides + 3 backup slides; standard speaking target: 7 min 40 sec, including 2.5–3 minutes of research.** Traditional Chinese rehearsal notes and 10-minute extension guidance are in `speaker_notes.md`, separate from the PDF. Both versions use the same slide order and adjust spoken detail. Timing is a rehearsal target.
 
 ## Slide organization
 
@@ -16,8 +16,11 @@ Software engineering interview presentation by Yu-Jui Liang, dated November 6, 2
 | 6 | Heterogeneous GPU LLM Serving Across Data Centers | Global Prefill/Decode scheduling across heterogeneous clusters; three memory configurations | 105 s |
 | 7 | Research Methodology: System-Level Simulation | Public specifications and published models feed serving simulation and throughput/power evaluation | 75 s |
 | 8 | Thank You | Close | 10 s |
+| 9 | SAT-LEX: LLM and SMT-Based Document Verification | Backup flowchart | Q&A |
+| 10 | ABC Mapper: SO Technology Mapper Baseline | Backup, EDA-CAD slide 6 | Q&A |
+| 11 | Single-Output vs Multi-Output Cell Mapping | Backup, EDA-CAD slide 7 | Q&A |
 
-NeoPower testing is followed directly by the LLM research question. Slides 3–5 follow the presenter's finalized explanation: system and responsibilities, custom simulator, then deployment validation. No additional projects are included.
+NeoPower testing is followed directly by the LLM research question. Slides 3–5 follow the presenter's finalized explanation: system and responsibilities, custom simulator, then deployment validation. SAT-LEX and two mapping slides follow Thank You as Q&A backups.
 
 ## Compilation
 
@@ -30,7 +33,7 @@ latexmk -pdf main.tex
 From the repository root:
 
 ```bash
-cd 2026-11-06/Software-Projects-NeoPower-LLM
+cd Software-Projects
 latexmk -pdf main.tex
 ```
 
@@ -40,17 +43,17 @@ Clean auxiliaries without deleting the PDF:
 latexmk -c main.tex
 ```
 
-Rebuild `main.pdf` whenever `main.tex` changes. Keep the PDF in sync with the source. No external fonts or image assets are needed.
+Rebuild `main.pdf` whenever `main.tex` changes. Keep the PDF in sync with the source. No external fonts are needed. Mapping backups reuse three image assets in `../EDA-CAD-Project/figures/`.
 
 ## Editing and visual checks
 
 - Preserve the existing blue/green, 16:9 Beamer identity and editable TikZ diagrams.
 - Slide 2 retains its original two-column education/employment content from `../NV-Testing/main.tex`; reference folders are not modified.
 - Diagram styles and colors live in the preamble. Research diagrams retain the blue/green palette; memory examples use blue for Full-HBM, mint for Full-HBF and lilac for hybrid.
-- Comment banners use final slide numbers 1–8.
+- Comment banners use final slide numbers 1–11.
 - Keep essential diagram labels readable. Remove secondary material rather than shrink fonts or fill whitespace.
 - No bottom explanatory captions or disclaimers. Normal theme page numbers remain; caveats belong in the speaker notes.
-- Check the build log for box overflow and warnings, verify exactly eight PDF pages, and render and inspect every page after layout changes.
+- Check the build log for box overflow and warnings, verify exactly eleven PDF pages, and render and inspect every page after layout changes.
 
 ## Factual boundaries
 
@@ -75,4 +78,4 @@ LLM research:
 
 ## Current verification
 
-The revised PDF was built with `latexmk -pdf` / pdfLaTeX and contains eight pages. Every rendered page was visually inspected for clipping, overlap and diagram readability. The compilation log contains no overfull/underfull box warnings. Slides 1–5 retain identical frame source; only the automatic total-page denominator changes. The PDF matches the revised LaTeX source. Speaking durations are rehearsal targets, not measured delivery times.
+Rebuild with `latexmk -pdf main.tex`. The expected output is eleven pages: eight main slides followed by three Q&A backups. SAT-LEX uses an editable TikZ flowchart with two LLM conversion paths: legal documents become SMT constraints, while report/scenario documents become logical variables. The SMT solver checks the two for consistency or conflict. Mapping content and image crops are reused from EDA-CAD slides 6 and 7, with local page numbering and without links to omitted EDA-CAD detail pages.
