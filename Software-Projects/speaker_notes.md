@@ -1,10 +1,10 @@
 # 口說備忘：Software Engineering & System Simulation
 
-日期：2026-11-06。投影片共 8 張，英文；本講稿使用繁體中文，不編入 PDF。
+日期：2026-11-06。投影片共 11 張（8 張主講、3 張問答備用），英文；本講稿使用繁體中文，不編入 PDF。
 
 ## 時間配置
 
-標準版約 **7 分 40 秒**，其中研究段約 **2 分 45 秒至 3 分鐘**。下表以研究段 3 分鐘配置；時間為排練目標，實際速度需透過口說排練確認。技術備註供問答使用，不必逐條朗讀。
+標準版約 **6 分 55 秒**，其中研究段約 **2 分 15 秒**。下表以研究段 2 分 15 秒配置；時間為排練目標，實際速度需透過口說排練確認。技術備註供問答使用，不必逐條朗讀。
 
 | 張 | 主題 | 標準版 |
 | --- | --- | --- |
@@ -13,18 +13,18 @@
 | 3 | NeoPower 系統架構 | 50 秒 |
 | 4 | NeoPower 情境模擬 | 90 秒 |
 | 5 | NeoPower 部署前後驗證 | 80 秒 |
-| 6 | 跨資料中心異質 GPU Serving | 105 秒 |
+| 6 | 跨資料中心 LLM 請求排程 | 60 秒 |
 | 7 | 系統級模擬方法與目前進度 | 75 秒 |
 | 8 | 結語 | 10 秒 |
-| 合計 | | 7 分 40 秒 |
+| 合計 | | 6 分 55 秒 |
 
-10 分鐘版維持相同八頁順序，可依第 3–5 張的延伸備註補充 NeoPower 案例；研究段仍維持約 2.5–3 分鐘。若面試官中途提問，優先縮短案例。
+10 分鐘版維持相同八頁順序，可依第 3–5 張的延伸備註補充 NeoPower 案例；研究段維持約 2 分 15 秒。若面試官中途提問，優先縮短案例。
 
 ## 第 1 張 — Software Engineering & System Simulation
 
 目標時間：15 秒。
 
-各位好，我是 Yu-Jui Liang。今天介紹我在 NeoPower 的後端開發、系統模擬與測試經驗，以及目前進行中的異質 GPU LLM serving 研究。
+各位好，我是 Yu-Jui Liang。今天介紹我在 NeoPower 的後端開發、系統模擬與測試經驗，以及目前進行中的跨資料中心 LLM 請求排程研究。
 
 學歷留到下一頁，不重複介紹。
 
@@ -92,41 +92,26 @@ NeoPower 新動智能是一間做電動車能源管理的新創。我從大二�
 - 10 分鐘版多說如何將日誌、營運資料與回饋一起判讀，以及條件相近仍有上述限制。
 - 本簡報不提供未確認的改善比例或實驗結果，也不延伸其他時間分組方法。
 
-## 第 6 張 — Heterogeneous GPU LLM Serving Across Data Centers
+## 第 6 張 — Cross-Data-Center LLM Serving
 
-目標時間：105 秒。
+目標時間：約 60 秒。
 
-接下來介紹我目前正在進行的碩士研究。
+接下來是我的碩士研究，重點是跨資料中心的 LLM 請求排程。
 
-我主要研究的是跨 Data Center 的 Heterogeneous GPU LLM Serving Scheduling，也就是如何將不同的 LLM Requests 分配到多個 Data Centers 中的 GPU Clusters，讓這些 GPU 能更有效率地協同運作，目標是提高整體 Serving Throughput，並降低系統功耗。
+請求先進入 Global Request Router，由它決定送往哪個資料中心。圖中列出三種概念性的儲存系統配置：A 以 HBM 為主、B 混合 HBM 與 HBF、C 以 HBF 為主。這些是研究情境，不代表已部署或可購買的 GPU 產品。
 
-在這個研究中，我們考慮不同 Data Centers 可能配置不同型號的 GPU。這些 GPU 除了運算能力不同，也可能搭配不同容量的 HBM 和 HBF。
+每個資料中心內都有自己的 Local A/E Scheduler，負責安排站內的 Attention 與 Expert Workers。全域層選擇資料中心，區域層管理站內工作，不要求把 Attention 和 Expert 分放在不同資料中心。
 
-這裡簡單介紹一下 HBF。HBF 的全名是 High Bandwidth Flash，是一種以 NAND Flash 為基礎的高頻寬記憶體技術，目前還沒有廣泛量產並應用在商用 GPU 上。
-
-在記憶體配置方面，我主要參考 SanDisk、SK hynix，以及一些學術研究提出的設計和規格，考慮三種 GPU 記憶體配置。
-
-第一種是 Full-HBM，也就是目前常見、以 HBM 為主要高頻寬記憶體的 GPU。
-
-第二種是 Full-HBF，在概念模型中以 HBF 作為主要記憶體，不配置 HBM。
-
-第三種則是 Hybrid HBM/HBF，在研究設定中同時使用兩種記憶體，例如各配置一半的容量。
-
-另外，在 LLM Inference 中，可以將執行過程分成 Prefill 和 Decode 兩個階段。
-
-Prefill 負責處理輸入 Prompt，通常比較需要 GPU 的運算能力；Decode 則是逐步產生輸出 Token，通常比較受到記憶體頻寬和存取效能的影響。
-
-所以我的研究希望探討，在跨 Data Center 的環境下，如何根據不同 GPU 的運算能力與記憶體配置，將 Prefill 和 Decode 工作分配到合適的 GPU Clusters。
-
-最後希望找到更有效率的 Scheduling Strategy，在提升 LLM Serving Throughput 的同時，降低整體系統的功耗。
+研究希望比較不同儲存配置下的請求排程策略，提高 SLO Goodput，也就是單位時間內滿足服務目標的請求數，同時降低總系統功耗。這是研究目標，模擬整合與評估仍在規劃或進行中。
 
 技術備註與問答：
 
-- 圖中的 A／B 是不同 GPU 型號與運算能力的概念剖面，沒有指定實際產品或數值。兩個 Data Centers 都可執行 Prefill 和 Decode，配置由排程策略決定，並非固定分工。
-- Full-HBF 表示在概念模型中以 HBF 取代 HBM 作為主要記憶體；不代表可以省略所有緩衝、快取或資料管理機制。
-- Hybrid 的 50/50 是選定研究配置的容量比例，不是頻寬比例，也不是所有混合架構的要求。
-- Prefill 與 Decode 的瓶頸仍會受模型、批次與工作負載影響。較高吞吐量與較低總功耗是研究目標，尚無已達成的改善結果。
-- HBF 參數取自公開規格與研究模型，沒有直接量測 HBF GPU。此處不加入缺乏可識別來源的容量、頻寬、延遲或功耗數值。
+- 主要問題是跨資料中心的 request scheduling；GPU 型號與運算能力差異屬於實作與模型參數，不是這頁的主題。
+- A/E 指 Attention／Expert。每個資料中心都包含兩類 workers，圖中沒有要求跨資料中心進行 A/E 分工。
+- HBF 是 High Bandwidth Flash，以 NAND Flash 為基礎。HBM-focused 與 HBF-focused 表示配置重點，不表示排除其他緩衝、快取或資料管理機制。Hybrid 不預設固定容量比例。
+- 全域路由策略的候選考量包括請求的 SLO、站點負載與儲存配置；具體策略及參數仍需在後續模擬中定義與評估。
+- SLO Goodput 必須先定義請求達標條件與統計時間窗口，並與總系統功耗一起評估；不等同於只計算總吞吐量或每 token 能耗。
+- 不宣稱已有完成的排程實驗、效能改善或 HBF GPU 實測結果。
 
 ## 第 7 張 — Research Methodology: System-Level Simulation
 
@@ -138,7 +123,7 @@ Prefill 負責處理輸入 Prompt，通常比較需要 GPU 的運算能力；Dec
 
 在實作方面，我目前以開源的 GPU Cluster Serving Simulator 作為系統架構的基礎，並規劃整合相關學術研究所使用的 GPU Memory 和 Storage Simulators，來模擬不同硬體配置下的記憶體傳輸與功耗行為。
 
-接著，在這個模擬環境中建立多個 Data Centers 和不同規格的 GPU Clusters，研究如何將 LLM Requests，以及 Attention 和 Expert 的分割工作，分配到不同的 GPU 上。
+接著，在這個模擬環境中建立多個 Data Centers 和不同規格的 GPU Clusters，研究全域路由如何將 LLM Requests 分配到資料中心，再由各站的 Local A/E Scheduler 安排站內的 Attention 和 Expert 工作。
 
 最後透過模擬結果，比較不同 Scheduling Strategies 對系統 Throughput 和 Power Consumption 的影響。
 

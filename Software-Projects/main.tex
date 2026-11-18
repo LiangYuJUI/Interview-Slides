@@ -14,7 +14,7 @@
 %  3 NeoPower architecture
 %  4 NeoPower scenario simulation
 %  5 NeoPower testing and reliability
-%  6 Cross-data-center heterogeneous GPU serving
+%  6 Cross-data-center LLM serving
 %  7 System-level simulation methodology
 %  8 Thank you
 %  9 SAT-LEX document verification
@@ -352,47 +352,57 @@
   \end{columns}
 \end{frame}
 
-% Slide 6: Proposed A/E-centric architecture
-\begingroup
-\setbeamerfont{frametitle}{size=\fontsize{12}{14}\selectfont}
-\begin{frame}{MoE Serving: HBM/HBF-Aware Attention--Expert Disaggregation}
-  \takeaway{Co-design worker memory profiles and A/E placement to improve SLO goodput per watt.}
-  \vspace{0.14cm}
+% ============================================================
+% SLIDE 6 - Cross-data-center request scheduling
+% Storage configurations are conceptual research examples, not products.
+% Both Attention and Expert workers remain inside each data center.
+% ============================================================
+\begin{frame}{Cross-Data-Center LLM Serving}
+  \takeaway{Scheduling Across Different Storage System Configurations}
+  \vspace{0.15cm}
   {\centering
   \begin{tikzpicture}[>=Latex]
-    \node[font=\small\bfseries] (req) at (0,0.30) {Incoming MoE Requests};
-    \node[svc,draw=Accent!80,fill=SoftMint,text width=5.0cm,minimum height=0.84cm]
-      (global) at (0,-0.66) {\textbf{Global Request Router}\\Request routing across data centers};
-    \node[svc,draw=Accent!75,fill=white,text width=5.0cm,minimum height=0.84cm]
-      (local) at (0,-2.10) {\textbf{Local A/E Scheduler}\\Assign GPUs and experts};
-    \node[align=center,font=\small,text=Accent] (dcLeft) at (-4.60,-0.66)
-      {Other data\\centers};
-    \node[align=center,font=\small,text=Accent] (dcRight) at (4.60,-0.66)
-      {Other data\\centers};
-
-    \node[svc,draw=AccentBlue!70,fill=SoftBlue,text width=4.48cm,minimum height=1.58cm]
-      (attn) at (-3.34,-4.08) {\textbf{Attention Worker}\\\textbf{HBM-rich GPU}\\Attention / active KV cache};
-    \node[svc,draw=Accent!70,fill=SoftMint,text width=4.48cm,minimum height=1.58cm]
-      (expert) at (3.34,-4.08) {\textbf{Expert Worker}\\\textbf{HBF-rich GPU}\\Expert weights; HBM hot set};
-
+    \node[font=\small\bfseries] (req) at (0,0)
+      {Incoming LLM Requests};
+    \node[svc,draw=Accent!80,fill=SoftMint,text width=4.5cm,minimum height=0.78cm]
+      (global) at (0,-0.86)
+      {\textbf{Global Request Router}\\Select a data center};
     \draw[->,Accent,thick] (req) -- (global);
-    \draw[->,Accent,thick] (global.west) -- (dcLeft.east);
-    \draw[->,Accent,thick] (global.east) -- (dcRight.west);
-    \draw[->,Accent,thick] (global) -- (local);
-    \draw[Accent,thick] (local.south) -- (0,-2.92);
-    \draw[->,AccentBlue,thick] (0,-2.92) -| (attn.north);
-    \draw[->,Accent,thick] (0,-2.92) -| (expert.north);
-    \draw[->,AccentBlue,thick]
-      ([yshift=5pt]attn.east) -- node[above,font=\tiny,fill=white,inner sep=0.5pt] {dispatch}
-      ([yshift=5pt]expert.west);
-    \draw[->,Accent,thick]
-      ([yshift=-5pt]expert.west) -- node[below,font=\tiny,fill=white,inner sep=0.5pt] {combine}
-      ([yshift=-5pt]attn.east);
+
+    % Three equal site boundaries make the global/local scope explicit.
+    \foreach \id/\x/\shade/\config in {
+      A/-4.65/SoftBlue/HBM-focused,
+      B/0/SoftLilac/{Hybrid HBM/HBF},
+      C/4.65/SoftMint/HBF-focused} {
+      \node[draw=AccentBlue!55,fill=\shade,rounded corners=4pt,
+        minimum width=4.25cm,minimum height=2.65cm,line width=0.8pt]
+        (dc\id) at (\x,-3.28) {};
+      \node[font=\small\bfseries] at (\x,-2.22) {Data Center \id};
+      \node[font=\small,text=Muted] at (\x,-2.57) {\config};
+      \node[svc,draw=Accent!65,fill=white,text width=3.55cm,
+        minimum height=0.52cm,font=\small\bfseries]
+        (local\id) at (\x,-3.05) {Local A/E Scheduler};
+      \node[svc,draw=AccentBlue!55,fill=white,text width=1.55cm,
+        minimum height=0.66cm,font=\small]
+        (attn\id) at (\x-1.00,-4.07) {Attention\\Workers};
+      \node[svc,draw=Accent!65,fill=white,text width=1.55cm,
+        minimum height=0.66cm,font=\small]
+        (expert\id) at (\x+1.00,-4.07) {Expert\\Workers};
+      \draw[Accent,thick] (local\id.south) -- (\x,-3.48);
+      \draw[->,AccentBlue,thick] (\x,-3.48) -| (attn\id.north);
+      \draw[->,Accent,thick] (\x,-3.48) -| (expert\id.north);
+    }
+    \draw[Accent,thick] (global.south) -- (0,-1.60);
+    \draw[->,Accent,thick] (0,-1.60) -| (dcA.north);
+    \draw[->,Accent,thick] (0,-1.60) -- (dcB.north);
+    \draw[->,Accent,thick] (0,-1.60) -| (dcC.north);
+    \node[font=\small,text=Muted] at (0,-4.92)
+      {Conceptual storage configurations for research};
   \end{tikzpicture}\par}
-  \vspace{0.12cm}
-  {\centering\small\color{Accent}\textbf{Goal:} Balance trade-offs among latency, power, and throughput.\par}
+  \vspace{0.14cm}
+  {\centering\small\bfseries\color{Accent}
+    Goal: Improve SLO Goodput \& Reduce Total System Power\par}
 \end{frame}
-\endgroup
 
 % ============================================================
 % SLIDE 7 - System-level methodology; memory integration remains planned
