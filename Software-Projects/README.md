@@ -1,6 +1,6 @@
-# Software Engineering & System Simulation
+# Experience & Selected Projects
 
-Software engineering interview presentation by Yu-Jui Liang, dated November 6, 2026. The deck covers production software work at NeoPower and ongoing research on cross-data-center Prefill/Decode scheduling across heterogeneous GPU clusters with HBM/HBF memory configurations, targeting higher aggregate serving throughput and lower total system power.
+Interview presentation for software, systems, and EDA roles by Yu-Jui Liang, dated November 6, 2026. The deck covers production software work at NeoPower and ongoing research on cross-data-center Prefill/Decode scheduling across heterogeneous GPU clusters with HBM/HBF memory configurations, targeting higher aggregate serving throughput and lower total system power.
 
 **8 main slides + 3 backup slides; standard speaking target: 7 min 40 sec, including 2.5–3 minutes of research.** Traditional Chinese rehearsal notes and 10-minute extension guidance are in `speaker_notes.md`, separate from the PDF. Both versions use the same slide order and adjust spoken detail. Timing is a rehearsal target.
 
@@ -8,7 +8,7 @@ Software engineering interview presentation by Yu-Jui Liang, dated November 6, 2
 
 | # | Title | Purpose | Time |
 | --- | --- | --- | --- |
-| 1 | Software Engineering & System Simulation | Simple cover | 15 s |
+| 1 | Experience & Selected Projects | Simple cover | 15 s |
 | 2 | Education & Professional Experience | Existing education and employment history | 35 s |
 | 3 | NeoPower: Backend System Architecture | Electric bus platform, personal responsibilities, container isolation | 50 s |
 | 4 | NeoPower: Scenario-Based System Simulation | Personally developed simulator, historical inputs, high load and network failures | 90 s |
