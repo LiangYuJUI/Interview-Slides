@@ -52,7 +52,7 @@ Rebuild `main.pdf` whenever `main.tex` changes. Keep the PDF in sync with the so
 - Diagram styles and colors live in the preamble. Research diagrams retain the blue/green palette; storage examples use blue for HBM-focused, mint for HBF-focused and lilac for hybrid HBM/HBF.
 - Comment banners use final slide numbers 1–11.
 - Keep essential diagram labels readable. Remove secondary material rather than shrink fonts or fill whitespace.
-- Slide 6 labels the storage configurations as conceptual research examples and ends with the research goal. Normal theme page numbers remain; detailed caveats belong in the speaker notes.
+- Slide 6 ends with the research goal; the conceptual status of the storage configurations is explained in the speaker notes. Normal theme page numbers remain; detailed caveats belong in the speaker notes.
 - Check the build log for box overflow and warnings, verify exactly eleven PDF pages, and render and inspect every page after layout changes.
 
 ## Factual boundaries

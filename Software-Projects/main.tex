@@ -375,8 +375,8 @@
       B/0/SoftLilac/{Hybrid HBM/HBF},
       C/4.65/SoftMint/HBF-focused} {
       \node[draw=AccentBlue!55,fill=\shade,rounded corners=4pt,
-        minimum width=4.25cm,minimum height=2.65cm,line width=0.8pt]
-        (dc\id) at (\x,-3.28) {};
+        minimum width=4.25cm,minimum height=3.10cm,line width=0.8pt]
+        (dc\id) at (\x,-3.505) {};
       \node[font=\small\bfseries] at (\x,-2.22) {Data Center \id};
       \node[font=\small,text=Muted] at (\x,-2.57) {\config};
       \node[svc,draw=Accent!65,fill=white,text width=3.55cm,
@@ -384,20 +384,18 @@
         (local\id) at (\x,-3.05) {Local A/E Scheduler};
       \node[svc,draw=AccentBlue!55,fill=white,text width=1.55cm,
         minimum height=0.66cm,font=\small]
-        (attn\id) at (\x-1.00,-4.07) {Attention\\Workers};
+        (attn\id) at (\x-1.00,-4.52) {Attention\\Workers};
       \node[svc,draw=Accent!65,fill=white,text width=1.55cm,
         minimum height=0.66cm,font=\small]
-        (expert\id) at (\x+1.00,-4.07) {Expert\\Workers};
-      \draw[Accent,thick] (local\id.south) -- (\x,-3.48);
-      \draw[->,AccentBlue,thick] (\x,-3.48) -| (attn\id.north);
-      \draw[->,Accent,thick] (\x,-3.48) -| (expert\id.north);
+        (expert\id) at (\x+1.00,-4.52) {Expert\\Workers};
+      \draw[Accent,thick] (local\id.south) -- (\x,-3.70);
+      \draw[->,AccentBlue,thick] (\x,-3.70) -| (attn\id.north);
+      \draw[->,Accent,thick] (\x,-3.70) -| (expert\id.north);
     }
     \draw[Accent,thick] (global.south) -- (0,-1.60);
     \draw[->,Accent,thick] (0,-1.60) -| (dcA.north);
     \draw[->,Accent,thick] (0,-1.60) -- (dcB.north);
     \draw[->,Accent,thick] (0,-1.60) -| (dcC.north);
-    \node[font=\small,text=Muted] at (0,-4.92)
-      {Conceptual storage configurations for research};
   \end{tikzpicture}\par}
   \vspace{0.14cm}
   {\centering\small\bfseries\color{Accent}
