@@ -355,7 +355,7 @@
 % ============================================================
 % SLIDE 6 - Cross-data-center request scheduling
 % Storage configurations are conceptual research examples, not products.
-% Both Attention and Expert workers remain inside each data center.
+% Both Attention and FFN workers remain inside each data center.
 % ============================================================
 \begin{frame}{Cross-Data-Center LLM Serving}
   \takeaway{Scheduling Across Different Storage System Configurations}
@@ -381,16 +381,16 @@
       \node[font=\small,text=Muted] at (\x,-2.57) {\config};
       \node[svc,draw=Accent!65,fill=white,text width=3.55cm,
         minimum height=0.52cm,font=\small\bfseries]
-        (local\id) at (\x,-3.05) {Local A/E Scheduler};
+        (local\id) at (\x,-3.05) {Local Scheduler};
       \node[svc,draw=AccentBlue!55,fill=white,text width=1.55cm,
         minimum height=0.66cm,font=\small]
         (attn\id) at (\x-1.00,-4.52) {Attention\\Workers};
       \node[svc,draw=Accent!65,fill=white,text width=1.55cm,
         minimum height=0.66cm,font=\small]
-        (expert\id) at (\x+1.00,-4.52) {Expert\\Workers};
+        (ffn\id) at (\x+1.00,-4.52) {FFN\\Workers};
       \draw[Accent,thick] (local\id.south) -- (\x,-3.70);
       \draw[->,AccentBlue,thick] (\x,-3.70) -| (attn\id.north);
-      \draw[->,Accent,thick] (\x,-3.70) -| (expert\id.north);
+      \draw[->,Accent,thick] (\x,-3.70) -| (ffn\id.north);
     }
     \draw[Accent,thick] (global.south) -- (0,-1.60);
     \draw[->,Accent,thick] (0,-1.60) -| (dcA.north);
@@ -419,7 +419,7 @@
     \node[svc,draw=Accent!80,fill=white,text width=4.3cm,minimum height=3.20cm]
       (sim) at (5,0) {\textbf{System-Level}\\\textbf{LLM Serving Simulator}\\[4mm]
       Multiple data centers\\Heterogeneous GPU clusters\\[2mm]
-      LLM requests\\Attention / Expert split\\Request routing \& scheduling};
+      LLM requests\\Attention / FFN split\\Request routing \& scheduling};
     \node[svc,draw=AccentBlue!65,fill=SoftLilac!65,text width=3.15cm,minimum height=3.20cm]
       (eval) at (10.05,0) {\textbf{Scheduling Evaluation}\\[4mm]
       Compare strategies\\[3mm]

@@ -100,14 +100,14 @@ NeoPower 新動智能是一間做電動車能源管理的新創。我從大二�
 
 請求先進入 Global Request Router，由它決定送往哪個資料中心。圖中列出三種概念性的儲存系統配置：A 以 HBM 為主、B 混合 HBM 與 HBF、C 以 HBF 為主。這些是研究情境，不代表已部署或可購買的 GPU 產品。
 
-每個資料中心內都有自己的 Local A/E Scheduler，負責安排站內的 Attention 與 Expert Workers。全域層選擇資料中心，區域層管理站內工作，不要求把 Attention 和 Expert 分放在不同資料中心。
+每個資料中心內都有自己的 Local Scheduler，負責安排站內的 Attention 與 FFN Workers。全域層選擇資料中心，區域層管理站內工作，不要求把 Attention 和 FFN 分放在不同資料中心。
 
 研究希望比較不同儲存配置下的請求排程策略，提高 SLO Goodput，也就是單位時間內滿足服務目標的請求數，同時降低總系統功耗。這是研究目標，模擬整合與評估仍在規劃或進行中。
 
 技術備註與問答：
 
 - 主要問題是跨資料中心的 request scheduling；GPU 型號與運算能力差異屬於實作與模型參數，不是這頁的主題。
-- A/E 指 Attention／Expert。每個資料中心都包含兩類 workers，圖中沒有要求跨資料中心進行 A/E 分工。
+- FFN 指 Feed-Forward Network。此處保留 Attention／FFN 分離執行的概念架構，不限定 MoE 模型，也不要求跨資料中心分工。
 - HBF 是 High Bandwidth Flash，以 NAND Flash 為基礎。HBM-focused 與 HBF-focused 表示配置重點，不表示排除其他緩衝、快取或資料管理機制。Hybrid 不預設固定容量比例。
 - 全域路由策略的候選考量包括請求的 SLO、站點負載與儲存配置；具體策略及參數仍需在後續模擬中定義與評估。
 - SLO Goodput 必須先定義請求達標條件與統計時間窗口，並與總系統功耗一起評估；不等同於只計算總吞吐量或每 token 能耗。
@@ -123,7 +123,7 @@ NeoPower 新動智能是一間做電動車能源管理的新創。我從大二�
 
 在實作方面，我目前以開源的 GPU Cluster Serving Simulator 作為系統架構的基礎，並規劃整合相關學術研究所使用的 GPU Memory 和 Storage Simulators，來模擬不同硬體配置下的記憶體傳輸與功耗行為。
 
-接著，在這個模擬環境中建立多個 Data Centers 和不同規格的 GPU Clusters，研究全域路由如何將 LLM Requests 分配到資料中心，再由各站的 Local A/E Scheduler 安排站內的 Attention 和 Expert 工作。
+接著，在這個模擬環境中建立多個 Data Centers 和不同規格的 GPU Clusters，研究全域路由如何將 LLM Requests 分配到資料中心，再由各站的 Local Scheduler 安排站內的 Attention 和 FFN 工作。
 
 最後透過模擬結果，比較不同 Scheduling Strategies 對系統 Throughput 和 Power Consumption 的影響。
 

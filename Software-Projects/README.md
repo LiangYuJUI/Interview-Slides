@@ -13,7 +13,7 @@ Interview presentation for software, systems, and EDA roles by Yu-Jui Liang, dat
 | 3 | NeoPower: Backend System Architecture | Electric bus platform, personal responsibilities, container isolation | 50 s |
 | 4 | NeoPower: Scenario-Based System Simulation | Personally developed simulator, historical inputs, high load and network failures | 90 s |
 | 5 | NeoPower: Testing & Production Reliability | Pre-deployment test gate and cross-site charging-power algorithm comparison | 80 s |
-| 6 | Cross-Data-Center LLM Serving | Global request routing across three conceptual storage configurations; local A/E scheduling within each data center | 60 s |
+| 6 | Cross-Data-Center LLM Serving | Global request routing across three conceptual storage configurations; local scheduling within each data center | 60 s |
 | 7 | Research Methodology: System-Level Simulation | Public specifications and published models feed serving simulation and throughput/power evaluation | 75 s |
 | 8 | Thank You | Close | 10 s |
 | 9 | SAT-LEX: LLM and SMT-Based Document Verification | Backup flowchart | Q&A |
@@ -68,7 +68,7 @@ NeoPower:
 LLM research:
 
 - Slide 6 emphasizes cross-data-center request scheduling. Incoming LLM requests reach a Global Request Router, which selects among Data Center A (HBM-focused), B (Hybrid HBM/HBF) and C (HBF-focused).
-- Each data center contains its own Local A/E Scheduler and both Attention and Expert Workers. The local scheduler manages work within that site; the diagram does not require Attention and Expert workers to reside in different data centers.
+- Each data center contains its own Local Scheduler and both Attention and FFN Workers. The local scheduler manages work within that site; the diagram does not require Attention and FFN workers to reside in different data centers.
 - These storage configurations are conceptual research examples, not claims about deployed or commercially available GPU hardware. No fixed HBM/HBF capacity ratio is assumed. GPU heterogeneity is an implementation detail.
 - HBF means High Bandwidth Flash and is NAND-flash-based.
 - Parameter sources are public GPU specifications, existing HBM characteristics and published HBF/NAND-flash research, including proposals associated with SanDisk, SK hynix and academic groups. No unsupported device parameters or benchmark results are included.
