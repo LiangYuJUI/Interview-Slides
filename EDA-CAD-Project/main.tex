@@ -901,13 +901,16 @@
 \renewcommand{\slideposition}{Details index}
 \begin{frame}[label=details-index]{Technical Details}
   \slidesubtitle{Questions \& Discussion}\par\vspace{.18cm}
-  {\small Select a topic. Each detail page links back to the relevant summary slides.}\par
+  {\small Select a topic. All backup pages link back to this index.}\par
   \vspace{.45cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.48\textwidth}
       {\normalsize\bfseries\color{Accent}Logic Synthesis /\\Technology Mapping}\par\vspace{.30cm}
       \hyperlink{detail-dc-abc}{\beamerbutton{D10 / Design Compiler vs. ABC}}\par\vspace{.30cm}
-      \hyperlink{detail-legality}{\beamerbutton{D02 / MO Pair Matching}}
+      \hyperlink{detail-legality}{\beamerbutton{D02 / MO Pair Matching}}\par\vspace{.35cm}
+      {\normalsize\bfseries\color{Accent}SoC Integration / ML for EDA}\par\vspace{.22cm}
+      \hyperlink{detail-mini-soc}{\beamerbutton{B06 / Mini-SoC RTL-to-GDS}}\par\vspace{.22cm}
+      \hyperlink{detail-diffusion-floorplan}{\beamerbutton{B07 / Diffusion Floorplanner}}
     \end{column}
     \begin{column}{.48\textwidth}
       {\normalsize\bfseries\color{Accent}Physical Design /\\Timing ECO}\par\vspace{.30cm}
@@ -920,7 +923,7 @@
 
 % DETAIL 10 / 11 | DC vs. ABC Synthesis Stages
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-6}{\beamerreturnbutton{Summary 6}}}
-\renewcommand{\slideposition}{Detail 10 / 11}
+\renewcommand{\slideposition}{Backup 1 / 7}
 \begin{frame}[label=detail-dc-abc]{Design Compiler vs. ABC: Logic Synthesis Stages}
   \vspace{.02cm}\slidesubtitle{D10 / Logic Synthesis}\par\vspace{.08cm}
   \vspace{.18cm}
@@ -981,7 +984,7 @@
 
 % DETAIL 02 | MO Pair Matching \& Structural Legality
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-9}{\beamerreturnbutton{Summary 9}}}
-\renewcommand{\slideposition}{Backup 2 / 5}
+\renewcommand{\slideposition}{Backup 2 / 7}
 \begin{frame}[label=detail-legality]{MO Pair Matching \& Structural Legality}
 
   \slidesubtitle{D02 / Candidate Validation}\par\vspace{.30cm}
@@ -1005,7 +1008,7 @@
 
 % DETAIL 11 / 11 | Physical Design Flow
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-14}{\beamerreturnbutton{Summary 14}}}
-\renewcommand{\slideposition}{Detail 11 / 11}
+\renewcommand{\slideposition}{Backup 3 / 7}
 \begin{frame}[label=detail-pd-flow]{Where Our ECO Fits in the Physical Design Flow}
   \vspace{.02cm}\slidesubtitle{D11 / Physical Design Flow}\par\vspace{.14cm}
   \centering
@@ -1035,7 +1038,7 @@
 
 % DETAIL 08 | QoR Scoring for Branch Ranking
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-17}{\beamerreturnbutton{Summary 17}}}
-\renewcommand{\slideposition}{Backup 4 / 5}
+\renewcommand{\slideposition}{Backup 4 / 7}
 \begin{frame}[shrink=12,label=detail-quality]{QoR Scoring for Branch Ranking}
 
   \slidesubtitle{D08 / Branch List Ranking}\par\vspace{.12cm}
@@ -1076,7 +1079,7 @@
 
 % DETAIL 09 | Parallel Candidate Evaluation with OpenROAD
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-17}{\beamerreturnbutton{Summary 17}}}
-\renewcommand{\slideposition}{Backup 5 / 5}
+\renewcommand{\slideposition}{Backup 5 / 7}
 \begin{frame}[shrink=3,label=detail-parallel]{Parallel Candidate Evaluation with OpenROAD}
 
   \slidesubtitle{D09 / Execution Architecture}\par\vspace{.12cm}
@@ -1117,6 +1120,71 @@
     \end{column}
   \end{columns}
 
+\end{frame}
+
+
+% B06 | Personal integration project and academic EDA validation platform
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerreturnbutton{Details index}}}
+\renewcommand{\slideposition}{Backup 6 / 7}
+\begin{frame}[shrink=20,label=detail-mini-soc]{Mini-SoC: RTL-to-GDS Validation Platform}
+  \slidesubtitle{B06 / Personal Project \& EDA Tool Validation}\par\vspace{.14cm}
+  {\small\bfseries An open-source Mini-SoC in a complete RTL-to-GDS flow, now a validation platform for EDA tools.}\par\vspace{.22cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \smalllabel{Integration of Existing Open-Source IP}\par\vspace{.12cm}
+      \centering
+      \begin{tikzpicture}[>=Latex,font=\small,
+        ip/.style={draw=AccentBlue!65,fill=SoftBlue!72,rounded corners=3pt,
+          align=center,minimum height=.65cm,inner sep=4pt},
+        flow/.style={->,thick,Accent}]
+        \node[ip,text width=5.7cm] (bus) at (0,0) {\textbf{Wishbone Interconnect}};
+        \node[ip,text width=2.45cm] (periph) at (-1.65,-1.1) {SPI / I2C\\Peripherals};
+        \node[ip,text width=2.45cm] (ctrl) at (1.65,-1.1) {SRAM\\Controller};
+        \node[ip,fill=SoftLilac,text width=2.45cm] (ram) at (1.65,-2.2) {1-KiB SRAM\\Hard Macro};
+        \draw[flow] (bus.south -| periph.north)--(periph.north);
+        \draw[flow] (bus.south -| ctrl.north)--(ctrl.north);
+        \draw[flow] (ctrl.south)--(ram.north);
+      \end{tikzpicture}\par\vspace{.16cm}
+      \smallpanel{panelmint}{Physical Implementation / ASAP7}{RTL synthesis, macro-based physical implementation, and routing through GDS.}
+      \vspace{.12cm}
+      {\scriptsize\raggedright Personal practice integrating existing IP to exercise the full flow, later extended for academic tool validation.\par}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \softpanel{panelblue}{Mini-SoC / Post-Route Results}{%
+        \begin{tabular}{@{}ll@{}}
+          \textbf{11.1k} instances & \textbf{500 ps} clock period\\[.10cm]
+          \textbf{+34.8 ps} setup slack & \textbf{8.94 mW} power
+        \end{tabular}\par\vspace{.12cm}
+        Zero setup / hold violations}
+      \vspace{.15cm}
+      \smallpanel{panelmint}{Reported Improvements}{\textbf{16\%} die-area reduction\quad /\quad \textbf{6\%} wirelength reduction}
+      \vspace{.15cm}
+      \smallpanel{panellilac}{Separate Extended Design / ORFS RV32I}{Four 1-KiB SRAM macros\\[.07cm]
+        \textbf{18.4k} instances\quad /\quad \textbf{65\%} utilization}
+    \end{column}
+  \end{columns}
+  \vspace{.22cm}
+  \takeaway{\small Beyond standard benchmarks: validate new EDA tools within an end-to-end open-source RTL-to-GDS flow.}
+\end{frame}
+
+% B07 | Controlled comparison; actual evaluator outputs are pending
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerreturnbutton{Details index}}}
+\renewcommand{\slideposition}{Backup 7 / 7}
+\begin{frame}[shrink=9,label=detail-diffusion-floorplan]{ICCAD 2026: Diffusion-Guided SoC Floorplanner}
+  \slidesubtitle{B07 / ML for EDA \& Macro Placement}\par\vspace{.10cm}
+  {\small\bfseries Compare heuristic and diffusion-based initialization using the same refinement stage and evaluator.}\par\vspace{.06cm}
+  {\centering
+    \includegraphics[width=\linewidth,height=4.45cm,keepaspectratio]{floorset_benchmark_results.png}\par}
+  \vspace{.05cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.50\textwidth}
+      \smallpanel{panelblue}{Implemented Flow / Contest Problem C}{Contest API + data pipeline; graph model + training; DDIM inference; heuristic fallback; constraint-aware SA for floorplan / HPWL refinement; evaluator + constraint checks.}
+    \end{column}
+    \begin{column}{.47\textwidth}
+      \smallpanel{panellilac}{Evaluation Pending}{Official score, HPWL, bounding-box area, constraint violations, runtime, and hard feasibility.\\[.06cm]
+        \textbf{Results pending actual evaluator outputs.}}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \end{document}
