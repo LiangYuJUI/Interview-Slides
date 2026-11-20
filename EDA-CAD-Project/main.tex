@@ -1092,25 +1092,25 @@
       bus/.style={line width=.8pt,line cap=rect,line join=miter}}
     \node[b,fill=SoftMint!85,text width=5.6cm] (controller) at (0,0)
       {\textbf{Python Search Controller}\\Branch List + Parent Checkpoint};
-    \node[b] (w1) at (-4.4,-1.40)
-      {\textbf{Worker 1 / S2 Path-Restricted}\\{\tiny Independent OpenROAD context}};
-    \node[b] (w2) at (0,-1.40)
-      {\textbf{Worker 2 / S3 Overlap-Aware}\\{\tiny Independent OpenROAD context}};
-    \node[b] (w3) at (4.4,-1.40)
-      {\textbf{Worker 3 / S5 Power Recovery}\\{\tiny Independent OpenROAD context}};
-    \draw[bus,AccentBlue] (controller.south) -- (0,-.65);
-    \draw[bus,AccentBlue] (-4.4,-.65) -- (4.4,-.65);
+    \node[b] (w1) at (-4.4,-1.55)
+      {\textbf{Worker 1 / S2 Path-Restricted}};
+    \node[b] (w2) at (0,-1.55)
+      {\textbf{Worker 2 / S3 Overlap-Aware}};
+    \node[b] (w3) at (4.4,-1.55)
+      {\textbf{Worker 3 / S5 Power Recovery}};
+    \draw[bus,AccentBlue] (controller.south) -- (0,-.775);
+    \draw[bus,AccentBlue] (-4.4,-.775) -- (4.4,-.775);
     \foreach \n in {w1,w2,w3}{
-      \draw[bus,->,AccentBlue] (\n.north |- 0,-.65) -- (\n.north);
-      \draw[bus,Accent] (\n.south) -- (\n.south |- 0,-2.15);
+      \draw[bus,->,AccentBlue] (\n.north |- 0,-.775) -- (\n.north);
+      \draw[bus,Accent] (\n.south) -- (\n.south |- 0,-2.325);
     }
-    \draw[bus,Accent] (-4.4,-2.15) -- (4.4,-2.15);
-    \node[b,fill=SoftMint!70,text width=6.4cm] (merge) at (0,-2.80)
+    \draw[bus,Accent] (-4.4,-2.325) -- (4.4,-2.325);
+    \node[b,fill=SoftMint!70,text width=6.4cm] (merge) at (0,-3.10)
       {\textbf{Collect \& Rank Candidates}\\Global STA / Power / HPWL / Checkpoints};
-    \draw[bus,->,Accent] (0,-2.15) -- (merge.north);
+    \draw[bus,->,Accent] (0,-2.325) -- (merge.north);
   \end{tikzpicture}
   \par}
-  \vspace{.10cm}
+  \vspace{-.12cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.48\textwidth}
       \smallpanel{panelblue}{Worker Responsibilities}{Apply ECO operations, legalize placement, evaluate QoR, save checkpoints.}
@@ -1127,11 +1127,13 @@
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerreturnbutton{Details index}}}
 \renewcommand{\slideposition}{Backup 6 / 7}
 \begin{frame}[shrink=20,label=detail-mini-soc]{Mini-SoC: RTL-to-GDS Validation Platform}
-  \slidesubtitle{B06 / Personal Project \& EDA Tool Validation}\par\vspace{.14cm}
-  {\small\bfseries Personal practice integrating open-source IP through RTL-to-GDS, with tool / script integration checks.}\par\vspace{.22cm}
+  \vspace{0pt}% Keep the following group in the frame body.
+  {\fontsize{8.4875}{10}\selectfont\bfseries\color{Accent}
+    B06 / PERSONAL PROJECT \& EDA TOOL VALIDATION}\par\vspace{.14cm}
+  \vspace{.22cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.48\textwidth}
-      \smalllabel{Integration of Existing Open-Source IP}\par\vspace{.12cm}
+      \smalllabel{Integration of Existing Open-Source IP}\par\vspace{.32cm}
       \centering
       \begin{tikzpicture}[>=Latex,font=\small,
         ip/.style={draw=AccentBlue!65,fill=SoftBlue!72,rounded corners=3pt,
@@ -1145,9 +1147,7 @@
         \draw[flow] (bus.south -| ctrl.north)--(ctrl.north);
         \draw[flow] (ctrl.south)--(ram.north);
       \end{tikzpicture}\par\vspace{.16cm}
-      \smallpanel{panelmint}{Physical Implementation / ASAP7}{RTL synthesis, macro-based physical implementation, and routing through GDS.}
-      \vspace{.12cm}
-      {\scriptsize\raggedright Demonstrated: RTL-to-GDS and tool / script integration checks. Intended use: validation of new academic EDA tools.\par}
+      \softpanel{panelmint}{\normalsize Physical Implementation / ASAP7 7nm}{RTL synthesis, macro-based physical implementation, and routing through GDS.}
     \end{column}
     \begin{column}{.48\textwidth}
       \softpanel{panelblue}{Original Mini-SoC / Post-Route Results}{%
@@ -1157,9 +1157,9 @@
         \end{tabular}\par\vspace{.12cm}
         Zero setup / hold violations}
       \vspace{.15cm}
-      \smallpanel{panelmint}{Mini-SoC / Reported Improvements}{\textbf{16\%} die-area reduction\quad /\quad \textbf{6\%} wirelength reduction\\[.07cm]Comparison baseline not documented in available sources.}
+      \softpanel{panelmint}{Mini-SoC / Reported Improvements}{\textbf{16\%} die-area reduction\quad /\quad \textbf{6\%} wirelength reduction\\[.07cm]Comparison baseline not documented in available sources.}
       \vspace{.15cm}
-      \smallpanel{panellilac}{Separate Extended Design / ORFS RV32I}{Four 1-KiB SRAM macros\\[.07cm]
+      \softpanel{panellilac}{Separate Extended Design / ORFS RV32I}{Four 1-KiB SRAM macros\\[.07cm]
         \textbf{18.4k} instances\quad /\quad \textbf{65\%} utilization}
     \end{column}
   \end{columns}
@@ -1170,19 +1170,18 @@
 % B07 | Controlled comparison; actual evaluator outputs are pending
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerreturnbutton{Details index}}}
 \renewcommand{\slideposition}{Backup 7 / 7}
-\begin{frame}[label=detail-diffusion-floorplan]{ICCAD 2026: Diffusion-Guided SoC Floorplanner}
+\begin{frame}[label=detail-diffusion-floorplan]{CAD Contest 2026: Diffusion-Guided SoC Floorplanner}
   \slidesubtitle{B07 / ML for EDA \& Macro Placement}\par\vspace{.10cm}
   {\small\bfseries Heuristic vs. Diffusion Initialization: same Constrained SA refinement and evaluator.}\par\vspace{.06cm}
   {\centering
-    \includegraphics[width=\linewidth,height=4.65cm,keepaspectratio]{floorset_benchmark_results.png}\par}
+    \includegraphics[width=\linewidth,height=4.30cm,keepaspectratio]{floorset_benchmark_results.png}\par}
   \vspace{.05cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.50\textwidth}
-      {\footnotesize\bfseries\color{Accent}Implemented Flow / Contest Problem C}\par\vspace{.06cm}{\scriptsize Contest API / data pipeline, graph training, DDIM inference, heuristic fallback, constrained SA, evaluator / checks.}
+      {\small\bfseries\color{Accent}Implemented Flow / Contest Problem C}\par\vspace{.06cm}{\footnotesize Diffusion-based initialization followed by constraint-aware simulated annealing for macro placement, HPWL, and floorplan quality.}
     \end{column}
     \begin{column}{.47\textwidth}
-      {\footnotesize\bfseries\color{Accent}Evaluation Pending}\par\vspace{.06cm}{\scriptsize Official score, HPWL, bounding-box area, violations, runtime, hard feasibility.\\[.06cm]
-        \textbf{Results pending actual evaluator outputs.}}
+      {\small\bfseries\color{Accent}Evaluation Pending}\par\vspace{.06cm}{\footnotesize Official score, HPWL, bounding-box area, violations, runtime, hard feasibility.}
     \end{column}
   \end{columns}
 \end{frame}
