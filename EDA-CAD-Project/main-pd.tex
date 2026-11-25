@@ -174,12 +174,14 @@
 \institute{National Taiwan University}
 \date{}
 
-% Unified S1-S5 card height; keeps five candidates easy to compare.
+% Unified S1-S6 card size; six candidates share one grid.
 \newcommand{\ecostrategycard}[3]{%
-  \begin{beamercolorbox}[rounded=true,sep=.20cm,wd=\linewidth]{#1}%
-    \begin{minipage}[c][1.43cm][c]{\dimexpr\linewidth-.40cm\relax}
-      {\normalsize\bfseries\color{Accent}#2}\par\vspace{.11cm}
-      {\small\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000 #3\par}
+  \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{#1}%
+    \begin{minipage}[t][2.58cm][t]{\dimexpr\linewidth-.20cm\relax}%
+      \parbox[t][0.90cm][t]{\linewidth}{%
+        \small\bfseries\color{Accent}\raggedright #2}%
+      \par\vspace{.04cm}%
+      {\footnotesize\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000 #3\par}%
     \end{minipage}%
   \end{beamercolorbox}%
 }
@@ -422,14 +424,14 @@
     \end{column}
   \end{columns}
 
-  \vspace{.40cm}
+  \vspace{.06cm}
   % ---- Conceptual ECO pipeline, not the proposed branch-search algorithm ----
   \smalllabel{Basic ECO Evaluation Pipeline}\par\vspace{.09cm}
   \centering
   \begin{tikzpicture}[>=Latex,font=\scriptsize]
     \tikzset{
       ecoStage/.style={draw=AccentBlue!60,fill=SoftBlue!74,
-        rounded corners=4pt,text width=2.45cm,minimum height=1.96cm,
+        rounded corners=4pt,text width=2.45cm,minimum height=2.32cm,
         inner xsep=4pt,inner ysep=4pt,align=center,outer sep=0pt},
       ecoMint/.style={ecoStage,draw=Accent!68,fill=SoftMint!80},
       ecoLilac/.style={ecoStage,draw=AccentBlue!60,fill=SoftLilac!83}
@@ -440,19 +442,21 @@
       \mbox{SDC}\\[.8mm]
       \mbox{Liberty}};
     \node[ecoStage] (detect) at (3.55,0) {%
-      {\bfseries\color{AccentBlue}02 / Analyze}\\[1.6mm]
-      \mbox{Critical paths}\\[.8mm]
-      \mbox{Setup endpoints}\\[.8mm]
-      \mbox{Critical cells / nets}};
+      {\bfseries\color{AccentBlue}02 / Analyze}\\[1.2mm]
+      \mbox{Critical paths}\\[.45mm]
+      \mbox{High-slack paths}\\[.45mm]
+      \mbox{Setup endpoints}};
     \node[ecoMint] (repair) at (7.10,0) {%
-      {\bfseries\color{Accent}03 / ECO Repair}\\[1.6mm]
-      \mbox{Gate sizing}\\[.8mm]
-      \mbox{Buffer insertion}\\[.8mm]
+      {\bfseries\color{Accent}03 / ECO Repair}\\[1.2mm]
+      \mbox{Gate sizing}\\[.45mm]
+      \mbox{VT swapping}\\[.45mm]
+      \mbox{Buffer insertion}\\[.45mm]
       \mbox{Cell relocation}};
     \node[ecoLilac] (evaluate) at (10.65,0) {%
-      {\bfseries\color{AccentBlue}04 / Evaluate}\\[1.6mm]
-      \mbox{Legalize + STA}\\[.8mm]
-      \mbox{TNS / Power}\\[.8mm]
+      {\bfseries\color{AccentBlue}04 / Evaluate}\\[1.2mm]
+      \mbox{Legalize}\\[.45mm]
+      \mbox{Global STA}\\[.45mm]
+      \mbox{TNS / Power}\\[.45mm]
       {\fontsize{6.65}{8}\selectfont\mbox{HPWL / Displacement}}};
     \foreach \from/\to in {input/detect,detect/repair,repair/evaluate}{%
       \draw[->,Accent,thick] (\from.east)--(\to.west);}
@@ -462,32 +466,34 @@
 \end{frame}
 
 % ------------------------------------------------------------------------
-% SLIDE 7 / 18 | Five Automatic ECO Strategy Candidates
+% SLIDE 7 / 18 | Six Automatic ECO Strategy Candidates
 % ------------------------------------------------------------------------
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
 \renewcommand{\slideposition}{Summary 7 / 18}
-\begin{frame}[label=summary-7]{Five Automatic ECO Strategy Candidates}
+\begin{frame}[label=summary-7]{Six Automatic ECO Strategy Candidates}
   \vspace{.01cm}
-  \slidesubtitle{02 / Candidate Set}\par\vspace{.12cm}
-  \vspace{.37cm}
+  \slidesubtitle{02 / Candidate Set}\par\vspace{.10cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.32\textwidth}
+    \begin{column}{.314\textwidth}
       \ecostrategycard{panelblue}{S1 / Global Setup}{Whole design; automatic upsizing and VT selection.}
     \end{column}
-    \begin{column}{.32\textwidth}
+    \begin{column}{.314\textwidth}
       \ecostrategycard{panelmint}{S2 / Path-Restricted}{Top-K path cells + nets; localized setup repair.}
     \end{column}
-    \begin{column}{.32\textwidth}
-      \ecostrategycard{panellilac}{S3 / Overlap-Aware}{Top-I shared cells, nets fixed; sizing / VT repair.}
+    \begin{column}{.314\textwidth}
+      \ecostrategycard{panellilac}{S3 / Overlap-Aware}{Top-I shared cells, nets fixed; sizing/VT repair.}
     \end{column}
   \end{columns}
-  \vspace{.34cm}
+  \vspace{.14cm}
   \begin{columns}[T,onlytextwidth]
-    \begin{column}{.49\textwidth}
+    \begin{column}{.314\textwidth}
       \ecostrategycard{panelmint}{S4 / Local Buffering}{Top-K nets, original cells fixed; buffer insertion and load splitting.}
     \end{column}
-    \begin{column}{.49\textwidth}
-      \ecostrategycard{panelblue}{S5 / Targeted High-Fanout Repair}{Identify high-fanout nets; restrict repair to selected driver cells and associated nets.}
+    \begin{column}{.314\textwidth}
+      \ecostrategycard{panelblue}{S5 / Targeted High-Fanout Repair}{High-fanout nets; repair selected drivers and associated nets.}
+    \end{column}
+    \begin{column}{.314\textwidth}
+      \ecostrategycard{panellilac}{S6 / Slack-Aware Power Recovery}{Top-K paths with the largest positive slack; higher-VT cell swaps to reduce leakage while preserving timing constraints.\par\vspace{.05cm}{\scriptsize\color{Muted}Proposed strategy.}}
     \end{column}
   \end{columns}
 \end{frame}
