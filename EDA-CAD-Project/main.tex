@@ -536,47 +536,36 @@
 
 % ------------------------------------------------------------------------
 % SLIDE 12 / 18 | Normalized ADP results
-% Without MILP, ABC = 1.000, SO mode = 0.640, MO mode (FIFO) = 0.627.
-% 37.3% is MO mode (FIFO) versus ABC. 2% is that same MO mode versus SO mode.
+% ABC = 1.000, SO mode = 0.640, MO mode with MILP = 0.602.
+% SO mode is 36% below ABC. MILP is 6% below SO mode.
 % 6% below SO mode on the ABC scale: 0.640 x 0.94 = 0.6016, shown as 0.602.
 % ------------------------------------------------------------------------
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
 \renewcommand{\slideposition}{Summary 12 / 18}
 \begin{frame}[label=summary-12]{Normalized ADP Results}
   \slidesubtitle{07 / Current Results}\par\vspace{.06cm}
-  \takeaway{Evaluation of four mapping configurations across 30 arithmetic logic circuit benchmarks using the ASAP7 7nm standard-cell library.}
+  \takeaway{Evaluation of three mapping configurations across 30 arithmetic logic circuit benchmarks using the ASAP7 7nm standard-cell library.}
   \vspace{.06cm}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{.54\textwidth}
       {\small\bfseries\color{Ink}GMean Normalized ADP (Area--Delay Product)}\par\vspace{.02cm}
-      \begin{tikzpicture}[x=4.15cm,y=.97cm]
-        \fill[AccentBlue!38,rounded corners=1.5pt] (0,3.00) rectangle (1,3.30);
-        \fill[AccentBlue!72,rounded corners=1.5pt] (0,2.00) rectangle (.640,2.30);
-        \fill[Accent!55,rounded corners=1.5pt] (0,1.00) rectangle (.627,1.30);
+      \begin{tikzpicture}[x=4.15cm,y=1.08cm]
+        \fill[AccentBlue!38,rounded corners=1.5pt] (0,2.30) rectangle (1,2.60);
+        \fill[AccentBlue!72,rounded corners=1.5pt] (0,1.15) rectangle (.640,1.45);
         \fill[Accent,rounded corners=1.5pt] (0,0.00) rectangle (.6016,.30);
-        \node[anchor=west,font=\small\bfseries] at (1.05,3.15) {1.000};
-        \node[anchor=west,font=\small\bfseries] at (.72,2.15) {0.640};
-        \node[anchor=west,font=\small\bfseries] at (.71,1.12) {0.627};
+        \node[anchor=west,font=\small\bfseries] at (1.05,2.45) {1.000};
+        \node[anchor=west,font=\small\bfseries] at (.72,1.30) {0.640};
         \node[anchor=west,font=\small\bfseries,text=Accent] at (.70,.15) {0.602};
-        \node[anchor=west,font=\scriptsize] at (0,3.58) {ABC Mapper (SO Baseline)};
-        \node[anchor=west,font=\scriptsize] at (0,2.58) {Our Approach (SO Mode)};
-        \node[anchor=west,font=\scriptsize] at (0,1.66) {Our Approach (MO Mode without MILP, FIFO)};
+        \node[anchor=west,font=\scriptsize] at (0,2.88) {ABC Mapper (SO Baseline)};
+        \node[anchor=west,font=\scriptsize] at (0,1.73) {Our Approach (SO Mode)};
         \node[anchor=west,font=\scriptsize\bfseries] at (0,.58) {Our Approach (MO Mode with MILP)};
       \end{tikzpicture}\par
-      \vspace{.02cm}
-      {\scriptsize\color{Muted}FIFO rejects an MO candidate whose root is already used.}
     \end{column}
     \begin{column}{.44\textwidth}
       \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
-        {\fontsize{18}{20}\selectfont\bfseries\color{Accent}37.3\%}\quad
+        {\fontsize{18}{20}\selectfont\bfseries\color{AccentBlue}36\%}\quad
         {\footnotesize\color{Ink}lower ADP than ABC Mapper}\\[1pt]
-        {\scriptsize\color{Muted}Our Approach MO mode (FIFO): 0.627 vs.\ 1.000}
-      \end{beamercolorbox}
-      \vspace{.06cm}
-      \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
-        {\fontsize{18}{20}\selectfont\bfseries\color{AccentBlue}2\%}\quad
-        {\footnotesize\color{Ink}lower ADP than SO mode}\\[1pt]
-        {\scriptsize\color{Muted}Our Approach MO mode (FIFO): 0.627 vs.\ 0.640}
+        {\scriptsize\color{Muted}Our Approach (SO Mode): 0.640 vs.\ 1.000}
       \end{beamercolorbox}
       \vspace{.06cm}
       \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
@@ -632,7 +621,7 @@
 \renewcommand{\slideposition}{Summary 14 / 18}
 \begin{frame}[label=summary-14]{Multi-Objective Timing ECO Optimization}
   \vspace{.01cm}
-  \slidesubtitle{02 / Problem Definition}\par\vspace{.10cm}
+  \slidesubtitle{01 / Problem Definition}\par\vspace{.10cm}
   \takeaway{Improve setup TNS toward zero while controlling total power, HPWL, and cell displacement.}
   \vspace{.14cm}
 
@@ -741,7 +730,7 @@
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-quality}{\beamerbutton{QoR scoring}}\hspace{.12cm}\hyperlink{detail-parallel}{\beamerbutton{Parallel workers}}}
 \renewcommand{\slideposition}{Summary 16 / 18}
 \begin{frame}[label=summary-16]{STA-Guided ECO Search: Best-First Branch List}
-  \vspace{.01cm}\slidesubtitle{02 / Heuristic Search Policy}\par\vspace{.07cm}
+  \vspace{.01cm}\slidesubtitle{03 / Heuristic Search Policy}\par\vspace{.07cm}
   \takeaway{No better child this round? Continue from the best unexplored state in the Branch List.}
   \vspace{.13cm}
   \begin{columns}[T,onlytextwidth]
@@ -803,7 +792,7 @@
 \renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-quality}{\beamerbutton{QoR scoring}}}
 \renewcommand{\slideposition}{Summary 17 / 18}
 \begin{frame}[label=summary-17]{QoR Results \& Conclusion}
-  \vspace{.01cm}\slidesubtitle{02 / Earlier ECO Evaluation}\par\vspace{.11cm}
+  \vspace{.01cm}\slidesubtitle{04 / Earlier ECO Evaluation}\par\vspace{.11cm}
   {\small\color{Muted}Setup-focused timing repair and the resulting power / wirelength trade-off.}\par
   \vspace{.08cm}
   \begin{columns}[T,onlytextwidth]

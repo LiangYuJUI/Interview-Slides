@@ -1,0 +1,1146 @@
+% Physical-design interview variant of main.tex.
+% Timing ECO is Project 01 and is presented before logic-synthesis mapping.
+% The original speaking order remains in main.tex.
+% EDA / CAD technical interview | technology mapping and ECO
+% English Beamer interview deck, expanded from user-authored ABC Mapper slides.
+% pdfLaTeX; project illustrations are stored in figures/.
+% Mapping content preserved; ECO pages are clearly marked as proposed.
+% NeoPower is a company project: keep discussion high-level and do not imply that
+% every current repository module was personally authored during employment.
+%
+% Original mapping sequence:
+%  1 Cover                 2 Education & Experience   3 Outline
+%  4 ABC: Extension       5 ABC: Testing
+%  6 NeoPower: Systems    7 NeoPower: Reliability
+%  8 Thank You
+
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{hyperref}
+\graphicspath{{./}{figures/}}
+
+% --------- Same Madrid-inspired visual identity as the ABC Mapper deck ---------
+\usetheme{Madrid}
+\usecolortheme{default}
+\definecolor{Ink}{HTML}{243748}
+\definecolor{Muted}{HTML}{667B8B}
+\definecolor{Accent}{HTML}{347E74}
+\definecolor{AccentBlue}{HTML}{507DAD}
+\definecolor{SoftMint}{HTML}{E6F4EE}
+\definecolor{SoftBlue}{HTML}{E9F2F9}
+\definecolor{SoftLilac}{HTML}{F1EEF8}
+\definecolor{Paper}{HTML}{FBFCFE}
+\definecolor{Divider}{HTML}{D8E4EB}
+\setbeamercolor{background canvas}{bg=Paper}
+\setbeamercolor{normal text}{fg=Ink}
+\setbeamercolor{structure}{fg=Accent}
+\setbeamercolor{frametitle}{fg=Ink,bg=SoftBlue}
+\setbeamercolor{title}{fg=Ink}
+\setbeamercolor{subtitle}{fg=Muted}
+\setbeamercolor{block title}{fg=Ink,bg=SoftBlue}
+\setbeamercolor{block body}{fg=Ink,bg=white}
+\setbeamercolor{item}{fg=Accent}
+\setbeamercolor{footline}{fg=Muted,bg=Paper}
+\setbeamercolor{panelblue}{fg=Ink,bg=SoftBlue!60}
+\setbeamercolor{panelmint}{fg=Ink,bg=SoftMint!72}
+\setbeamercolor{panellilac}{fg=Ink,bg=SoftLilac!76}
+\setbeamercolor{panelwhite}{fg=Ink,bg=white}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{footline}{size=\tiny}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{%
+    \begin{beamercolorbox}[wd=\paperwidth,ht=.30cm,dp=.16cm]{footline}%
+      \raggedright\noindent\makebox[\paperwidth][r]{\slideposition\hspace*{.65cm}}
+    \end{beamercolorbox}}%
+}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=.77cm,dp=.18cm,leftskip=.64cm]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle%
+  % Place links outside the shrinkable frame body to preserve PDF hit areas.
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=base east,inner sep=0pt] at
+      ([xshift=-.65cm,yshift=-1.50cm]current page.north east)
+      {\normalfont\slidenavigation};
+  \end{tikzpicture}%
+  \end{beamercolorbox}%
+
+}
+
+% --------- Same basic components, plus lightweight reusable panels ---------
+\newcommand{\smalllabel}[1]{{\scriptsize\bfseries\color{Accent}\MakeUppercase{#1}}}
+\newcommand{\takeaway}[1]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.15cm,wd=\linewidth]{block title}%
+    \strut\textbf{#1}\strut
+  \end{beamercolorbox}%
+}
+\newcommand{\minibadge}[2]{%
+  \tikz[baseline=(badge.base)]\node[fill=#1,rounded corners=3pt,
+    inner xsep=6pt,inner ysep=3pt] (badge) {\scriptsize\bfseries #2};%
+}
+\newcommand{\softpanel}[3]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.16cm,wd=\linewidth]{#1}%
+    {\small\bfseries\color{Accent}#2}\par\vspace{0.08cm}
+    {\small\color{Ink}#3}%
+  \end{beamercolorbox}%
+}
+\newcommand{\smallpanel}[3]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.13cm,wd=\linewidth]{#1}%
+    {\small\bfseries\color{Accent}#2}\par\vspace{0.06cm}
+    {\scriptsize\color{Ink}#3}%
+  \end{beamercolorbox}%
+}
+\newcommand{\outlinecard}[4]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.17cm,wd=\linewidth]{#1}%
+    \begin{minipage}[c]{0.34\linewidth}
+      {\normalsize\bfseries #2}\par\vspace{0.03cm}
+      {\scriptsize\color{Accent}#3}
+    \end{minipage}\hfill%
+    \begin{minipage}[c]{0.63\linewidth}
+      {\small #4}
+    \end{minipage}%
+  \end{beamercolorbox}%
+}
+\newcommand{\gate}[3]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.15cm,wd=\linewidth]{panelwhite}%
+    {\small\bfseries\color{Accent}#1\quad #2}\par\vspace{0.07cm}
+    {\scriptsize\color{Muted}#3}%
+  \end{beamercolorbox}%
+}
+
+
+% --- Custom slide components: same color palette and structure as the template ---
+% Reserved image areas can be replaced by \\includegraphics[width=...]{your_image}.
+\newcommand{\figurespace}[3]{%
+  \begin{tikzpicture}
+    \node[draw=AccentBlue!50,dashed,rounded corners=3pt,fill=white,
+      text width=.90\linewidth,minimum height=#1,align=center,inner sep=5pt] {%
+      {\scriptsize\bfseries\color{AccentBlue}FIGURE SPACE}\\[3mm]
+      {\normalsize\bfseries\color{Muted}#2}\\[2mm]
+      {\scriptsize\color{Muted}#3}%
+    };
+  \end{tikzpicture}%
+}
+\newcommand{\statcard}[2]{%
+  \begin{beamercolorbox}[rounded=true,sep=.13cm,wd=\linewidth]{panelwhite}
+    {\Large\bfseries\color{Ink}#1}\par
+    {\scriptsize\color{Muted}#2}
+  \end{beamercolorbox}%
+}
+\newcommand{\scitem}[2]{%
+  \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelblue}
+    {\small\bfseries\color{Accent}#1}\par\vspace{.06cm}
+    {\scriptsize #2}
+  \end{beamercolorbox}%
+}
+
+% Reusable visual placeholder from the original portfolio template.
+% Mapping / ECO research figures elsewhere in this deck continue to use \figurespace.
+\providecommand{\aiplaceholder}[3]{}
+\renewcommand{\aiplaceholder}[3]{%
+  \par\noindent
+  \begin{tikzpicture}
+    \node[draw=AccentBlue!55,dashed,line width=0.6pt,
+      rounded corners=4pt,fill=SoftBlue!35,
+      text width=\dimexpr\linewidth-0.82cm\relax,
+      minimum height=#1,inner xsep=0.40cm,inner ysep=0.12cm,
+      outer sep=0pt,align=center] {%
+      {\small\bfseries\color{AccentBlue}IMAGE PLACEHOLDER}\par
+      \vspace{0.12cm}
+      {\small\color{Ink}#2\par}
+      \vspace{0.10cm}
+      {\scriptsize\ttfamily\color{Muted}\detokenize{#3}\par}%
+    };
+  \end{tikzpicture}\par
+}
+
+
+\title[CAD Technical Interview]{EDA / CAD Engineering Projects}
+\subtitle{Selected Research and Engineering Projects}
+\author{Yu-Jui (Stanley) Liang}
+\institute{National Taiwan University}
+\date{}
+
+% Unified S1-S5 card height; keeps five candidates easy to compare.
+\newcommand{\ecostrategycard}[3]{%
+  \begin{beamercolorbox}[rounded=true,sep=.20cm,wd=\linewidth]{#1}%
+    \begin{minipage}[c][1.43cm][c]{\dimexpr\linewidth-.40cm\relax}
+      {\normalsize\bfseries\color{Accent}#2}\par\vspace{.11cm}
+      {\small\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000 #3\par}
+    \end{minipage}%
+  \end{beamercolorbox}%
+}
+
+
+% Navigation shares the subtitle row; the footer reserves a fixed right margin.
+% Stable summary-N and detail-topic labels support links in both directions.
+\newcommand{\slidenavigation}{}
+\newcommand{\slideposition}{}
+\newcommand{\slidesubtitle}[1]{%
+  \smalllabel{#1}%
+}
+\setbeamercolor{button}{fg=Accent,bg=SoftMint}
+\setbeamercolor{button border}{fg=Accent!50}
+\setbeamerfont{button}{size=\scriptsize}
+
+\begin{document}
+% 19 summary pages: portfolio, mapping cover + content, ECO cover + content.
+
+
+% ============================================================
+% No duplicate project listing on this cover; see slide 4.
+% ============================================================
+% ------------------------------------------------------------------------
+% SLIDE 1 / 18 | Portfolio Cover
+% ------------------------------------------------------------------------
+{\setbeamertemplate{footline}{}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 1 / 18}
+\begin{frame}[plain,label=summary-1]
+  \vspace*{1.65cm}
+  \smalllabel{CAD Engineering Technical Interview}\par
+  \vspace{0.51cm}
+  {\raggedright\fontsize{21}{27}\selectfont\bfseries\color{Ink}
+    EDA / CAD Engineering Projects\par}
+  \vspace{0.29cm}
+  {\normalsize\color{Muted}Physical Design \enspace / \enspace Timing ECO \enspace / \enspace Logic Synthesis \enspace / \enspace CAD Flow Automation\par}
+  \vspace{0.70cm}
+  {\Large\bfseries\color{Ink}Yu-Jui (Stanley) Liang}\par
+  \vspace{0.10cm}
+  {\normalsize\color{Muted}M.S. Candidate, Data Science Master Degree Program\par}
+  {\normalsize\color{Muted}National Taiwan University\par}
+  \vskip0pt plus 1filll
+  {\color{Accent}\rule{\textwidth}{0.7pt}}\par
+  \vspace{0.16cm}
+  {\small\href{mailto:liangyujui@gmail.com}{liangyujui@gmail.com}
+     \quad | \quad
+     \href{https://www.linkedin.com/in/yu-jui-liang-735a57316}{linkedin.com/in/yu-jui-liang-735a57316}\par}
+  \vspace*{0.55cm}
+\end{frame}}
+
+% ============================================================
+% ============================================================
+% ------------------------------------------------------------------------
+% SLIDE 2 / 18 | Education & Research Interests
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 2 / 18}
+\begin{frame}[label=summary-2]{Education \& Research Interests}
+  \vspace{0.05cm}
+  \slidesubtitle{01 / Profile}\par\vspace{0.10cm}
+  \vfill
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.49\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelblue}
+        {\large\bfseries\color{AccentBlue}Education}\par
+        \vspace{0.14cm}
+        {\normalsize\bfseries National Taiwan University}\par
+        {\normalsize M.S. Candidate, Data Science Master Degree Program}\par
+        {\small\color{Muted}Sep. 2025 -- Expected Jul.--Sep. 2027}\par
+        \vspace{0.23cm}
+        {\normalsize\bfseries National Chengchi University}\par
+        {\normalsize B.S. in Computer Science}\par
+        {\normalsize Double Major in Electronic Physics}\par
+        {\small\color{Muted}Sep. 2021 -- Jun. 2025}
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelmint}
+        {\large\bfseries\color{Accent}Research Interests}\par
+        \vspace{0.15cm}
+        {\normalsize\bfseries EDA / CAD \& VLSI Design Automation}\par
+        \vspace{0.09cm}
+        {\normalsize Physical Design}\par
+        {\normalsize Timing Closure}\par
+        {\normalsize Static Timing Analysis}\par
+        {\normalsize Incremental ECO}\par
+        {\normalsize Logic Synthesis}\par
+        {\normalsize Technology Mapping}\par
+        {\normalsize PPA Optimization}\par
+        \vspace{0.15cm}
+        {\normalsize\bfseries Algorithm \& Software Development}\par
+        \vspace{0.09cm}
+        {\normalsize C++ / Python / Tcl Flow Automation}\par
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+% ============================================================
+% ============================================================
+% ------------------------------------------------------------------------
+% SLIDE 3 / 18 | Professional Software Engineering Experience
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 3 / 18}
+\begin{frame}[label=summary-3]{Professional Software Engineering Experience}
+  \vspace{0.04cm}
+  \slidesubtitle{02 / Work Experience}\par\vspace{0.10cm}
+  \takeaway{Software development, simulation, and validation experience in R\&D environments.}
+  \vfill
+
+  \begin{beamercolorbox}[rounded=true,sep=0.19cm,wd=\linewidth]{panelblue}
+    {\normalsize\bfseries\color{Ink}AIMobile Co., Ltd. (Inventec Group)}\hfill
+    {\scriptsize\color{Muted}Apr. 2025 -- Jul. 2025}\par
+    \vspace{0.07cm}
+    {\small\bfseries\color{AccentBlue}Contract Software Engineer}\par
+    \vspace{0.14cm}
+    {\small\color{Ink}Contributed to software development and system integration in an R\&D environment.}\par
+    \vspace{0.08cm}
+    {\small\color{Ink}Supported debugging and functional validation across software modules.}\par
+  \end{beamercolorbox}
+
+  \vfill
+  \begin{beamercolorbox}[rounded=true,sep=0.19cm,wd=\linewidth]{panelmint}
+    {\normalsize\bfseries\color{Ink}Neopower Technologies Co., Ltd.}\hfill
+    {\scriptsize\color{Muted}Jun. 2023 -- Mar. 2025}\par
+    \vspace{0.07cm}
+    {\small\bfseries\color{Accent}Contract Software Engineer}\par
+    \vspace{0.14cm}
+    {\small\color{Ink}Developed a custom system simulator to reproduce operational and error scenarios.}\par
+    \vspace{0.08cm}
+    {\small\color{Ink}Performed regression checks, log analysis, and customer-side A/B validation.}\par
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+% ============================================================
+% ============================================================
+% ------------------------------------------------------------------------
+% SLIDE 4 / 18 | Selected Projects & Discussion Topics
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 4 / 18}
+\begin{frame}[label=summary-4]{Selected Projects \& Discussion Topics}
+  \vspace{0.03cm}
+  \slidesubtitle{03 / Project Overview}\par\vspace{0.11cm}
+  \vfill
+  \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panellilac}
+    {\small\bfseries\color{Accent}01 \quad ICCAD 2025 Problem C --- CAD Methodology (Back End)}\par
+    \vspace{0.05cm}
+    {\normalsize\bfseries STA-Driven Incremental Timing ECO Search}\par
+    \vspace{0.07cm}
+    {\small OpenROAD / OpenSTA \quad / \quad Python--Tcl Flow Automation \quad / \quad Heuristic PPA Search}
+  \end{beamercolorbox}
+  \vfill
+  \begin{beamercolorbox}[rounded=true,sep=0.20cm,wd=\linewidth]{panelblue}
+    {\small\bfseries\color{AccentBlue}02 \quad Master's Research --- Logic Synthesis (Front End)}\par
+    \vspace{0.05cm}
+    {\normalsize\bfseries Joint Single- and Multi-Output Cell Mapping via Differentiable Optimization}\par
+    \vspace{0.07cm}
+    {\small EDA Tool Development \quad / \quad Boolean Matching \quad / \quad Area--Delay Optimization}
+  \end{beamercolorbox}
+  \vfill
+\end{frame}
+
+% ============================================================
+% PROJECT 02 SECTION OPENER | simplified ICCAD 2025 Problem C
+% ============================================================
+% ------------------------------------------------------------------------
+% SLIDE 5 / 18 | Project 01 Opener: ICCAD 2025 CAD Contest Problem C
+% ------------------------------------------------------------------------
+{\setbeamertemplate{footline}{}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-pd-flow}{\beamerbutton{PD Flow}}}
+\renewcommand{\slideposition}{Summary 5 / 18}
+\begin{frame}[plain,label=summary-5]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north east,inner sep=0pt] at
+      ([xshift=-.65cm,yshift=-.40cm]current page.north east)
+      {\slidenavigation};
+  \end{tikzpicture}
+  \vfill
+  \smalllabel{Project 01 / ICCAD 2025 CAD Contest / Problem C}\par
+  \vspace{.40cm}
+  \begin{beamercolorbox}[rounded=true,sep=.25cm,wd=\linewidth]{panelblue}
+    {\fontsize{13.6}{17}\selectfont\bfseries\color{Ink}
+    \mbox{Incremental Placement Optimization Beyond Detailed Placement}\par}
+    \vspace{.14cm}
+    {\normalsize\color{Ink}
+      Simultaneous Gate Sizing, Buffering, and Cell Relocation\par}
+  \end{beamercolorbox}
+  \vspace{.80cm}
+  \smalllabel{My Proposed Approach}\par
+  \vspace{.17cm}
+  {\fontsize{18}{23}\selectfont\bfseries\color{Accent}
+    STA-Driven Incremental Timing ECO Search\par}
+  \vspace{.18cm}
+  {\small\color{Muted}
+    Use OpenROAD / OpenSTA with policy-controlled ECO moves and global PPA evaluation.\par}
+  \vfill
+\end{frame}}
+% ------------------------------------------------------------------------
+% SLIDE 6 / 18 | Multi-Objective Timing ECO Optimization
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-quality}{\beamerbutton{QoR scoring}}\hspace{.12cm}\hyperlink{detail-pd-flow}{\beamerbutton{PD Flow}}}
+\renewcommand{\slideposition}{Summary 6 / 18}
+\begin{frame}[label=summary-6]{Multi-Objective Timing ECO Optimization}
+  \vspace{.01cm}
+  \slidesubtitle{01 / Problem Definition}\par\vspace{.10cm}
+  \takeaway{Improve setup TNS toward zero while controlling total power, HPWL, and cell displacement.}
+  \vspace{.14cm}
+
+  % ---- Contest objectives: what matters after an ECO repair ----
+  \smalllabel{Optimization Objectives}\par\vspace{.08cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.226\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelblue}
+        {\small\bfseries\color{AccentBlue}01 / Setup TNS}\par\vspace{.11cm}
+        {\scriptsize Reduce negative setup\par slack at violating endpoints.}
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{.226\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelmint}
+        {\small\bfseries\color{Accent}02 / Total Power}\par\vspace{.11cm}
+        {\scriptsize Avoid excess power\par from ECO changes.}
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{.226\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panellilac}
+        {\small\bfseries\color{AccentBlue}03 / HPWL}\par\vspace{.11cm}
+        {\scriptsize Control estimated\par wirelength after ECO.}
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{.226\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelblue}
+        {\small\bfseries\color{Accent}04 / Displacement}\par\vspace{.11cm}
+        {\scriptsize Limit cell movement\par and keep placement legal.}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+
+  \vspace{.40cm}
+  % ---- Conceptual ECO pipeline, not the proposed branch-search algorithm ----
+  \smalllabel{Basic ECO Evaluation Pipeline}\par\vspace{.09cm}
+  \centering
+  \begin{tikzpicture}[>=Latex,font=\scriptsize]
+    \tikzset{
+      ecoStage/.style={draw=AccentBlue!60,fill=SoftBlue!74,
+        rounded corners=4pt,text width=2.45cm,minimum height=1.96cm,
+        inner xsep=4pt,inner ysep=4pt,align=center,outer sep=0pt},
+      ecoMint/.style={ecoStage,draw=Accent!68,fill=SoftMint!80},
+      ecoLilac/.style={ecoStage,draw=AccentBlue!60,fill=SoftLilac!83}
+    }
+    \node[ecoStage] (input) at (0,0) {%
+      {\bfseries\color{AccentBlue}01 / Input}\\[1.6mm]
+      \mbox{Netlist / DEF}\\[.8mm]
+      \mbox{SDC}\\[.8mm]
+      \mbox{Liberty}};
+    \node[ecoStage] (detect) at (3.55,0) {%
+      {\bfseries\color{AccentBlue}02 / Analyze}\\[1.6mm]
+      \mbox{Critical paths}\\[.8mm]
+      \mbox{Setup endpoints}\\[.8mm]
+      \mbox{Critical cells / nets}};
+    \node[ecoMint] (repair) at (7.10,0) {%
+      {\bfseries\color{Accent}03 / ECO Repair}\\[1.6mm]
+      \mbox{Gate sizing}\\[.8mm]
+      \mbox{Buffer insertion}\\[.8mm]
+      \mbox{Cell relocation}};
+    \node[ecoLilac] (evaluate) at (10.65,0) {%
+      {\bfseries\color{AccentBlue}04 / Evaluate}\\[1.6mm]
+      \mbox{Legalize + STA}\\[.8mm]
+      \mbox{TNS / Power}\\[.8mm]
+      {\fontsize{6.65}{8}\selectfont\mbox{HPWL / Displacement}}};
+    \foreach \from/\to in {input/detect,detect/repair,repair/evaluate}{%
+      \draw[->,Accent,thick] (\from.east)--(\to.west);}
+    \draw[->,Accent,thick] (evaluate.south) -- ++(0,-.35cm)
+      -| (detect.south);
+  \end{tikzpicture}\par
+\end{frame}
+
+% ------------------------------------------------------------------------
+% SLIDE 7 / 18 | Five Automatic ECO Strategy Candidates
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 7 / 18}
+\begin{frame}[label=summary-7]{Five Automatic ECO Strategy Candidates}
+  \vspace{.01cm}
+  \slidesubtitle{02 / Candidate Set}\par\vspace{.12cm}
+  \vspace{.37cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.32\textwidth}
+      \ecostrategycard{panelblue}{S1 / Global Setup}{Whole design; automatic upsizing and VT selection.}
+    \end{column}
+    \begin{column}{.32\textwidth}
+      \ecostrategycard{panelmint}{S2 / Path-Restricted}{Top-K path cells + nets; localized setup repair.}
+    \end{column}
+    \begin{column}{.32\textwidth}
+      \ecostrategycard{panellilac}{S3 / Overlap-Aware}{Top-I shared cells, nets fixed; sizing / VT repair.}
+    \end{column}
+  \end{columns}
+  \vspace{.34cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.49\textwidth}
+      \ecostrategycard{panelmint}{S4 / Local Buffering}{Top-K nets, original cells fixed; buffer insertion and load splitting.}
+    \end{column}
+    \begin{column}{.49\textwidth}
+      \ecostrategycard{panelblue}{S5 / Targeted High-Fanout Repair}{Identify high-fanout nets; restrict repair to selected driver cells and associated nets.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------------
+% SLIDE 8 / 18 | STA-Guided ECO Search: Best-First Branch List
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-quality}{\beamerbutton{QoR scoring}}\hspace{.12cm}\hyperlink{detail-parallel}{\beamerbutton{Parallel workers}}}
+\renewcommand{\slideposition}{Summary 8 / 18}
+\begin{frame}[label=summary-8]{STA-Guided ECO Search: Best-First Branch List}
+  \vspace{.01cm}\slidesubtitle{03 / Heuristic Search Policy}\par\vspace{.07cm}
+  \takeaway{No better child this round? Continue from the best unexplored state in the Branch List.}
+  \vspace{.13cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.585\textwidth}
+      {\small\bfseries\color{Accent}Search Tree Example}\par\vspace{.08cm}
+      \centering
+      \begin{tikzpicture}[>=Latex,font=\scriptsize]
+        \tikzset{
+          state/.style={draw=AccentBlue!65,fill=SoftBlue!82,rounded corners=3pt,
+            text width=1.48cm,minimum height=.57cm,align=center,inner sep=2pt},
+          best/.style={state,draw=Accent,fill=SoftMint!92,line width=.9pt},
+          next/.style={state,draw=AccentBlue,fill=SoftLilac!87,line width=.9pt},
+          move/.style={font=\tiny,text=Muted,fill=Paper,inner sep=1pt}
+        }
+        \node[state] (root) at (2.64,0) {Parent $x_0$\\$\mathrm{QoR}=100$};
+        \node[state] (a) at (.14,-1.02) {State A\\$\mathrm{QoR}=103$};
+        \node[best] (b) at (2.64,-1.02) {State B\\$\mathrm{QoR}=106$};
+        \node[state] (c) at (5.14,-1.02) {State C\\$\mathrm{QoR}=98$};
+        \draw[->,AccentBlue,thick] (root.south) -- node[move,near end,left]{S2} (a.north);
+        \draw[->,AccentBlue,thick] (root.south) -- node[move,midway,left]{S3} (b.north);
+        \draw[->,AccentBlue,thick] (root.south) -- node[move,near end,right]{S5} (c.north);
+        \node[next] (d) at (1.39,-2.11) {State D\\$\mathrm{QoR}=105$};
+        \node[state] (e) at (3.89,-2.11) {State E\\$\mathrm{QoR}=104$};
+        \draw[->,AccentBlue,thick] (b.south) -- node[move,near end,left]{S4} (d.north);
+        \draw[->,AccentBlue,thick] (b.south) -- node[move,near end,right]{S5} (e.north);
+        \node[draw=AccentBlue!55,fill=white,rounded corners=3pt,
+          text width=5.73cm,minimum height=.57cm,align=center,inner sep=3pt]
+          at (2.64,-3.01) {\textbf{Bounded Branch List:} D:105 $>$ E:104 $>$ A:103};
+        \node[draw=Accent!70,fill=SoftMint!65,rounded corners=3pt,
+          text width=5.73cm,minimum height=.63cm,align=center,inner sep=3pt]
+          at (2.64,-3.79) {\textbf{Global Best:} B (106) \quad $\vert$ \quad
+            \textbf{Next:} D (105)};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{.395\textwidth}
+      {\small\bfseries\color{Accent}Heuristic Search Steps}\par\vspace{.12cm}
+      \begin{beamercolorbox}[rounded=true,sep=.15cm,wd=\linewidth]{panelwhite}
+        {\small\bfseries\color{Accent}01 / Pop Parent}\par
+        {\scriptsize Highest-QoR unexplored state from the \textbf{Branch List}.}\par
+        \vspace{.10cm}
+        {\small\bfseries\color{Accent}02 / Generate + Evaluate}\par
+        {\scriptsize STA-guided ECO moves, legalization, and global QoR score.}\par
+        \vspace{.10cm}
+        {\small\bfseries\color{Accent}03 / Update States}\par
+        {\scriptsize Save improved \textbf{Global Best}; queue legal child states.}\par
+        \vspace{.10cm}
+        {\small\bfseries\color{Accent}04 / Next Branch}\par
+        {\scriptsize Expand best branch, \textbf{even with no new Global Best}.}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+  \vspace{.05cm}
+  {\scriptsize\bfseries\color{Accent}A lower-scoring intermediate state may lead to a better ECO sequence later.}\par
+\end{frame}
+
+% ------------------------------------------------------------------------
+% SLIDE 9 / 18 | QoR Results & Conclusion
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-quality}{\beamerbutton{QoR scoring}}}
+\renewcommand{\slideposition}{Summary 9 / 18}
+\begin{frame}[label=summary-9]{QoR Results \& Conclusion}
+  \vspace{.01cm}\slidesubtitle{04 / Earlier ECO Evaluation}\par\vspace{.11cm}
+  {\small\color{Muted}Setup-focused timing repair and the resulting power / wirelength trade-off.}\par
+  \vspace{.08cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.49\textwidth}
+      {\small\bfseries\color{Accent}Setup Timing}\par\vspace{.10cm}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelblue}
+        {\fontsize{24}{27}\selectfont\bfseries\color{AccentBlue}20.5\%}\par\vspace{.025cm}
+        {\small\bfseries Average Setup TNS Improvement}\par
+      \end{beamercolorbox}
+      \vspace{.10cm}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panellilac}
+        {\fontsize{24}{27}\selectfont\bfseries\color{AccentBlue}14.6\%}\par\vspace{.025cm}
+        {\small\bfseries Average Setup WNS Improvement}\par
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{.49\textwidth}
+      {\small\bfseries\color{Accent}Power \& Wirelength}\par\vspace{.10cm}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelmint}
+        {\fontsize{24}{27}\selectfont\bfseries\color{Accent}8\%}\par\vspace{.025cm}
+        {\small\bfseries Total Power Reduction}\par
+      \end{beamercolorbox}
+      \vspace{.10cm}
+      \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelblue}
+        {\fontsize{24}{27}\selectfont\bfseries\color{Ink}+2\%}\par\vspace{.025cm}
+        {\small\bfseries HPWL Increase}\par
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+  \vspace{.09cm}
+  \begin{beamercolorbox}[rounded=true,sep=.13cm,wd=\linewidth]{panelwhite}
+    {\small\bfseries\color{Accent}Conclusion}\par\vspace{.025cm}
+    {\small\color{Ink}ECO operators can improve setup timing and power while accepting a small wirelength trade-off.}
+  \end{beamercolorbox}
+  \vspace{.06cm}
+\end{frame}
+
+
+% ==============================================================
+% Main technical contents retained from the uploaded Beamer source.
+% The 15-minute and 30-minute versions allocate equal time to
+% Project 02 (Mapping) and Project 01 (STA-Driven ECO Optimization).
+% ==============================================================
+
+% ============================================================
+% PROJECT 02 SECTION OPENER | same cover pattern as Project 01
+% ============================================================
+% ------------------------------------------------------------------------
+% SLIDE 10 / 18 | Project 02 Opener: Joint SO / MO Cell Mapping
+% ------------------------------------------------------------------------
+{\setbeamertemplate{footline}{}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 10 / 18}
+\begin{frame}[plain,label=summary-10]
+  \vfill
+  \smalllabel{Project 02 / Master's Research / Logic Synthesis}\par
+  \vspace{.40cm}
+  \begin{beamercolorbox}[rounded=true,sep=.25cm,wd=\linewidth]{panelblue}
+    {\fontsize{13.6}{17}\selectfont\bfseries\color{Ink}
+    \mbox{Technology Mapping for Multi-Output Standard Cells}\par}
+    \vspace{.14cm}
+    {\normalsize\color{Ink}
+      FA/HA cells over a shared input boundary\par}
+  \end{beamercolorbox}
+  \vspace{.80cm}
+  \smalllabel{My Proposed Approach}\par
+  \vspace{.17cm}
+  {\fontsize{18}{23}\selectfont\bfseries\color{Accent}
+    Joint Single- and Multi-Output Cell Mapping\\
+    via Differentiable Optimization\par}
+  \vspace{.18cm}
+  {\small\color{Muted}
+    MO candidate discovery in ABC, area-aware MILP pre-selection, and a mapping optimizer adapted from prior work.\par}
+  \vfill
+\end{frame}}
+
+% ------------------------------------------------------------------------
+% SLIDE 11 / 18 | ABC Mapper: SO Technology Mapper Baseline
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-dc-abc}{\beamerbutton{DC vs ABC}}}
+\renewcommand{\slideposition}{Summary 11 / 18}
+\begin{frame}[label=summary-11]{ABC Mapper: SO Technology Mapper Baseline}
+  \vspace{.02cm}
+  \slidesubtitle{01 / Baseline Mapping}\par\vspace{.08cm}
+  \takeaway{The open-source ABC synthesis framework primarily targets single-output cell mapping, leaving joint FA/HA output mapping unsupported in the baseline flow.}
+  \vspace{.08cm}
+  \begin{center}
+    \includegraphics[width=\linewidth,height=4.22cm,keepaspectratio,trim=8bp 158bp 8bp 125bp,clip]{aig-technology-mapping.png}\par
+    \vspace{.06cm}
+    {\small\color{Muted}Same Boolean behavior, realized with ASAP7 7nm library cells.}
+  \end{center}
+\end{frame}
+
+
+% SLIDE 12 / 18 | Single-output vs multi-output motivation
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 12 / 18}
+\begin{frame}[label=summary-12]{Single-Output vs Multi-Output Cell Mapping}
+  \slidesubtitle{02 / Motivation}\par\vspace{.10cm}
+  \takeaway{A shared FA cell can implement two output functions over the same input boundary.}
+  \vfill
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.49\textwidth}
+      \includegraphics[width=\linewidth,height=3.65cm,keepaspectratio,trim=0 105bp 0 250bp,clip]{single-output-cell-mapping.png}
+    \end{column}
+    \begin{column}{.49\textwidth}
+      \includegraphics[width=\linewidth,height=3.65cm,keepaspectratio,trim=0 180bp 0 175bp,clip]{multi-output-cell-mapping.png}
+    \end{column}
+  \end{columns}
+  \vspace{.12cm}
+  {\small Independent MO discovery exposes joint output matches beyond SO-oriented cut retention.}
+  \vfill
+\end{frame}
+
+
+% ------------------------------------------------------------------------
+% SLIDE 13 / 18 | Joint SO / MO Mapping: Research Pipeline
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-11}{\beamerbutton{SO baseline}}\hspace{.12cm}\hyperlink{summary-16}{\beamerbutton{Optimizer integration}}}
+\renewcommand{\slideposition}{Summary 13 / 18}
+\begin{frame}[shrink=8,label=summary-13]{Joint SO / MO Mapping: Research Pipeline}
+  \vspace{.02cm}
+  \slidesubtitle{03 / Research Scope}\par\vspace{.08cm}
+  \takeaway{We extend the ABC Mapper with multi-output candidate discovery and area-aware MILP selection, while preserving the original single-output mapping path.}
+  \vspace{.16cm}
+  \begin{center}
+    \includegraphics[width=\linewidth,height=4.55cm,keepaspectratio,trim=0 48bp 0 145bp,clip]{mapping-framework.png}
+  \end{center}
+\end{frame}
+
+
+% ------------------------------------------------------------------------
+% SLIDE 14 / 18 | MO Candidate Discovery in ABC
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{detail-legality}{\beamerbutton{Pair legality}}}
+\renewcommand{\slideposition}{Summary 14 / 18}
+\begin{frame}[label=summary-14]{MO Candidate Discovery in ABC}
+  \vspace{.02cm}\slidesubtitle{04 / Core Algorithm}\par\vspace{.06cm}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.30\textwidth}
+      \centering
+      \includegraphics[height=4.40cm,width=\linewidth,keepaspectratio]{shared-cut-leaves.png}
+    \end{column}
+    \begin{column}{.385\textwidth}
+      {\scriptsize\bfseries\color{Accent}01 / MO Pattern Discovery}\par
+      \vspace{.05cm}
+      {\small Search for MO-compatible logic patterns independently of SO-oriented pruning.}\par
+      \vspace{.26cm}
+      {\scriptsize\bfseries\color{Accent}02 / Output Pair Matching}\par
+      \vspace{.05cm}
+      {\small Match output-function pairs with shared inputs and compatible cell pin mapping.}\par
+      \vspace{.26cm}
+      {\scriptsize\bfseries\color{Accent}03 / Candidate Validation}\par
+      \vspace{.05cm}
+      {\small Verify functional and structural legality, then identify the SO logic that each MO cell could replace.}\par
+    \end{column}
+    \begin{column}{.285\textwidth}
+      \centering
+      \includegraphics[height=3.45cm,width=\linewidth,keepaspectratio]{legal-mo-candidate.png}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+
+% ------------------------------------------------------------------------
+% SLIDE 15 / 18 | Area-Aware MO Selection (MILP)
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 15 / 18}
+\begin{frame}[label=summary-15]{Area-Aware MO Selection (MILP)}
+  \vspace{.02cm}\slidesubtitle{05 / Global Candidate Selection}\par\vspace{.04cm}
+  \takeaway{Maximize estimated area savings subject to non-overlapping MO candidates.}
+  \vspace{.06cm}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.56\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.08cm,wd=\linewidth]{panelwhite}
+      {\normalsize
+      \setlength{\abovedisplayskip}{0pt}%
+      \setlength{\belowdisplayskip}{0pt}%
+      \setlength{\abovedisplayshortskip}{0pt}%
+      \setlength{\belowdisplayshortskip}{0pt}%
+      \[\boxed{\begin{aligned}
+        \max\quad &\sum_{i=1}^{N}\bigl(A_i^{SO}-A_i^{MO}\bigr)x_i\\[1pt]
+        \text{s.t.}\quad &\sum_{i=1}^{N} a_{vi}x_i\leq1,\quad\forall v\in\mathcal V\\[1pt]
+        &x_i\in\{0,1\},\quad i=1,\ldots,N
+      \end{aligned}}\]
+      }
+      \end{beamercolorbox}
+    \end{column}
+    \begin{column}{.42\textwidth}
+      \centering
+      \begin{tikzpicture}[font=\footnotesize,>=Latex,line width=0.9pt,scale=1.22,transform shape]
+        \node[circle,draw=AccentBlue!70,fill=SoftBlue,minimum size=0.62cm,inner sep=0pt] (A) at (0,0) {\bfseries A};
+        \node[circle,draw=AccentBlue!70,fill=white,minimum size=0.58cm,inner sep=0pt] (B) at (-1.05,0.82) {\bfseries B};
+        \node[circle,draw=Accent!75,fill=white,minimum size=0.58cm,inner sep=0pt] (C) at (1.05,0.82) {\bfseries C};
+        \draw[AccentBlue,thick] (A) -- (B);
+        \draw[Accent,thick] (A) -- (C);
+        \node[font=\scriptsize,text=AccentBlue,anchor=east] at (-0.78,1.28) {(A,\,B)};
+        \node[font=\scriptsize,text=Accent,anchor=west] at (0.78,1.28) {(A,\,C)};
+        \node[font=\footnotesize,text=Ink] at (0,-0.68) {$x_{AB}+x_{AC}\leq 1$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \vspace{.02cm}
+  \begin{beamercolorbox}[rounded=true,sep=.11cm,wd=\textwidth]{panelblue}
+    {\large\bfseries\color{Accent}Notation}\par\vspace{.06cm}
+    {\normalsize\color{Ink}
+      $x_i$: select MO $i$;\quad $A_i^{SO}$: SO witness area;\quad $A_i^{MO}$: MO cell area;\\[2pt]
+      $a_{vi}=1$ iff AIG base node $v$ belongs to MO candidate $i$; otherwise $0$.}
+  \end{beamercolorbox}
+\end{frame}
+
+
+% SLIDE 16 / 18 | Mapping Optimizer: SO / BIND Decisions
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 16 / 18}
+\begin{frame}[shrink=6,label=summary-16]{Mapping Optimizer: SO / BIND Decisions}
+  \vspace{.02cm}\slidesubtitle{06 / Decision Integration}\par\vspace{.06cm}
+  \takeaway{MILP pre-selects non-overlapping MO candidates, while the mapping optimizer makes the final SO/BIND decisions.}
+  \vspace{.08cm}
+  {\centering
+    \includegraphics[width=\linewidth,height=5.38cm,keepaspectratio,trim=6bp 112bp 6bp 130bp,clip]{optimizer-binding-decision.png}\par
+  }
+\end{frame}
+
+% ------------------------------------------------------------------------
+% SLIDE 17 / 18 | Normalized ADP results
+% ABC = 1.000, SO mode = 0.640, MO mode with MILP = 0.602.
+% SO mode is 36% below ABC. MILP is 6% below SO mode.
+% 6% below SO mode on the ABC scale: 0.640 x 0.94 = 0.6016, shown as 0.602.
+% ------------------------------------------------------------------------
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 17 / 18}
+\begin{frame}[label=summary-17]{Normalized ADP Results}
+  \slidesubtitle{07 / Current Results}\par\vspace{.06cm}
+  \takeaway{Evaluation of three mapping configurations across 30 arithmetic logic circuit benchmarks using the ASAP7 7nm standard-cell library.}
+  \vspace{.06cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.54\textwidth}
+      {\small\bfseries\color{Ink}GMean Normalized ADP (Area--Delay Product)}\par\vspace{.02cm}
+      \begin{tikzpicture}[x=4.15cm,y=1.08cm]
+        \fill[AccentBlue!38,rounded corners=1.5pt] (0,2.30) rectangle (1,2.60);
+        \fill[AccentBlue!72,rounded corners=1.5pt] (0,1.15) rectangle (.640,1.45);
+        \fill[Accent,rounded corners=1.5pt] (0,0.00) rectangle (.6016,.30);
+        \node[anchor=west,font=\small\bfseries] at (1.05,2.45) {1.000};
+        \node[anchor=west,font=\small\bfseries] at (.72,1.30) {0.640};
+        \node[anchor=west,font=\small\bfseries,text=Accent] at (.70,.15) {0.602};
+        \node[anchor=west,font=\scriptsize] at (0,2.88) {ABC Mapper (SO Baseline)};
+        \node[anchor=west,font=\scriptsize] at (0,1.73) {Our Approach (SO Mode)};
+        \node[anchor=west,font=\scriptsize\bfseries] at (0,.58) {Our Approach (MO Mode with MILP)};
+      \end{tikzpicture}\par
+    \end{column}
+    \begin{column}{.44\textwidth}
+      \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
+        {\fontsize{18}{20}\selectfont\bfseries\color{AccentBlue}36\%}\quad
+        {\footnotesize\color{Ink}lower ADP than ABC Mapper}\\[1pt]
+        {\scriptsize\color{Muted}Our Approach (SO Mode): 0.640 vs.\ 1.000}
+      \end{beamercolorbox}
+      \vspace{.06cm}
+      \begin{beamercolorbox}[rounded=true,sep=.10cm,wd=\linewidth]{block title}
+        {\fontsize{18}{20}\selectfont\bfseries\color{Accent}6\%}\quad
+        {\footnotesize\color{Ink}lower ADP than SO mode}\\[1pt]
+        {\scriptsize\color{Muted}Our Approach MO mode (MILP): 0.602 vs.\ 0.640}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+% ------------------------------------------------------------------------
+% SLIDE 18 / 18 | Thank You / Questions and Discussion
+% ------------------------------------------------------------------------
+{\setbeamertemplate{footline}{}
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}}
+\renewcommand{\slideposition}{Summary 18 / 18}
+\begin{frame}[plain,label=summary-18]
+  \centering
+  \vfill
+  {\fontsize{36}{42}\selectfont\bfseries\color{Ink}THANK YOU}\par
+  \vspace{.37cm}
+  {\fontsize{19}{24}\selectfont\color{Muted}Questions \& Discussion}\par
+  \vfill
+\hyperlink{details-index}{\beamergotobutton{Technical details}}\par\vspace{.30cm}
+\end{frame}}
+
+
+% =====================================================================
+% Technical details: original full-deck material omitted from the shortlist.
+% =====================================================================
+\appendix
+\renewcommand{\slidenavigation}{\hyperlink{summary-4}{\beamerreturnbutton{Back to project overview}}}
+\renewcommand{\slideposition}{Details index}
+\begin{frame}[label=details-index]{Technical Details}
+  \slidesubtitle{Questions \& Discussion}\par\vspace{.18cm}
+  {\small Select a topic. All backup pages link back to this index.}\par
+  \vspace{.45cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      {\normalsize\bfseries\color{Accent}Physical Design /\\Timing ECO}\par\vspace{.30cm}
+      \hyperlink{detail-pd-flow}{\beamerbutton{B03 / Physical Design Flow}}\par\vspace{.30cm}
+      \hyperlink{detail-quality}{\beamerbutton{B04 / QoR Scoring}}\par\vspace{.30cm}
+      \hyperlink{detail-parallel}{\beamerbutton{B05 / Parallel ECO Evaluation}}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      {\normalsize\bfseries\color{Accent}Logic Synthesis}\par\vspace{.30cm}
+      \hyperlink{detail-dc-abc}{\beamerbutton{B01 / Design Compiler vs. ABC}}\par\vspace{.30cm}
+      \hyperlink{detail-legality}{\beamerbutton{B02 / MO Pair Matching}}\par\vspace{.35cm}
+      {\normalsize\bfseries\color{Accent}Additional EDA Projects}\par\vspace{.22cm}
+      \hyperlink{detail-mini-soc}{\beamerbutton{B06 / Mini-SoC RTL-to-GDS}}\par\vspace{.22cm}
+      \hyperlink{detail-diffusion-floorplan}{\beamerbutton{B07 / Diffusion Floorplanner}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% B01 | DC vs. ABC Synthesis Stages
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-11}{\beamerreturnbutton{Summary 11}}}
+\renewcommand{\slideposition}{Backup 1 / 7}
+\begin{frame}[label=detail-dc-abc]{Design Compiler vs. ABC: Logic Synthesis Stages}
+  \vspace{.02cm}\slidesubtitle{B01 / Logic Synthesis}\par\vspace{.08cm}
+  \vspace{.18cm}
+  \centering
+  \begin{tikzpicture}[>=Latex,font=\footnotesize]
+    \tikzset{
+      stage/.style={draw=AccentBlue!65,fill=SoftBlue!72,rounded corners=3pt,
+        text width=4.45cm,minimum height=.55cm,align=center,inner xsep=3pt,inner ysep=1.5pt},
+      opt/.style={stage,fill=SoftBlue!80,minimum height=.74cm},
+      mapping/.style={stage,draw=Accent!70,fill=SoftMint!85,minimum height=1.04cm},
+      flow/.style={->,Accent,thick},
+      cue/.style={dashed,AccentBlue!55,line width=.6pt}
+    }
+    \node[font=\small\bfseries,text=AccentBlue] at (0,0) {Synopsys Design Compiler};
+    \node[font=\small\bfseries,text=AccentBlue] at (7.8,0) {Berkeley ABC};
+    \node[stage,fill=white,minimum height=.32cm,font=\footnotesize] (front) at (0,-.55)
+      {RTL $\rightarrow$ \texttt{analyze + elaborate}};
+    \node[font=\footnotesize,text=Muted] at (7.8,-.55) {Research flow starts from AIG};
+    \node[stage] (gtech) at (0,-1.40)
+      {\textbf{GTECH}\\[1.5pt]{\footnotesize Generic Technology Representation}};
+    \node[stage] (aig) at (7.8,-1.40)
+      {\textbf{AIG}\\[1.5pt]{\footnotesize AND-Inverter Graph}};
+    \draw[flow] (front.south)--(gtech.north);
+    \node[font=\footnotesize,text=Muted,align=center,text width=2.6cm] at (3.9,-1.40)
+      {Technology-independent\\representations};
+    % Separate containers: these are independent tool flows, not a conversion.
+    \foreach \x in {0,7.8}{
+      \draw[draw=AccentBlue!55,dashed,rounded corners=4pt,fill=SoftBlue!25]
+        (\x-2.55,-2.02) rectangle (\x+2.55,-4.90);
+    }
+    \node[font=\footnotesize\ttfamily\bfseries] at (0,-2.27) {compile / compile\_ultra};
+    \node[font=\footnotesize\bfseries] at (7.8,-2.27) {ABC Logic Synthesis};
+    \node[opt] (dcopt) at (0,-2.92) {\textbf{Logic Optimization}};
+    \node[opt] (abcopt) at (7.8,-2.92)
+      {\textbf{Logic Optimization}};
+    \node[mapping] (dcmap) at (0,-4.25)
+      {\textbf{Technology Mapping}\\[1.5pt]{\footnotesize + Target Standard Cell Library}};
+    \node[mapping] (abcmap) at (7.8,-4.25)
+      {\textbf{Technology Mapping}\\[1.5pt]{\footnotesize + Standard Cell Library}};
+    \draw[flow] (gtech.south)--(0,-2.02);
+    \draw[flow] (aig.south)--(7.8,-2.02);
+    \draw[flow] (dcopt.south)--(dcmap.north);
+    \draw[flow] (abcopt.south)--(abcmap.north);
+    % Dashed guides deliberately have no arrowheads: correspondence, not data flow.
+    \draw[cue] (dcopt.east)--(abcopt.west);
+    \draw[cue] (dcmap.east)--(abcmap.west);
+    \node[fill=Paper,text=Muted,font=\footnotesize,align=center,text width=2.35cm,
+      inner sep=2pt] at (3.9,-3.58) {Approximate functional\\correspondence};
+    \node[stage,draw=Accent!70,fill=SoftMint!70] (dcout) at (0,-5.50)
+      {\textbf{Mapped Gate-Level Netlist}\\[1.5pt]{\footnotesize Standard-cell mapped}};
+    \node[stage,draw=Accent!70,fill=SoftMint!70] (abcout) at (7.8,-5.50)
+      {\textbf{Mapped Gate-Level Netlist}\\[1.5pt]{\footnotesize Standard-cell mapped}};
+    \draw[flow] (dcmap.south)--(dcout.north);
+    \draw[flow] (abcmap.south)--(abcout.north);
+  \end{tikzpicture}\par
+\end{frame}
+
+
+% B02 | MO Pair Matching \& Structural Legality
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-14}{\beamerreturnbutton{Summary 14}}}
+\renewcommand{\slideposition}{Backup 2 / 7}
+\begin{frame}[label=detail-legality]{MO Pair Matching \& Structural Legality}
+
+  \slidesubtitle{B02 / Candidate Validation}\par\vspace{.30cm}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \centering
+      \includegraphics[width=\linewidth,height=4.15cm,keepaspectratio]{legal-mo-candidate.png}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \softpanel{panelblue}{01 / Boolean Matching}{\begin{minipage}[c][.72cm][c]{\dimexpr\linewidth-.32cm\relax}Match the two output truth tables with SUM / CARRY functions.\end{minipage}}
+      \vspace{.16cm}
+      \softpanel{panelmint}{02 / Pin Compatibility}{\begin{minipage}[c][.72cm][c]{\dimexpr\linewidth-.32cm\relax}Check shared inputs, compatible pin permutations, and input polarities.\end{minipage}}
+      \vspace{.16cm}
+      \softpanel{panellilac}{03 / Structural Legality}{\begin{minipage}[c][.72cm][c]{\dimexpr\linewidth-.32cm\relax}Validate distinct roots; reject direct-dangling, TFI dependencies, or cycles.\end{minipage}}
+    \end{column}
+  \end{columns}
+  \vspace{.28cm}
+  {\small\bfseries\color{Accent}Individual candidate legality is checked here; global conflicts are handled by MILP.}
+
+\end{frame}
+
+% B03 | Physical Design Flow
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-5}{\beamerreturnbutton{Summary 5}}}
+\renewcommand{\slideposition}{Backup 3 / 7}
+\begin{frame}[label=detail-pd-flow]{Where Our ECO Fits in the Physical Design Flow}
+  \vspace{.02cm}\slidesubtitle{B03 / Physical Design Flow}\par\vspace{.14cm}
+  \centering
+  \begin{tikzpicture}[>=Latex,font=\footnotesize]
+    \tikzset{
+      stage/.style={draw=AccentBlue!65,fill=SoftBlue!72,rounded corners=3pt,
+        text width=8.8cm,minimum height=.48cm,align=center,
+        inner xsep=3pt,inner ysep=2pt},
+      approach/.style={stage,draw=Accent!70,fill=SoftMint!85,minimum height=1.55cm},
+      flow/.style={->,Accent,thick}
+    }
+    \node[stage] (synthesis) at (0,0) {\textbf{Logic Synthesis}};
+    \node[stage] (floorplan) at (0,-.85) {\textbf{Floorplanning}};
+    \node[stage] (global) at (0,-1.70) {\textbf{Global Placement}};
+    \node[stage] (detailed) at (0,-2.55) {\textbf{Detailed Placement}};
+    \node[approach] (eco) at (0,-4.15) {
+      {\small\bfseries\color{Accent}Proposed Post-Placement Incremental ECO}\\[3pt]
+      Gate Sizing \quad / \quad VT Selection \quad / \quad Buffer Insertion\\[3pt]
+      \textbf{STA-Driven Timing / Power / Wirelength Optimization}};
+    \node[stage] (subsequent) at (0,-5.75)
+      {\textbf{Clock Optimization / Routing / Signoff (as applicable)}};
+    \foreach \from/\to in {synthesis/floorplan,floorplan/global,global/detailed,detailed/eco,eco/subsequent}{
+      \draw[flow] (\from.south)--(\to.north);
+    }
+  \end{tikzpicture}\par
+\end{frame}
+
+% B04 | QoR Scoring for Branch Ranking
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-8}{\beamerreturnbutton{Summary 8}}}
+\renewcommand{\slideposition}{Backup 4 / 7}
+\begin{frame}[shrink=12,label=detail-quality]{QoR Scoring for Branch Ranking}
+
+  \slidesubtitle{B04 / Branch List Ranking}\par\vspace{.12cm}
+  \takeaway{Rank checkpoints by setup TNS, power, and HPWL using an internal heuristic.}
+  \vspace{.14cm}
+  \begin{beamercolorbox}[rounded=true,sep=.14cm,wd=\linewidth]{panelwhite}
+    {\centering\Large $\displaystyle Q(x) = w_T\,g_T(x) + w_P\,g_P(x) - w_H\,p_H(x)$\par\vspace{.26cm}}
+    \vspace{-.15cm}
+    \begin{columns}[T,onlytextwidth]
+      \begin{column}{.38\linewidth}\centering
+        {\small\bfseries\color{Accent}Setup TNS gain}
+        \par\vspace{.12cm}$\displaystyle g_T=\frac{|TNS_0|-|TNS_x|}{\max(|TNS_0|,\epsilon)}$
+      \end{column}
+      \begin{column}{.29\linewidth}\centering
+        {\small\bfseries\color{Accent}Power gain}
+        \par\vspace{.12cm}$\displaystyle g_P=\frac{P_0-P_x}{P_0}$
+      \end{column}
+      \begin{column}{.29\linewidth}\centering
+        {\small\bfseries\color{Accent}HPWL penalty}
+        \par\vspace{.12cm}$\displaystyle p_H=\frac{H_x-H_0}{H_0}$
+      \end{column}
+    \end{columns}
+  \end{beamercolorbox}
+  \vspace{.15cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \smallpanel{panelblue}{Global QoR Evaluation}{Use full-design STA / power / HPWL with the same baseline and weights across branches. Reject illegal or failed states.}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \smallpanel{panelmint}{Runtime Budget}{Count each parallel batch once in wall-clock time; stop when the global execution budget is exhausted.}
+    \end{column}
+  \end{columns}
+  \vspace{.14cm}
+  {\scriptsize The methodology legalizes placement before evaluation. Displacement is absent from $Q$; legalization alone does not bound displacement. No explicit displacement control is verified here.}\par\vspace{.09cm}
+  {\scriptsize\color{Muted}$TNS$: setup total negative slack; $P$: total power; $H$: HPWL. Internal search heuristic, not the ICCAD Contest official score. Summary 8 scores are illustrative.}
+
+\end{frame}
+
+% B05 | Proposed Parallel ECO Evaluation Architecture
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerbutton{Details index}}\hspace{.12cm}\hyperlink{summary-8}{\beamerreturnbutton{Summary 8}}}
+\renewcommand{\slideposition}{Backup 5 / 7}
+\begin{frame}[shrink=3,label=detail-parallel]{Proposed Parallel ECO Evaluation Architecture}
+
+  \slidesubtitle{B05 / Execution Architecture}\par\vspace{.12cm}
+  \takeaway{Evaluate candidates in independent OpenROAD workers, then collect and rank.}
+  \vspace{.14cm}
+  {\centering
+  \begin{tikzpicture}[>=Latex,font=\scriptsize]
+    \tikzset{b/.style={draw=AccentBlue!65,fill=SoftBlue!70,rounded corners=3pt,
+      text width=3.35cm,minimum height=.82cm,align=center,inner sep=3pt},
+      bus/.style={line width=.8pt,line cap=rect,line join=miter}}
+    \node[b,fill=SoftMint!85,text width=5.6cm] (controller) at (0,0)
+      {\textbf{Python Search Controller}\\Branch List + Parent Checkpoint};
+    \node[b] (w1) at (-4.4,-1.55)
+      {\textbf{Worker 1 / S2 Path-Restricted}};
+    \node[b] (w2) at (0,-1.55)
+      {\textbf{Worker 2 / S3 Overlap-Aware}};
+    \node[b] (w3) at (4.4,-1.55)
+      {\textbf{Worker 3 / S5 High-Fanout Repair}};
+    \draw[bus,AccentBlue] (controller.south) -- (0,-.775);
+    \draw[bus,AccentBlue] (-4.4,-.775) -- (4.4,-.775);
+    \foreach \n in {w1,w2,w3}{
+      \draw[bus,->,AccentBlue] (\n.north |- 0,-.775) -- (\n.north);
+      \draw[bus,Accent] (\n.south) -- (\n.south |- 0,-2.325);
+    }
+    \draw[bus,Accent] (-4.4,-2.325) -- (4.4,-2.325);
+    \node[b,fill=SoftMint!70,text width=6.4cm] (merge) at (0,-3.10)
+      {\textbf{Collect \& Rank Candidates}\\Global STA / Power / HPWL / Checkpoints};
+    \draw[bus,->,Accent] (0,-2.325) -- (merge.north);
+  \end{tikzpicture}
+  \par}
+  \vspace{-.12cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \smallpanel{panelblue}{Worker Responsibilities}{Apply ECO operations, legalize placement, evaluate QoR, save checkpoints.}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \smallpanel{panelmint}{Controller Responsibilities}{Manage worker resources, maintain Branch List, and update Global Best.}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+% B06 | Personal integration project and academic EDA validation platform
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerreturnbutton{Details index}}}
+\renewcommand{\slideposition}{Backup 6 / 7}
+\begin{frame}[shrink=20,label=detail-mini-soc]{Mini-SoC: RTL-to-GDS Validation Platform}
+  \vspace{0pt}% Keep the following group in the frame body.
+  {\fontsize{8.4875}{10}\selectfont\bfseries\color{Accent}
+    B06 / PERSONAL PROJECT \& EDA TOOL VALIDATION}\par\vspace{.14cm}
+  \vspace{.22cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.48\textwidth}
+      \smalllabel{Integration of Existing Open-Source IP}\par\vspace{.32cm}
+      \centering
+      \begin{tikzpicture}[>=Latex,font=\small,
+        ip/.style={draw=AccentBlue!65,fill=SoftBlue!72,rounded corners=3pt,
+          align=center,minimum height=.65cm,inner sep=4pt},
+        flow/.style={->,thick,Accent}]
+        \node[ip,text width=5.7cm] (bus) at (0,0) {\textbf{Wishbone Interconnect}};
+        \node[ip,text width=2.45cm] (periph) at (-1.65,-1.1) {SPI / I2C\\Peripherals};
+        \node[ip,text width=2.45cm] (ctrl) at (1.65,-1.1) {SRAM\\Controller};
+        \node[ip,fill=SoftLilac,text width=2.45cm] (ram) at (1.65,-2.2) {1-KiB SRAM\\Hard Macro};
+        \draw[flow] (bus.south -| periph.north)--(periph.north);
+        \draw[flow] (bus.south -| ctrl.north)--(ctrl.north);
+        \draw[flow] (ctrl.south)--(ram.north);
+      \end{tikzpicture}\par\vspace{.16cm}
+      \softpanel{panelmint}{\normalsize Physical Implementation / ASAP7 7nm}{RTL synthesis, macro-based physical implementation, and routing through GDS.}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \softpanel{panelblue}{Original Mini-SoC / Post-Route Results}{%
+        \begin{tabular}{@{}ll@{}}
+          \textbf{11.1k} instances & \textbf{500 ps} clock period\\[.10cm]
+          \textbf{+34.8 ps} setup slack & \textbf{8.94 mW} power
+        \end{tabular}\par\vspace{.12cm}
+        Zero setup / hold violations}
+      \vspace{.15cm}
+      \softpanel{panelmint}{Mini-SoC / Reported Improvements}{\textbf{16\%} die-area reduction\quad /\quad \textbf{6\%} wirelength reduction\\[.07cm]Comparison baseline not documented in available sources.}
+      \vspace{.15cm}
+      \softpanel{panellilac}{Separate Extended Design / ORFS RV32I}{Four 1-KiB SRAM macros\\[.07cm]
+        \textbf{18.4k} instances\quad /\quad \textbf{65\%} utilization}
+    \end{column}
+  \end{columns}
+  \vspace{.22cm}
+  \takeaway{\small Beyond standard benchmarks: validate new EDA tools within an end-to-end open-source RTL-to-GDS flow.}
+\end{frame}
+
+% B07 | Controlled comparison; actual evaluator outputs are pending
+\renewcommand{\slidenavigation}{\hyperlink{details-index}{\beamerreturnbutton{Details index}}}
+\renewcommand{\slideposition}{Backup 7 / 7}
+\begin{frame}[label=detail-diffusion-floorplan]{CAD Contest 2026: Diffusion-Guided SoC Floorplanner}
+  \slidesubtitle{B07 / ML for EDA \& Macro Placement}\par\vspace{.10cm}
+  {\small\bfseries Heuristic vs. Diffusion Initialization: same Constrained SA refinement and evaluator.}\par\vspace{.06cm}
+  {\centering
+    \includegraphics[width=\linewidth,height=4.30cm,keepaspectratio]{floorset_benchmark_results.png}\par}
+  \vspace{.05cm}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{.50\textwidth}
+      {\small\bfseries\color{Accent}Implemented Flow / Contest Problem C}\par\vspace{.06cm}{\footnotesize Diffusion-based initialization followed by constraint-aware simulated annealing for macro placement, HPWL, and floorplan quality.}
+    \end{column}
+    \begin{column}{.47\textwidth}
+      {\small\bfseries\color{Accent}Evaluation Pending}\par\vspace{.06cm}{\footnotesize Official score, HPWL, bounding-box area, violations, runtime, hard feasibility.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\end{document}
