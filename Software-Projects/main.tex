@@ -350,22 +350,20 @@
   \vspace{0.20cm}
   {\centering
   \begin{tikzpicture}[>=Latex]
-    \node[font=\small\bfseries] (req) at (0,2.00) {Incoming LLM Requests};
+    \node[font=\small\bfseries] (req) at (0,2.45) {Incoming LLM Requests};
     \node[svc,draw=Accent!75,fill=SoftMint,text width=4.5cm,minimum height=0.70cm]
-      (engine) at (0,1.20) {\textbf{LLM Serving Engine}\\Request Scheduling / Continuous Batching};
+      (engine) at (0,1.48) {\textbf{LLM Serving Engine}\\Request Scheduling / Continuous Batching};
     \draw[->,Accent,thick] (req) -- (engine);
-    \node[font=\scriptsize\bfseries,text=AccentBlue,anchor=west] at (-5.15,1.30)
-      {Single Server};
     \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=2.25cm,minimum height=1.03cm]
-      (gpua) at (-2.85,-0.28) {\textbf{GPU A}\\Compute + HBM\\KV Cache};
+      (gpua) at (-2.85,-0.10) {\textbf{GPU A}\\Compute + HBM\\KV Cache};
     \node[svc,draw=Accent!65,fill=SoftMint,text width=2.25cm,minimum height=1.03cm]
-      (gpub) at (2.85,-0.28) {\textbf{GPU B}\\Compute + HBM\\KV Cache};
+      (gpub) at (2.85,-0.10) {\textbf{GPU B}\\Compute + HBM\\KV Cache};
     \node[svc,draw=AccentBlue!50,fill=white,text width=3.25cm,minimum height=0.68cm]
-      (dram) at (0,-1.15) {Shared Host DRAM — KV Cache Tier};
+      (dram) at (0,-1.45) {Shared Host DRAM — KV Cache Tier};
     \node[svc,draw=Accent!60,fill=SoftLilac,text width=3.25cm,minimum height=0.62cm]
-      (ssd) at (0,-2.15) {SSD Storage — KV Cache Tier};
-    \draw[->,AccentBlue,thick] (engine.south) -- (0,0.17) -| (gpua.north);
-    \draw[->,Accent,thick] (engine.south) -- (0,0.17) -| (gpub.north);
+      (ssd) at (0,-2.55) {SSD Storage — KV Cache Tier};
+    \draw[->,AccentBlue,thick] (engine.south) -- (0,0.62) -| (gpua.north);
+    \draw[->,Accent,thick] (engine.south) -- (0,0.62) -| (gpub.north);
     \draw[<->,AccentBlue,thick] (gpua.south) -- (dram.north west);
     \draw[<->,Accent,thick] (gpub.south) -- (dram.north east);
     \draw[<->,Muted,thick] (dram.south) -- node[right,font=\scriptsize,text=Muted]
