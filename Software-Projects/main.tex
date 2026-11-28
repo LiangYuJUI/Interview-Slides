@@ -351,8 +351,6 @@
   {\centering
   \begin{tikzpicture}[>=Latex]
     \node[font=\small\bfseries] (req) at (0,2.00) {Incoming LLM Requests};
-    \node[draw=AccentBlue!45,dashed,rounded corners=4pt,minimum width=10.8cm,
-      minimum height=4.15cm] (server) at (0,-0.42) {};
     \node[svc,draw=Accent!75,fill=SoftMint,text width=4.5cm,minimum height=0.70cm]
       (engine) at (0,1.20) {\textbf{LLM Serving Engine}\\Request Scheduling / Continuous Batching};
     \draw[->,Accent,thick] (req) -- (engine);
