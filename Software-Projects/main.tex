@@ -359,9 +359,9 @@
     \node[svc,draw=Accent!65,fill=SoftMint,text width=3.85cm,minimum height=1.03cm]
       (gpub) at (2.85,-0.18) {\textbf{GPU B}\\{\mbox{\scriptsize Compute \& Bandwidth \& Power}}\\{\small HBM / KV Cache}};
     \node[svc,draw=AccentBlue!50,fill=white,text width=3.25cm,minimum height=0.98cm]
-      (dram) at (-2.20,-1.95) {Host DRAM\\KV Cache Tier\\{\scriptsize\color{Muted}Capacity / Retention}};
+      (dram) at (-2.20,-2.25) {Host DRAM\\KV Cache Tier\\{\scriptsize\color{Muted}Capacity / Retention}};
     \node[svc,draw=Accent!60,fill=SoftLilac,text width=3.25cm,minimum height=0.98cm]
-      (ssd) at (2.20,-1.95) {SSD Storage\\KV Cache Tier\\{\scriptsize\color{Muted}Capacity / Retention}};
+      (ssd) at (2.20,-2.25) {SSD Storage\\KV Cache Tier\\{\scriptsize\color{Muted}Capacity / Retention}};
     \draw[->,AccentBlue,thick] (engine.south) -- (0,0.70) -| (gpua.north);
     \draw[->,Accent,thick] (engine.south) -- (0,0.70) -| (gpub.north);
     \draw[AccentBlue,thick] (gpua.south) |- (0,-1.02);
