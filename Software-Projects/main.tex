@@ -347,8 +347,7 @@
 % Conceptual research architecture; not a completed implementation.
 % ============================================================
 \begin{frame}{Heterogeneous GPU LLM Serving}
-  \takeaway{Hardware- and workload-aware KV cache management for efficient LLM inference.}
-  \vspace{0.10cm}
+  \vspace{0.20cm}
   {\centering
   \begin{tikzpicture}[>=Latex]
     \node[font=\small\bfseries] (req) at (0,2.00) {Incoming LLM Requests};
@@ -374,9 +373,7 @@
     \draw[<->,Muted,thick] (dram.south) -- node[right,font=\scriptsize,text=Muted]
       {KV offload / restore} (ssd.north);
   \end{tikzpicture}\par}
-  \vspace{0.04cm}
-  {\centering\scriptsize Conceptual research architecture: GPU throughput and memory tiers trade capacity, bandwidth, latency, power and energy efficiency.\par}
-  \vspace{0.04cm}
+  \vspace{0.12cm}
   {\centering\small\bfseries\color{Accent}Goal: Improve energy and carbon efficiency under serving performance constraints.\par}
 \end{frame}
 
