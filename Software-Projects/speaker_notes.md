@@ -1,30 +1,29 @@
-# 口說備忘：Software Engineering & System Simulation
+# 口說備忘：Software Engineering · Testing & Simulation · LLM Serving Optimization
 
-日期：2026-11-06。投影片共 11 張（8 張主講、3 張問答備用），英文；本講稿使用繁體中文，不編入 PDF。
+投影片共 13 張（10 張主講，含結尾；3 張問答備用）。英文投影片搭配繁體中文口說稿。研究正式題目為 **Carbon- and Power-Aware Multi-Tier KV Cache Management for Heterogeneous GPU LLM Serving**，範圍是單一伺服器內的異質 GPU 推論系統。
 
 ## 時間配置
 
-標準版約 **6 分 55 秒**，其中研究段約 **2 分 15 秒**。下表以研究段 2 分 15 秒配置；時間為排練目標，實際速度需透過口說排練確認。技術備註供問答使用，不必逐條朗讀。
+完整主講約 **7–8 分鐘**，LLM 研究段約 **3 分鐘**。下表是排練目標；依面試官背景，可縮短案例或補充技術備註。備用投影片供問答使用，不計入主講時間。
 
-| 張 | 主題 | 標準版 |
+| 張 | 主題 | 目標時間 |
 | --- | --- | --- |
-| 1 | 封面 | 15 秒 |
-| 2 | 學經歷 | 35 秒 |
+| 1 | 封面 | 10 秒 |
+| 2 | 學經歷 | 30 秒 |
 | 3 | NeoPower 系統架構 | 50 秒 |
-| 4 | NeoPower 情境模擬 | 90 秒 |
-| 5 | NeoPower 部署前後驗證 | 80 秒 |
-| 6 | 跨資料中心 LLM 請求排程 | 60 秒 |
-| 7 | 系統級模擬方法與目前進度 | 75 秒 |
-| 8 | 結語 | 10 秒 |
-| 合計 | | 6 分 55 秒 |
-
-10 分鐘版維持相同八頁順序，可依第 3–5 張的延伸備註補充 NeoPower 案例；研究段維持約 2 分 15 秒。若面試官中途提問，優先縮短案例。
+| 4 | NeoPower 情境模擬 | 80 秒 |
+| 5 | NeoPower 部署前後驗證 | 70 秒 |
+| 6 | 異質 GPU LLM Serving | 45 秒 |
+| 7 | 細粒度效能與功耗建模 | 45 秒 |
+| 8 | 系統級模擬研究方法 | 50 秒 |
+| 9 | 效能限制下的資源最佳化 | 40 秒 |
+| 10 | 結語 | 10 秒 |
 
 ## 第 1 張 — Software Engineering & System Simulation
 
 目標時間：15 秒。
 
-各位好，我是 Yu-Jui Liang。今天介紹我在 NeoPower 的後端開發、系統模擬與測試經驗，以及目前進行中的跨資料中心 LLM 請求排程研究。
+各位好，我是 Yu-Jui Liang。今天介紹我在 NeoPower 的後端開發、系統模擬與測試經驗，以及目前進行中的異質 GPU LLM Serving 資源管理研究。
 
 學歷留到下一頁，不重複介紹。
 
@@ -92,57 +91,52 @@ NeoPower 新動智能是一間做電動車能源管理的新創。我從大二�
 - 10 分鐘版多說如何將日誌、營運資料與回饋一起判讀，以及條件相近仍有上述限制。
 - 本簡報不提供未確認的改善比例或實驗結果，也不延伸其他時間分組方法。
 
-## 第 6 張 — Cross-Data-Center LLM Serving
+## 第 6 張 — Heterogeneous GPU LLM Serving
 
-目標時間：約 60 秒。
+目標時間：45 秒。
 
-接下來是我的碩士研究，重點是跨資料中心的 LLM 請求排程。
+我的碩士研究正式題目是 Carbon- and Power-Aware Multi-Tier KV Cache Management for Heterogeneous GPU LLM Serving。目前的範圍是單一伺服器內有多種 GPU 的 LLM 推論環境。請求進入 Serving Engine，由 Request Scheduling 與 Continuous Batching 管理，再由異質 GPU 執行。
 
-請求先進入 Global Request Router，由它決定送往哪個資料中心。圖中列出三種概念性的儲存系統配置：A 以 HBM 為主、B 混合 HBM 與 HBF、C 以 HBF 為主。這些是研究情境，不代表已部署或可購買的 GPU 產品。
+研究關注 KV Cache 在 GPU 本地 HBM、共享 Host DRAM 和 SSD 之間的配置、搬移、暫存與還原。這些層級在容量、頻寬、存取延遲、功耗與能效上不同，GPU 也可能有不同的運算吞吐量。圖是概念性的研究架構，不代表已完成實作；箭頭只表示資料搬移概念，不假設特定的實體互連拓樸或 GPU 直接存取 SSD 能力。
 
-每個資料中心內都有自己的 Local Scheduler，負責安排站內的 Attention 與 FFN Workers。全域層選擇資料中心，區域層管理站內工作，不要求把 Attention 和 FFN 分放在不同資料中心。
+目標是在符合 Serving 效能要求下提升能源效率並降低碳排。這些仍是研究目標，尚無實驗結果。
 
-研究希望比較不同儲存配置下的請求排程策略，提高 SLO Goodput，也就是單位時間內滿足服務目標的請求數，同時降低總系統功耗。這是研究目標，模擬整合與評估仍在規劃或進行中。
+## 第 7 張 — Fine-Grained Performance & Power Modeling
 
-技術備註與問答：
+目標時間：45 秒。
 
-- 主要問題是跨資料中心的 request scheduling；GPU 型號與運算能力差異屬於實作與模型參數，不是這頁的主題。
-- FFN 指 Feed-Forward Network。此處保留 Attention／FFN 分離執行的概念架構，不限定 MoE 模型，也不要求跨資料中心分工。
-- HBF 是 High Bandwidth Flash，以 NAND Flash 為基礎。HBM-focused 與 HBF-focused 表示配置重點，不表示排除其他緩衝、快取或資料管理機制。Hybrid 不預設固定容量比例。
-- 全域路由策略的候選考量包括請求的 SLO、站點負載與儲存配置；具體策略及參數仍需在後續模擬中定義與評估。
-- SLO Goodput 必須先定義請求達標條件與統計時間窗口，並與總系統功耗一起評估；不等同於只計算總吞吐量或每 token 能耗。
-- 不宣稱已有完成的排程實驗、效能改善或 HBF GPU 實測結果。
+要比較不同 GPU 和快取配置，首先需要掌握不同推論工作在硬體上的時間與能耗。這裡將模型分成四類：Prefill Attention、Prefill FFN、Decode Attention 和 Decode FFN。Attention 與 FFN 在這裡是建模分類，並不是要把它們部署成分離的 GPU Worker。
 
-## 第 7 張 — Research Methodology: System-Level Simulation
+建模會考慮 GPU 運算吞吐量、記憶體頻寬與容量、Batch Size、Sequence Length 和工作負載特徵，預期估計輸出是 Latency（毫秒）、Power（瓦特）與 Energy（焦耳）。Hardware Profiling、模型建構、Calibration 與 Validation 都是接下來要做的研究工作，目前沒有宣稱已完成或驗證模型。
 
-目標時間：75 秒，包含簡短進度說明。
+## 第 8 張 — Research Methodology: System-Level Simulation
 
-在研究方法方面，因為目前沒有辦法直接取得搭載 HBF 的 GPU 硬體，因此我主要採用 System-Level Simulation 的方式進行研究，而不是實際建置這些硬體配置。
+目標時間：50 秒。
 
-模擬需要的 GPU、HBM 和 HBF 效能參數，會參考現有的公開硬體規格，以及學術論文中提出並經過評估的模型，包括運算效能、記憶體傳輸延遲、頻寬與功耗等特性。
+接著把 GPU、記憶體／儲存和工作負載模型放進 System-Level Discrete-Event Simulator。輸入包含 GPU 的運算、延遲、功率與能量模型；HBM、DRAM、SSD 的容量、頻寬、存取延遲和 I/O；以及請求到達、輸入輸出 Token 長度、KV Cache 重用和 Batching 機會。
 
-在實作方面，我目前以開源的 GPU Cluster Serving Simulator 作為系統架構的基礎，並規劃整合相關學術研究所使用的 GPU Memory 和 Storage Simulators，來模擬不同硬體配置下的記憶體傳輸與功耗行為。
+模擬器預計處理 Request Scheduling、Continuous Batching、GPU 執行、記憶體配置、多層 KV 管理、儲存 I/O、資料搬移、佇列和資源競爭。之後評估 TTFT、TPOT、Throughput、Goodput、平均和尖峰功率、系統能耗，以及 Operational Carbon 與 Allocated Embodied Carbon。Goodput 是符合定義服務目標的成功請求率。
 
-接著，在這個模擬環境中建立多個 Data Centers 和不同規格的 GPU Clusters，研究全域路由如何將 LLM Requests 分配到資料中心，再由各站的 Local Scheduler 安排站內的 Attention 和 FFN 工作。
+研究會評估及重用開源模擬框架、硬體 Profiling 資料和既有建模方法。Hardware Benchmarking、Model Calibration 與 Validation 是校準模型的規劃環節。這是提議中的系統架構；整合和驗證仍在規劃或進行中，並非 GPU Cycle-Accurate Simulation。
 
-最後透過模擬結果，比較不同 Scheduling Strategies 對系統 Throughput 和 Power Consumption 的影響。
+## 第 9 張 — Performance-Constrained Resource Optimization
 
-所以這個研究的核心，不只是模擬 GPU 硬體本身，而是建立一套結合 GPU 運算、記憶體特性與 LLM Serving 的系統級模擬環境，並利用它來評估和最佳化跨 Data Center 的 Request Scheduling。
+目標時間：40 秒。
 
-目前已定義研究問題與範圍，完成相關 GPU Serving、HBM／HBF 文獻的初步整理，並探索開源模擬框架作為架構起點。接下來會持續進行記憶體模型整合、Baseline Evaluation 和 Scheduling Experiments。
+預計探索的變數包括 DRAM 和 SSD 的邏輯快取容量、不同群組的 TTL、快取放置與保留政策，以及還原快取或重新計算的選擇。這些是既有硬體上的邏輯資源配置，不代表會因此減少已安裝硬體或製造階段的碳排。
 
-技術備註與問答：
+最佳化目標會考慮系統能耗、Operational Carbon、Allocated Embodied Carbon，以及平均和尖峰功率；同時受 TTFT、TPOT、Required Goodput、Power Budget 和容量限制。Operational Carbon 取決於用電量與電力碳強度；Embodied Carbon 分攤是帳務估算，不能解讀成實際減少硬體製造排放。能源歸因也要避免不同元件重複計算。
 
-- 開源 GPU Cluster Serving Simulator 是目前使用的架構起點；GPU Memory／Storage 模型的詳細整合、校正與排程評估仍在進行或規劃中，不宣稱整套系統已完成或通過驗證。
-- 先前探索的候選框架包含 LLMServingSim 2.0 與 FlashLab HBFSim；候選評估不等於完成整合或重現實驗。
-- 模型輸入包含公開 GPU 規格、既有 HBM 特性、發表的 HBF／NAND Flash 模型，以及論文中曾評估的模擬框架。具體版本、參數來源與適用條件仍需在整合時確認。
-- 模型需要足以反映影響排程的計算、記憶體存取及資源競爭行為，並非以 GPU 指令層級逐週期模擬為主。
-- 跨資料中心的傳輸與資料搬移成本若影響排程結果，需在實作中納入或明確設定假設；不把網路延遲作為本段主題。
-- 評估應明確定義吞吐量、總系統功耗的統計範圍及時間窗口，在可比較的工作負載下比較策略。模擬估計不等於硬體實測，也不能將功耗與能耗混用。
-- 尚未提供完成的排程演算法、Benchmark 數字、硬體量測結果或已證實的改善。
+這頁的核心問題是：KV Cache Hit Rate 越高，系統能耗就一定越低嗎？重用快取可能省下重複運算，但保留快取、Storage I/O 和資料搬移也會消耗能量。這是要用可比較的工作負載、完成服務量與相同效能限制驗證的研究問題，不是已得到的結論。
 
-## 第 8 張 — Thank You
+目前完成初步文獻整理、研究問題定義和初步框架分析；正在設計建模架構、評估框架可行性與規劃實驗。接下來是重現 Baseline、硬體 Profiling、模型 Calibration / Validation，以及資源最佳化實驗。
+
+## 第 10 張 — Thank You
 
 目標時間：10 秒。
 
-以上是我的 NeoPower 軟體工程經驗，以及目前的 LLM serving 研究方向。謝謝各位，歡迎提問。
+NeoPower 的經驗讓我實際參與軟體開發、系統模擬、測試與驗證；接下來我希望把這些 Systems Engineering 經驗用在 LLM Serving，透過硬體特性分析、效能模型與系統模擬研究資源管理。謝謝各位，歡迎提問。
+
+## 備用投影片 — Slides 11–13
+
+第 11 張 SAT-LEX 說明如何把法律文件轉成 SMT Constraints、把報告或情境轉成 Logical Variables，再用 SMT Solver 檢查一致性。第 12–13 張是 ABC Technology Mapping 的備用內容，可在面試官詢問 EDA 專案時使用。三張備用頁不計入主講時間。

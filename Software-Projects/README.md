@@ -1,30 +1,40 @@
 # Experience & Selected Projects
 
-Interview presentation for software, systems, and EDA roles by Yu-Jui Liang, dated November 6, 2026. The deck covers production software work at NeoPower and ongoing research on cross-data-center LLM request scheduling across different storage system configurations, targeting improved SLO goodput and lower total system power.
+Interview presentation for software, systems, and EDA roles by Yu-Jui Liang. The deck presents NeoPower software engineering, simulation and validation experience, followed by the research direction **Carbon- and Power-Aware Multi-Tier KV Cache Management for Heterogeneous GPU LLM Serving**. The research scope is a single server with heterogeneous GPUs and KV cache tiers spanning HBM, host DRAM and SSD.
 
-**8 main slides + 3 backup slides; standard speaking target: 6 min 55 sec, including 2 min 15 sec of research.** Traditional Chinese rehearsal notes and 10-minute extension guidance are in `speaker_notes.md`, separate from the PDF. Both versions use the same slide order and adjust spoken detail. Timing is a rehearsal target.
+The deck has **10 main slides, including the closing slide, followed by 3 backup slides**. The LLM research section is designed for about **3 minutes**; the complete main presentation is about **7–8 minutes**. Traditional Chinese speaker scripts and technical notes are in `speaker_notes.md` and are not embedded in the PDF.
 
 ## Slide organization
 
-| # | Title | Purpose | Time |
-| --- | --- | --- | --- |
-| 1 | Experience & Selected Projects | Simple cover | 15 s |
-| 2 | Education & Professional Experience | Existing education and employment history | 35 s |
-| 3 | NeoPower: Backend System Architecture | Electric bus platform, personal responsibilities, container isolation | 50 s |
-| 4 | NeoPower: Scenario-Based System Simulation | Personally developed simulator, historical inputs, high load and network failures | 90 s |
-| 5 | NeoPower: Testing & Production Reliability | Pre-deployment test gate and cross-site charging-power algorithm comparison | 80 s |
-| 6 | Cross-Data-Center LLM Serving | Global request routing across three conceptual storage configurations; local scheduling within each data center | 60 s |
-| 7 | Research Methodology: System-Level Simulation | Public specifications and published models feed serving simulation and throughput/power evaluation | 75 s |
-| 8 | Thank You | Close | 10 s |
-| 9 | SAT-LEX: LLM and SMT-Based Document Verification | Backup flowchart | Q&A |
-| 10 | ABC Mapper: SO Technology Mapper Baseline | Backup, EDA-CAD slide 6 | Q&A |
-| 11 | Single-Output vs Multi-Output Cell Mapping | Backup, EDA-CAD slide 7 | Q&A |
+| # | Title | Purpose |
+| --- | --- | --- |
+| 1 | Experience & Selected Projects | Cover |
+| 2 | Education & Professional Experience | Education and employment history |
+| 3 | NeoPower: Backend System Architecture | Platform architecture and personal engineering scope |
+| 4 | NeoPower: Scenario-Based System Simulation | Custom simulator and representative scenarios |
+| 5 | NeoPower: Testing & Production Reliability | Deployment gate and operational validation |
+| 6 | Heterogeneous GPU LLM Serving | Single-server architecture and multi-tier KV cache motivation |
+| 7 | Fine-Grained Performance & Power Modeling | Planned operation-level modeling across heterogeneous GPUs |
+| 8 | Research Methodology: System-Level Simulation | Proposed discrete-event simulation framework and evaluation |
+| 9 | Performance-Constrained Resource Optimization | Cache configuration variables, objectives, constraints and research question |
+| 10 | Thank You | Close |
+| 11 | SAT-LEX: LLM and SMT-Based Document Verification | Backup flowchart |
+| 12 | ABC Mapper: SO Technology Mapper Baseline | EDA backup |
+| 13 | Single-Output vs Multi-Output Cell Mapping | EDA backup |
 
-NeoPower testing is followed directly by the LLM research question. Slides 3–5 follow the presenter's finalized explanation: system and responsibilities, custom simulator, then deployment validation. SAT-LEX and two mapping slides follow Thank You as Q&A backups.
+Slides 2–5 and the original backup-slide content and layout are preserved. The former research section has been expanded from two slides to four. The previous deck is archived as `main-old.tex`, `main-old.pdf`, `README-old.md` and `speaker_notes-old.md`; the archived PDF is an exact copy of the prior PDF.
+
+## Research scope and status
+
+The project studies workload- and hardware-aware resource management for LLM inference in a single-server heterogeneous GPU environment. It includes workload characterization, fine-grained performance and power modeling, multi-tier KV cache management, system-level discrete-event simulation, hardware profiling and benchmarking, and performance, energy and carbon trade-off analysis.
+
+Completed research analysis includes an initial literature survey, research problem definition and preliminary framework analysis. Modeling architecture design, framework feasibility evaluation and experimental design are ongoing. Simulator implementation and integration, complete hardware profiling, validated GPU performance and energy models, final optimization algorithms and final evaluations remain planned or in progress. The slides present no fabricated results or hardware measurements.
+
+Operational carbon is evaluated from energy use and electricity carbon intensity. Allocated embodied carbon is an accounting measure and does not imply reduced manufacturing emissions from logical cache allocation. Energy accounting should avoid component double counting. Higher KV cache hit rate is a question to evaluate, since reuse can avoid computation while retention, storage I/O and data movement also consume energy. Comparisons should use comparable workloads, completed service volume and common performance constraints. Goodput is the rate of requests that satisfy the defined service-level objectives.
 
 ## Compilation
 
-Use the existing pdfLaTeX workflow from this directory:
+Compile from this directory with the existing pdfLaTeX workflow:
 
 ```bash
 latexmk -pdf main.tex
@@ -37,46 +47,13 @@ cd Software-Projects
 latexmk -pdf main.tex
 ```
 
-Clean auxiliaries without deleting the PDF:
+The mapping backup slides reuse image assets in `../EDA-CAD-Project/figures/`. Keep `main.pdf` in sync with `main.tex`.
 
-```bash
-latexmk -c main.tex
-```
+## Visual and factual checks
 
-Rebuild `main.pdf` whenever `main.tex` changes. Keep the PDF in sync with the source. No external fonts are needed. Mapping backups reuse three image assets in `../EDA-CAD-Project/figures/`.
-
-## Editing and visual checks
-
-- Preserve the existing blue/green, 16:9 Beamer identity and editable TikZ diagrams.
-- Slide 2 retains its original two-column education/employment content from `../NV-Testing/main.tex`; reference folders are not modified.
-- Diagram styles and colors live in the preamble. Research diagrams retain the blue/green palette; storage examples use blue for HBM-focused, mint for HBF-focused and lilac for hybrid HBM/HBF.
-- Comment banners use final slide numbers 1–11.
-- Keep essential diagram labels readable. Remove secondary material rather than shrink fonts or fill whitespace.
-- Slide 6 ends with the research goal; the conceptual status of the storage configurations is explained in the speaker notes. Normal theme page numbers remain; detailed caveats belong in the speaker notes.
-- Check the build log for box overflow and warnings, verify exactly eleven PDF pages, and render and inspect every page after layout changes.
-
-## Factual boundaries
-
-NeoPower:
-
-- Platform architecture is not a claim of sole authorship. Personal scope includes system planning and development, backend APIs, database integration, log analysis/debugging, some deployment and maintenance, and development of the custom simulator.
-- The simulator emulates vendors as clients or servers. Scenarios draw on production database logs, customer feedback and observed operational problems.
-- The two representative scenarios are high load from buses arriving together and network failures causing mass station/charger disconnection.
-- Pre-deployment functional and regression tests must pass before deployment. Post-deployment comparison focuses on old and new charging-power allocation algorithms at sites with similar operating conditions.
-- Cross-site observations are not randomized experiments and do not establish causal improvement by themselves. No unconfirmed performance numbers, protocols, customer names or implementation details are added.
-
-LLM research:
-
-- Slide 6 emphasizes cross-data-center request scheduling. Incoming LLM requests reach a Global Request Router, which selects among Data Center A (HBM-focused), B (Hybrid HBM/HBF) and C (HBF-focused).
-- Each data center contains its own Local Scheduler and both Attention and FFN Workers. The local scheduler manages work within that site; the diagram does not require Attention and FFN workers to reside in different data centers.
-- These storage configurations are conceptual research examples, not claims about deployed or commercially available GPU hardware. No fixed HBM/HBF capacity ratio is assumed. GPU heterogeneity is an implementation detail.
-- HBF means High Bandwidth Flash and is NAND-flash-based.
-- Parameter sources are public GPU specifications, existing HBM characteristics and published HBF/NAND-flash research, including proposals associated with SanDisk, SK hynix and academic groups. No unsupported device parameters or benchmark results are included.
-- An open-source GPU-cluster serving simulator is the architectural starting point. Detailed GPU-memory/storage-model integration and validation remain ongoing or planned.
-- Research scope, literature review and framework exploration are summarized only in Slide 7's speaker notes. There is no standalone roadmap slide.
-- Improved SLO goodput (the rate of requests meeting the defined service-level objectives) and lower total system power are objectives, not achieved results. Simulated estimates are not direct HBF GPU measurements. Power is distinct from energy per token.
-- Technical uncertainties include model calibration, parameter provenance and versions, resource contention, cross-data-center communication assumptions and the accounting scope for total power. These remain implementation considerations in the notes.
-
-## Current verification
-
-Rebuild with `latexmk -pdf main.tex`. The expected output is eleven pages: eight main slides followed by three Q&A backups. SAT-LEX uses an editable TikZ flowchart with two LLM conversion paths: legal documents become SMT constraints, while report/scenario documents become logical variables. The SMT solver checks the two for consistency or conflict. Mapping content and image crops are reused from EDA-CAD slides 6 and 7, with local page numbering and without links to omitted EDA-CAD detail pages.
+- Preserve the 16:9 Madrid-inspired Beamer style, palette, typography and editable TikZ diagrams.
+- Slide 6 describes a conceptual single-server architecture and does not assume a particular interconnect or direct GPU-to-SSD access.
+- Slide 7 separates Prefill Attention, Prefill FFN, Decode Attention and Decode FFN as modeling categories, not physically separated workers.
+- Slide 8 describes proposed system-level discrete-event simulation, not cycle-accurate GPU simulation. Calibration and validation are planned activities.
+- Slide 9 distinguishes logical cache allocation from physical hardware provisioning and frames cache-hit energy behavior as a research question.
+- Check for exactly 13 pages, overflow warnings, missing images and visual defects after rebuilding. Render and inspect the four research slides, cover, close and backup slides.
