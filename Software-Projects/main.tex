@@ -351,13 +351,13 @@
   {\centering
   \begin{tikzpicture}[>=Latex]
     \node[font=\small\bfseries] (req) at (0,2.45) {Incoming LLM Requests};
-    \node[svc,draw=Accent!75,fill=SoftMint,text width=4.5cm,minimum height=0.70cm]
-      (engine) at (0,1.48) {\textbf{LLM Serving Engine}\\Request Scheduling / Continuous Batching};
+    \node[svc,draw=Accent!75,fill=SoftMint,text width=7.0cm,minimum height=0.70cm]
+      (engine) at (0,1.48) {\textbf{LLM Serving Engine}\\Request Scheduling \& Continuous Batching};
     \draw[->,Accent,thick] (req) -- (engine);
-    \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=2.25cm,minimum height=1.03cm]
-      (gpua) at (-2.85,-0.10) {\textbf{GPU A}\\Compute + HBM\\KV Cache};
-    \node[svc,draw=Accent!65,fill=SoftMint,text width=2.25cm,minimum height=1.03cm]
-      (gpub) at (2.85,-0.10) {\textbf{GPU B}\\Compute + HBM\\KV Cache};
+    \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=3.85cm,minimum height=1.03cm]
+      (gpua) at (-2.85,-0.10) {\textbf{GPU A}\\{\mbox{\scriptsize Compute \& Bandwidth \& Power}}\\{\small HBM / KV Cache}};
+    \node[svc,draw=Accent!65,fill=SoftMint,text width=3.85cm,minimum height=1.03cm]
+      (gpub) at (2.85,-0.10) {\textbf{GPU B}\\{\mbox{\scriptsize Compute \& Bandwidth \& Power}}\\{\small HBM / KV Cache}};
     \node[svc,draw=AccentBlue!50,fill=white,text width=3.25cm,minimum height=0.68cm]
       (dram) at (-1.85,-1.45) {Shared Host DRAM\\KV Cache Tier};
     \node[svc,draw=Accent!60,fill=SoftLilac,text width=3.25cm,minimum height=0.62cm]
