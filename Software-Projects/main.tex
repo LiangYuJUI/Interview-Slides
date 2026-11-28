@@ -350,24 +350,27 @@
   \vspace{0.20cm}
   {\centering
   \begin{tikzpicture}[>=Latex]
-    \node[font=\small\bfseries] (req) at (0,2.45) {Incoming LLM Requests};
+    \node[font=\small\bfseries] (req) at (0,2.62) {Incoming LLM Requests};
     \node[svc,draw=Accent!75,fill=SoftMint,text width=7.0cm,minimum height=0.70cm]
-      (engine) at (0,1.48) {\textbf{LLM Serving Engine}\\Request Scheduling \& Continuous Batching};
+      (engine) at (0,1.58) {\textbf{LLM Serving Engine}\\Request Scheduling \& Continuous Batching};
     \draw[->,Accent,thick] (req) -- (engine);
     \node[svc,draw=AccentBlue!65,fill=SoftBlue,text width=3.85cm,minimum height=1.03cm]
-      (gpua) at (-2.85,-0.10) {\textbf{GPU A}\\{\mbox{\scriptsize Compute \& Bandwidth \& Power}}\\{\small HBM / KV Cache}};
+      (gpua) at (-2.85,-0.18) {\textbf{GPU A}\\{\mbox{\scriptsize Compute \& Bandwidth \& Power}}\\{\small HBM / KV Cache}};
     \node[svc,draw=Accent!65,fill=SoftMint,text width=3.85cm,minimum height=1.03cm]
-      (gpub) at (2.85,-0.10) {\textbf{GPU B}\\{\mbox{\scriptsize Compute \& Bandwidth \& Power}}\\{\small HBM / KV Cache}};
-    \node[svc,draw=AccentBlue!50,fill=white,text width=3.25cm,minimum height=0.68cm]
-      (dram) at (-1.85,-1.45) {Host DRAM\\KV Cache Tier\\Capacity / Retention};
-    \node[svc,draw=Accent!60,fill=SoftLilac,text width=3.25cm,minimum height=0.62cm]
-      (ssd) at (1.85,-1.45) {SSD Storage\\KV Cache Tier};
-    \draw[->,AccentBlue,thick] (engine.south) -- (0,0.62) -| (gpua.north);
-    \draw[->,Accent,thick] (engine.south) -- (0,0.62) -| (gpub.north);
-    \draw[<->,AccentBlue,thick] (gpua.south) -- (dram.north west);
-    \draw[<->,Accent,thick] (gpub.south) -- (dram.north east);
-    \draw[<->,Muted,thick] (dram.east) -- node[below=0.62cm,font=\tiny,text=Muted,
-      align=center,text width=1.7cm] {KV offload / restore} (ssd.west);
+      (gpub) at (2.85,-0.18) {\textbf{GPU B}\\{\mbox{\scriptsize Compute \& Bandwidth \& Power}}\\{\small HBM / KV Cache}};
+    \node[svc,draw=AccentBlue!50,fill=white,text width=3.25cm,minimum height=0.98cm]
+      (dram) at (-2.20,-1.95) {Host DRAM\\KV Cache Tier\\{\scriptsize\color{Muted}Capacity / Retention}};
+    \node[svc,draw=Accent!60,fill=SoftLilac,text width=3.25cm,minimum height=0.98cm]
+      (ssd) at (2.20,-1.95) {SSD Storage\\KV Cache Tier\\{\scriptsize\color{Muted}Capacity / Retention}};
+    \draw[->,AccentBlue,thick] (engine.south) -- (0,0.70) -| (gpua.north);
+    \draw[->,Accent,thick] (engine.south) -- (0,0.70) -| (gpub.north);
+    \draw[AccentBlue,thick] (gpua.south) -- (0,-1.02);
+    \draw[Accent,thick] (gpub.south) -- (0,-1.02);
+    \fill[Accent] (0,-1.02) circle (1.5pt);
+    \draw[Accent,thick] (0,-1.02) -- (0,-1.34);
+    \draw[Accent,thick] (-2.20,-1.34) -- (2.20,-1.34);
+    \draw[->,AccentBlue,thick] (-2.20,-1.34) -- (dram.north);
+    \draw[->,Accent,thick] (2.20,-1.34) -- (ssd.north);
   \end{tikzpicture}\par}
   \vspace{0.12cm}
   {\centering\small\bfseries\color{Accent}Goal: Improve energy and carbon efficiency under serving performance constraints.\par}
